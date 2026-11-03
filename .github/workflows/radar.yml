@@ -46,6 +46,8 @@ jobs:
           node --test tests/test_navegacao.cjs
           node --check docs/assets/navegacao-extras.js
           node --test tests/test_navegacao_extras.cjs
+          node --check docs/assets/sapinho.js
+          node --test tests/test_sapinho.cjs
       - name: Ler publicacoes oficiais
         env:
           OITAVA_TERMS: ${{ secrets.OITAVA_TERMS }}

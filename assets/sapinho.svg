@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
+<title>Sapinho da Oitava Parede</title>
+<circle cx="80" cy="78" r="69" fill="#e9eddb"/>
+<path d="M21 129c22-15 94-15 121 0-23 18-99 18-121 0Z" fill="#51864e"/>
+<path d="m82 127 36-1-20 9" stroke="#345b3b" stroke-width="2" stroke-linecap="round"/>
+<ellipse cx="80" cy="110" rx="34" ry="26" fill="#779d4c"/>
+<ellipse cx="80" cy="111" rx="21" ry="22" fill="#d6de9d"/>
+<path d="M49 110c-19-6-28 3-24 12 4 8 18 7 32 2M111 110c19-6 28 3 24 12-4 8-18 7-32 2" fill="#8db355" stroke="#365638" stroke-width="2.5" stroke-linejoin="round"/>
+<ellipse cx="80" cy="80" rx="48" ry="33" fill="#96b961" stroke="#365638" stroke-width="2.5"/>
+<circle cx="51" cy="51" r="20" fill="#96b961" stroke="#365638" stroke-width="2.5"/>
+<circle cx="109" cy="51" r="20" fill="#96b961" stroke="#365638" stroke-width="2.5"/>
+<circle cx="52" cy="52" r="13" fill="#fff9e8"/><circle cx="108" cy="52" r="13" fill="#fff9e8"/>
+<ellipse cx="55" cy="54" rx="5.5" ry="8" fill="#132b46"/><ellipse cx="105" cy="54" rx="5.5" ry="8" fill="#132b46"/>
+<circle cx="57" cy="51" r="2" fill="white"/><circle cx="107" cy="51" r="2" fill="white"/>
+<ellipse cx="45" cy="85" rx="7" ry="4" fill="#dba482" opacity=".8"/><ellipse cx="115" cy="85" rx="7" ry="4" fill="#dba482" opacity=".8"/>
+<path d="M57 87c13 14 33 14 46 0" stroke="#365638" stroke-width="3" stroke-linecap="round"/>
+<path d="m61 117-1 13m39-13 1 13m-45-1 10 2m30 0 10-2" stroke="#365638" stroke-width="2.5" stroke-linecap="round"/>
+<path d="m22 49 2-5 2 5 5 2-5 2-2 5-2-5-5-2 5-2Zm113-23 2-5 2 5 5 2-5 2-2 5-2-5-5-2 5-2Z" fill="#d9ac49"/>
+</svg>

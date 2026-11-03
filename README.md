@@ -146,3 +146,7 @@ Esta atualização modifica apenas a navegação: o radar, a agenda, os projetos
 - **Acessibilidade:** janela de busca com Escape, Tab, setas e Enter; foco devolvido ao controle anterior; suporte a preferência por movimento reduzido.
 
 A busca acontece inteiramente no navegador, sem enviar texto digitado a terceiros. Os recursos estão em `docs/assets/navegacao-extras.js` e `docs/assets/navegacao-extras.css`, com as versões correspondentes em `assets/`.
+
+## Visita rara do sapinho
+
+O sapinho ilustrado aparece em 3% das sessões elegíveis, cinco segundos após entrar, com intervalo mínimo de 14 dias neste navegador. Não aparece enquanto um formulário ou diálogo estiver em uso. O botão **Ouvir croac** sintetiza um som curto localmente, sem autoplay ou serviço externo; a caixa pode ser fechada e respeita a preferência por movimento reduzido. O teste `tests/test_sapinho.cjs` cobre probabilidade e intervalo, inclusive datas inválidas.
