@@ -32,3 +32,44 @@ test('dados ausentes nao derrubam a interface de agrupamento',()=>{
  assert.deepEqual(ui.groupPublications(null),[]);
  assert.deepEqual(ui.groupPublications([null,{},{}]),[]);
 });
+
+test('montar três níveis: programa > categoria > tipo de publicação',()=>{
+ const input=[
+  {id:'1',fonte:'pnab_pg',titulo:'Resultado Inscricoes Edital 18 - 2026',url:'https://a.test/1'},
+  {id:'2',fonte:'pnab_pg',titulo:'Retificação Edital 18 - 2026',url:'https://a.test/2'},
+  {id:'3',fonte:'pnab_pg',titulo:'Edital 19 - 2026',url:'https://a.test/3'},
+  {id:'4',fonte:'lpg_pg',titulo:'Resultado audiovisual',url:'https://a.test/4'},
+  {id:'5',fonte:'pnab_pg',titulo:'Resultado Inscricoes Edital 18 - 2026',url:'https://a.test/1'}
+ ];
+ const hierarchy=ui.buildHierarchy(ui.groupPublications(input));
+ assert.equal(hierarchy.length,2);
+ const pnab=hierarchy.find(p=>p.program==='pnab_pg');
+ assert.equal(pnab.categories.length,2);
+ const audio=pnab.categories.find(c=>c.theme==='audiovisual');
+ assert.equal(audio.count,2);
+ assert.deepEqual(audio.types.map(t=>t.type),['resultado','retificacao']);
+ assert.equal(audio.types.reduce((n,t)=>n+t.items.length,0),2);
+ const festivals=pnab.categories.find(c=>c.theme==='festivais');
+ assert.equal(festivals.count,1);
+ assert.equal(hierarchy.reduce((n,p)=>n+p.categories.reduce((m,c)=>m+c.count,0),0),4);
+});
+
+test('hierarquia tolera dados vazios',()=>{
+ assert.deepEqual(ui.buildHierarchy([]),[]);
+ assert.deepEqual(ui.buildHierarchy(ui.groupPublications(null)),[]);
+});
+
+test('o código usa menus nativos acessíveis nos três níveis',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const js=fs.readFileSync(path.join(__dirname,'../docs/assets/radar-organizado.js'),'utf8');
+ const css=fs.readFileSync(path.join(__dirname,'../docs/assets/radar-organizado.css'),'utf8');
+ for(const layer of ['radar-accordion-level-1','radar-accordion-level-2','radar-accordion-level-3']) {
+  assert.ok(js.includes(layer),layer);
+  assert.ok(css.includes(layer),layer);
+ }
+ assert.ok(js.includes('<details'));
+ assert.ok(js.includes('<summary'));
+ assert.ok(js.includes('radarExpandAll')&&js.includes('radarCollapseAll'));
+ assert.ok(js.includes('data-accordion-key'));
+ assert.ok(css.includes('focus-visible'));
+});

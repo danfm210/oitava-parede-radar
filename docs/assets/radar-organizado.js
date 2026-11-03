@@ -152,16 +152,76 @@
       '<strong class="radar-entry-title">'+htmlEscape(item.titulo)+'</strong>'+
       '<small>'+htmlEscape(docLabel)+'</small><small class="ed-date-meta">'+htmlEscape(secondary)+'</small></div>'+meta+href+'</article>';
   }
-  function card(group) {
-    const types=TYPES[group.type], theme=THEMES[group.theme]||THEMES.geral;
-    const latest=group.items.slice(0,2),extra=group.items.slice(2);
-    const area=group.theme!=='geral'?'<span class="radar-area-pill">'+escapeHTML(theme.name)+'</span>':'';
-    return '<section class="radar-topic-card" data-kind="'+escapeHTML(group.type)+'">'+
-      '<div class="radar-topic-header"><div><span class="radar-topic-kicker">'+escapeHTML(types.short)+'</span><h4>'+escapeHTML(group.theme==='geral'?types.name:theme.name)+'</h4></div><div class="radar-topic-count">'+group.items.length+' <span>arquivo'+(group.items.length===1?'':'s')+'</span></div></div>'+
-      (area?'<div class="radar-topic-subline">'+area+'</div>':'')+
-      '<div class="radar-topic-list">'+latest.map(showItem).join('')+'</div>'+
-      (extra.length?'<details class="radar-more"><summary><span>Ver mais '+extra.length+' documento'+(extra.length===1?'':'s')+' deste grupo</span><span aria-hidden="true" class="radar-more-chevron">⌄</span></summary><div class="radar-topic-list extra">'+extra.map(showItem).join('')+'</div></details>':'')+
-    '</section>';
+
+  // Nível 1: programa; nível 2: modalidade; nível 3: tipo de documento.
+  // A organização preserva cada arquivo e evita repetir uma mesma modalidade várias vezes.
+  function buildHierarchy(groups) {
+    const programs=new Map();
+    for(const group of groups) {
+      if(!programs.has(group.program))programs.set(group.program,new Map());
+      const themes=programs.get(group.program);
+      if(!themes.has(group.theme))themes.set(group.theme,[]);
+      themes.get(group.theme).push(group);
+    }
+    return Array.from(programs,([program,themes])=>({
+      program,
+      categories:Array.from(themes,([theme,types])=>({
+        theme,
+        types:types.sort((a,b)=>(TYPES[a.type]?.order||99)-(TYPES[b.type]?.order||99)),
+        count:types.reduce((n,g)=>n+g.items.length,0),
+        latest:types.flatMap(g=>g.items).map(viewDate).sort().reverse()[0]||''
+      })).sort((a,b)=>(THEMES[a.theme]?.order||99)-(THEMES[b.theme]?.order||99))
+    })).sort((a,b)=>(PROGRAMS[a.program]?.order||99)-(PROGRAMS[b.program]?.order||99));
+  }
+  const accordionOverrides=new Map();
+  function detailsAttrs(key,defaultOpen) {
+    const open=accordionOverrides.has(key)?accordionOverrides.get(key):defaultOpen;
+    return ' data-accordion-key="'+escapeHTML(key)+'"'+(open?' open':'');
+  }
+  function latestLabel(date) {
+    return date?'<span class="radar-accordion-latest">Data mais recente no grupo: '+escapeHTML(date.split('-').reverse().join('/'))+'</span>':'';
+  }
+  function card(group,defaultOpen) {
+    const types=TYPES[group.type]||TYPES.documento;
+    const key='type:'+group.program+':'+group.theme+':'+group.type;
+    const latest=group.items.slice(0,3),extra=group.items.slice(3);
+    return '<details class="radar-topic-card radar-accordion-level-3" data-kind="'+escapeHTML(group.type)+'"'+detailsAttrs(key,defaultOpen)+'>'+
+      '<summary class="radar-topic-header"><div><span class="radar-topic-kicker">TIPO DE PUBLICAÇÃO</span><h4>'+escapeHTML(types.name)+'</h4></div>'+
+      '<div class="radar-topic-count">'+group.items.length+' <span>documento'+(group.items.length===1?'':'s')+'</span></div>'+
+      '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
+      '<div class="radar-topic-contents"><div class="radar-topic-list">'+latest.map(showItem).join('')+'</div>'+
+      (extra.length?'<details class="radar-more"><summary><span>Mostrar outros '+extra.length+' documento'+(extra.length===1?'':'s')+' deste tipo</span><span aria-hidden="true" class="radar-more-chevron">⌄</span></summary><div class="radar-topic-list extra">'+extra.map(showItem).join('')+'</div></details>':'')+
+      '</div></details>';
+  }
+  function categorySection(category,program,isFirstCategory,defaultOpen,forceOpen) {
+    const theme=THEMES[category.theme]||THEMES.geral;
+    const key='theme:'+program+':'+category.theme;
+    const open=forceOpen||(defaultOpen&&isFirstCategory);
+    return '<details class="radar-category-section radar-accordion-level-2"'+detailsAttrs(key,open)+'>'+
+      '<summary class="radar-category-title"><span class="radar-category-index">'+escapeHTML(String(theme.order||7).padStart(2,'0'))+'</span>'+
+      '<span class="radar-category-label"><strong>'+escapeHTML(theme.name)+'</strong>'+
+      '<small>'+category.count+' documento'+(category.count===1?'':'s')+' em '+category.types.length+' tipo'+(category.types.length===1?'':'s')+
+      latestLabel(category.latest)+'</small></span>'+
+      '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
+      '<div class="radar-category-contents"><div class="radar-topic-grid">'+
+      category.types.map((group,i)=>card(group,forceOpen||(open&&i===0))).join('')+
+      '</div></div></details>';
+  }
+  function programSection(section,isFirst,forceOpen) {
+    const program=section.program;
+    const source=PROGRAMS[program]||{short:'Outras fontes',name:'Outras fontes',tone:'other'};
+    const count=section.categories.reduce((t,g)=>t+g.count,0);
+    const key='program:'+program;
+    const isOpen=forceOpen||(filterProgram!=='todos'&&filterProgram===program)||(isFirst&&filterProgram==='todos');
+    const logo=OFFICIAL_LOGOS[program]?officialLogo(program):svgMark(program);
+    return '<details class="radar-source-section radar-accordion-level-1 program-'+source.tone+'"'+detailsAttrs(key,isOpen)+'>'+
+      '<summary class="radar-source-title"><span class="radar-source-emblem">'+logo+'</span>'+
+      '<span class="radar-source-name"><small>PROGRAMA / FONTE</small><strong>'+escapeHTML(source.name)+'</strong>'+
+      '<span>'+section.categories.length+' categoria'+(section.categories.length===1?'':'s')+' · '+count+' documento'+(count===1?'':'s')+'</span></span>'+
+      '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
+      '<div class="radar-source-contents"><div class="radar-category-grid">'+
+      section.categories.map((c,i)=>categorySection(c,program,i,isOpen,forceOpen)).join('')+
+      '</div></div></details>';
   }
   function renderCurrent() {
     const sum=document.getElementById('radarProgramSummary');
@@ -181,6 +241,7 @@
     }).join('');
     sum.querySelectorAll('[data-program]').forEach(btn=>btn.addEventListener('click',()=>{
       filterProgram=filterProgram===btn.dataset.program?'todos':btn.dataset.program;
+      accordionOverrides.clear();
       renderCurrent();
     }));
     let filtered=allGroups.filter(g=>(filterProgram==='todos'||g.program===filterProgram)
@@ -202,17 +263,9 @@
       target.innerHTML='<div class="radar-empty"><strong>Nenhuma publicação para estes filtros</strong><p>Experimente outro programa, modalidade ou tipo de documento.</p></div>';
       return;
     }
-    const byProgram=new Map();
-    filtered.forEach(g=>{if(!byProgram.has(g.program))byProgram.set(g.program,[]);byProgram.get(g.program).push(g);});
-    target.innerHTML=Array.from(byProgram.entries()).map(([program,groups])=>{
-      const source=PROGRAMS[program]||{short:'Outras fontes',name:'Outras fontes',tone:'other'};
-      const count=groups.reduce((t,g)=>t+g.items.length,0);
-      return '<section class="radar-source-section program-'+source.tone+'">'+
-        '<div class="radar-source-title"><span class="radar-source-emblem">'+(OFFICIAL_LOGOS[program]?officialLogo(program):svgMark(program))+'</span>'+
-        '<div><small>FONTE / PROGRAMA</small><h3>'+escapeHTML(source.name)+'</h3>'+
-        '<p>'+count+' documento'+(count===1?'':'s')+' agrupado'+(count===1?'':'s')+' por tipo e modalidade</p></div></div>'+
-        '<div class="radar-topic-grid">'+groups.map(card).join('')+'</div></section>';
-    }).join('');
+    const hierarchy=buildHierarchy(filtered);
+    const forceOpen=Boolean(query || filterType!=='todos' || filterTheme!=='todos');
+    target.innerHTML=hierarchy.map((section,i)=>programSection(section,i===0,forceOpen)).join('');
   }
   function renderRadarOrganizado(docs,allowed,esc){
     currentDocs=Array.isArray(docs)?docs:[];
@@ -222,7 +275,35 @@
     const theme=document.getElementById('radarThemeFilter');
     const input=document.getElementById('radarDocQuery');
     const reset=document.getElementById('radarResetFilters');
+    const target=document.getElementById('monitorPublications');
+    if(target&&!target.dataset.accordionBound) {
+      target.dataset.accordionBound='1';
+      target.addEventListener('click',e=>{
+        const summary=e.target.closest('summary');
+        if(!summary || !target.contains(summary))return;
+        const details=summary.parentElement;
+        if(details?.matches('details[data-accordion-key]')){
+          accordionOverrides.set(details.dataset.accordionKey,!details.open);
+        }
+      });
+    }
     const controls=document.querySelector('.radar-toolbar');
+    if(controls&&!document.getElementById('radarAccordionActions')) {
+      const actions=document.createElement('div');
+      actions.id='radarAccordionActions';
+      actions.className='radar-accordion-actions';
+      actions.innerHTML='<span><strong>Explorar por etapas</strong><small>Abra o programa, a modalidade e o tipo de publicação para ver os arquivos.</small></span>'+
+        '<div class="radar-accordion-buttons"><button type="button" id="radarExpandAll">Expandir tudo</button><button type="button" id="radarCollapseAll">Recolher tudo</button></div>';
+      controls.append(actions);
+      for(const [id,open] of [['radarExpandAll',true],['radarCollapseAll',false]]) {
+        document.getElementById(id).addEventListener('click',()=>{
+          document.querySelectorAll('#monitorPublications details[data-accordion-key]').forEach(item=>{
+            accordionOverrides.set(item.dataset.accordionKey,open);
+            item.open=open;
+          });
+        });
+      }
+    }
     if(controls && !document.getElementById('edSortMode')){
       const node=document.createElement('div');node.className='ed-date-tools';
       node.innerHTML='<label for="edSortMode">Ordenar por<select id="edSortMode"><option value="recent">Mais recentes — data do arquivo</option><option value="relevant">Mais relevantes para audiovisual</option><option value="indexed">Adicionados recentemente ao radar</option></select></label>'+
@@ -231,11 +312,11 @@
       node.querySelector('#edSortMode').addEventListener('change',e=>{sortMode=e.target.value;renderCurrent();});
       node.querySelector('#edPeriod').addEventListener('change',e=>{period=e.target.value;renderCurrent();});
     }
-    if(selector&&!selector.dataset.bound){selector.dataset.bound='1';selector.addEventListener('change',()=>{filterType=selector.value;renderCurrent();});}
-    if(theme&&!theme.dataset.bound){theme.dataset.bound='1';theme.addEventListener('change',()=>{filterTheme=theme.value;renderCurrent();});}
-    if(input&&!input.dataset.bound){input.dataset.bound='1';input.addEventListener('input',()=>{query=input.value.trim();renderCurrent();});}
+    if(selector&&!selector.dataset.bound){selector.dataset.bound='1';selector.addEventListener('change',()=>{filterType=selector.value;accordionOverrides.clear();renderCurrent();});}
+    if(theme&&!theme.dataset.bound){theme.dataset.bound='1';theme.addEventListener('change',()=>{filterTheme=theme.value;accordionOverrides.clear();renderCurrent();});}
+    if(input&&!input.dataset.bound){input.dataset.bound='1';input.addEventListener('input',()=>{query=input.value.trim();accordionOverrides.clear();renderCurrent();});}
     if(reset&&!reset.dataset.bound){reset.dataset.bound='1';reset.addEventListener('click',()=>{
-      filterProgram='todos';filterType='todos';filterTheme='todos';query='';sortMode='recent';period='all';
+      filterProgram='todos';filterType='todos';filterTheme='todos';query='';sortMode='recent';period='all';accordionOverrides.clear();
       const sort=document.getElementById('edSortMode'),p=document.getElementById('edPeriod');
       if(sort)sort.value='recent';if(p)p.value='all';
       if(selector)selector.value='todos';if(theme)theme.value='todos';if(input)input.value='';
@@ -243,7 +324,7 @@
     });}
     renderCurrent();
   }
-  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,editalNumber,inferredDate,sortDocs,withinPeriod};
+  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,inferredDate,sortDocs,withinPeriod};
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root&&typeof document!=='undefined')root.renderRadarOrganizado=renderRadarOrganizado;
 })(typeof window!=='undefined'?window:null);

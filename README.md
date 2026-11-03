@@ -112,3 +112,13 @@ Arquivos principais: `docs/assets/editorial.css`, `docs/assets/editorial.js` (co
 - **Conferência individual:** o painel “Menções e conferência de documentos” tem guias Pendentes/Conferidas/Todas e checkbox de conferência, reversível. A marcação é persistida somente em `localStorage` no navegador corrente, **não compartilhada** entre os membros; não altera o resultado oficial e não deve ser interpretada como validação de aprovação.
 - **Ajuda Oitava:** assistente de ajuda **guiado, sem IA generativa no GitHub Pages**. Responde a dúvidas comuns com orientações contextualizadas; questões abertas oferecem copiar a pergunta e abrir o ChatGPT, sem enviar chaves ou dados do navegador. Para incorporar uma IA generativa diretamente na página seria necessário um serviço de backend autenticado, com orçamento e proteção de credenciais.
 - **Fotos da produtora:** a pasta do Google Drive enviada pelo usuário não estava acessível via conector na data da atualização. Até que o Google Drive seja conectado/autorizado, não foram baixados nem republicados arquivos privados na hospedagem pública. O acervo oficial continua com o link do Instagram.
+
+## Navegação colapsável de publicações — 03/11/2026
+
+A seção **Publicações por programa e tipo de edital** agora permite abrir ou recolher três níveis:
+
+- **Programa:** PNAB, Lei Paulo Gustavo ou Diário Oficial, identificados por cores e marcas disponíveis.
+- **Categoria / modalidade:** Audiovisual, Festivais, Cultura Viva, Formação, Pesquisa, Multilinguagens e assuntos gerais.
+- **Tipo de publicação:** Resultados, Retificações, Editais e inscrições, Anexos, Edições oficiais e outros documentos. Dentro de categorias extensas, há também um botão "Mostrar outros documentos".
+
+Os controles **Expandir tudo** / **Recolher tudo** ajudam a ver ou ocultar todos os grupos. Os filtros de data, tipo, modalidade e busca por nome ou número do edital continuam em funcionamento, expandindo automaticamente grupos correspondentes à busca. O sistema usa os elementos acessíveis `<details>` e `<summary>`, utilizáveis com teclado. Nenhuma publicação foi removida: mudou apenas a organização visual.
