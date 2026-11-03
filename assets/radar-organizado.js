@@ -74,9 +74,11 @@
       if (!item || typeof item!=='object' || !item.url || !item.titulo) return;
       const classification=classifyDocument(item);
       // Somente URLs idênticas ou IDs repetidos são descartados; editais distintos nunca são fundidos.
-      const dedup = String(item.id || item.url);
-      if (used.has(dedup)) return;
-      used.add(dedup);
+      const idKey=item.id ? 'id:'+String(item.id) : '';
+      const urlKey='url:'+String(item.url);
+      if ((idKey && used.has(idKey)) || used.has(urlKey)) return;
+      if (idKey) used.add(idKey);
+      used.add(urlKey);
       const grpKey=classification.program+'|'+classification.theme+'|'+classification.type;
       if (!out.has(grpKey)) out.set(grpKey,{key:grpKey,...classification,items:[]});
       out.get(grpKey).items.push({...item, originalIndex:index});
