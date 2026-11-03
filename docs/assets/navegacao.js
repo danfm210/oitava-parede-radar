@@ -1,23 +1,28 @@
 /* Oitava Parede · navegação unificada
-   Camadas: atalhos de primeira linha, menus de fontes e cultura, indicação de seção ativa.
+   Grupos consecutivos na ordem da página, com indicação de seção ativa na rolagem.
    O botão #menuButton já recebe alternância no código principal do website.
 */
 (function(root){
 'use strict';
 const SECTIONS=[
-  'inicio-editorial','monitor','monitorMentions','catalogo-projetos','projetos','agenda',
-  'reunioes','visao','fontes','oportunidades','acervo','notificacoes'
+  'inicio-editorial','edPulse','marcas','acervo','monitor','monitorMentions','visao',
+  'catalogo-projetos','projetos','fontes','oportunidades','agenda','reunioes','notificacoes','publicacao'
 ];
 const MENUS={
-  editais:['monitor','monitorMentions','fontes','oportunidades'],
-  explorar:['visao','acervo','notificacoes']
+  inicio:['inicio-editorial','edPulse','marcas','acervo'],
+  editais:['monitor','monitorMentions','visao'],
+  projetos:['catalogo-projetos','projetos'],
+  fontes:['fontes','oportunidades'],
+  central:['notificacoes','publicacao']
 };
 const normalizeTarget=hash=>String(hash||'').replace(/^#/,'').trim();
 function menuForTarget(id){
   return Object.keys(MENUS).find(key=>MENUS[key].includes(id))||null;
 }
-function chooseActive(positions,threshold){
+function chooseActive(positions,threshold,atEnd=false){
  const valid=(Array.isArray(positions)?positions:[]).filter(p=>p&&typeof p.top==='number'&&Number.isFinite(p.top));
+ // A última seção pode ser curta demais para alcançar a linha do cabeçalho.
+ if(atEnd&&valid.length)return [...valid].sort((a,b)=>b.top-a.top)[0].id;
  const before=valid.filter(p=>p.top<=threshold).sort((a,b)=>b.top-a.top);
  if(before.length)return before[0].id;
  const after=valid.sort((a,b)=>a.top-b.top);
@@ -78,9 +83,10 @@ function init(){
    const offset=header.getBoundingClientRect().height+75;
    const positions=SECTIONS.map(id=>{
      const element=document.getElementById(id);
-     return element?{id,top:element.getBoundingClientRect().top}:null;
+     return element&&element.getClientRects().length?{id,top:element.getBoundingClientRect().top}:null;
    }).filter(Boolean);
-   setActive(chooseActive(positions,offset));
+   const atEnd=window.scrollY>0&&Math.ceil(window.scrollY+window.innerHeight)>=document.documentElement.scrollHeight-2;
+   setActive(chooseActive(positions,offset,atEnd));
  }
  function requestActive(){
    if(pending)return;
@@ -150,7 +156,7 @@ function init(){
    closeMobile();
    const launch=document.getElementById('opHelpLauncher');
    if(launch)launch.click();
-   else document.getElementById('notificacoes')?.scrollIntoView({behavior:'smooth',block:'start'});
+   else document.getElementById('notificacoes')?.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
  });
  if(typeof ResizeObserver!=='undefined')new ResizeObserver(updateOffset).observe(header);
  window.addEventListener('scroll',requestActive,{passive:true});

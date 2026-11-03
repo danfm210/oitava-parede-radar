@@ -128,8 +128,8 @@ Os controles **Expandir tudo** / **Recolher tudo** ajudam a ver ou ocultar todos
 O cabeçalho mantém o logotipo original da Oitava Parede **centralizado no azul-marinho**, com menu organizado por tarefas para facilitar o acesso a todas as informações.
 
 - Acesso direto a **Início**, **Projetos**, **Agenda cultural**, **Reuniões** e **Ajuda**.
-- **Editais e resultados:** menu que abre o Radar automático, possíveis menções a conferir, fontes oficiais e oportunidades de fomento.
-- **Explorar:** menu para a visão geral, o acervo da Oitava Parede e avisos/notificações.
+- **Ordem da página:** Início → Editais → Inscrições e projetos → Fontes e fomento → Agenda cultural → Reuniões → A central. Cada grupo reúne apenas áreas consecutivas, sem fazer o destaque voltar a um menu anterior ao descer a página.
+- **Subseções acessíveis:** Início reúne capa, últimas movimentações, programas e acervo; Editais reúne radar, menções e visão geral; Inscrições e projetos abre o catálogo e os cadastros locais; Fontes e fomento abre portais e oportunidades; A central reúne avisos e compartilhamento.
 - Atalho **Ajuda** abre a janela contextual existente, sem expor chaves de IA.
 - O item da seção atual fica destacado em amarelo conforme o usuário navega ou rola a página. O cabeçalho fixo calcula uma margem para não cobrir o título da seção.
 - Em celulares, o menu abre verticalmente com grupos expansíveis; permite uso por toque, teclado, Escape e rótulos acessíveis.
@@ -168,7 +168,7 @@ Em revogação, suspensão ou dúvida, incremente `revisao` e marque `confirmado
 
 ## Catálogo de projetos e inscrições
 
-A aba **Inscrições** (`#catalogo-projetos`) reúne **Todos**, **Fontes oficiais** e **Neste navegador**, com busca por título/edital/protocolo e filtro por pessoa. O título oficial é copiado do campo PROJETO, com grafia e pontuação preservadas; o nome do edital ou do arquivo nunca substitui o título. Cada fonte mostra proponente como publicado, edital, etapa, situação no documento, página e link. Cadastros locais não são publicados nem promovidos automaticamente a registros oficiais, e suas alterações atualizam o catálogo no mesmo navegador.
+O catálogo **Projetos e inscrições** (`#catalogo-projetos`), acessível no menu **Inscrições e projetos**, reúne **Todos**, **Fontes oficiais** e **Neste navegador**, com busca por título/edital/protocolo e filtro por pessoa. O título oficial é copiado do campo PROJETO, com grafia e pontuação preservadas; o nome do edital ou do arquivo nunca substitui o título. Cada fonte mostra proponente como publicado, edital, etapa, situação no documento, página e link. Cadastros locais não são publicados nem promovidos automaticamente a registros oficiais, e suas alterações atualizam o catálogo no mesmo navegador.
 
 O cadastro público é `docs/dados/projetos-oficiais.json`, espelhado em `dados/projetos-oficiais.json`. Os cinco títulos iniciais foram conferidos em 03/11/2026: OITAVAFEST (19/2026, p. 15), LIVRO "OITAVO AMOR" e ZEBOLA DANCE - VIDEOCLIPE (retificação 16/2026, pp. 65–66), CURSO PROFISSIONALIZANTE EM PÓS PRODUÇÃO (20/2026, p. 17) e FASHION FILM (42/2024, p. 17). As referências completas estão no JSON. Esses registros mostram inscrições e não certificam aprovação final, repasse, identidade de homônimos ou vigência após atos posteriores.
 
@@ -210,3 +210,8 @@ A abertura cinematográfica reúne um painel de quatro tarefas — Radar, Projet
 Tipografia, cores, espaçamento, cartões e estados de foco formam um sistema comum. Entradas discretas no campo de visão e luz reativa ao ponteiro usam recursos nativos, sem novas bibliotecas, vídeo, som automático ou cursor personalizado. A preferência por movimento reduzido desativa as animações. Os cartões permanecem visíveis mesmo sem IntersectionObserver. A seção de compartilhamento informa os limites reais do armazenamento local e copia apenas o endereço da central após o clique.
 
 Os arquivos `assets/experiencia.js` e `assets/experiencia.css` são espelhados em `docs/assets/`. O script aguarda DOMContentLoaded também no estado interactive para iniciar após a capa editorial. Os testes `tests/test_experiencia.cjs` verificam essa ordem, contagens e navegação por teclado. Os fluxos de cadastro, histórico, fontes, convites e pontos personalizados permanecem nos componentes existentes.
+
+
+### Navegação sequencial — 03/11/2026
+
+Os links do cabeçalho seguem a mesma ordem física das seções. O destaque acompanha a rolagem nos dois sentidos, inclusive em Últimas movimentações, Programas e na seção final de compartilhamento. No fim da página, a última área pode ser reconhecida mesmo quando não tem altura suficiente para alcançar o cabeçalho. Os menus mantêm abertura por clique ou seta para baixo, fechamento por Escape e retorno de foco; não abrem automaticamente durante a rolagem. As âncoras compensam o cabeçalho fixo e o scroll-padding global sem duplicar o espaço acima da seção.

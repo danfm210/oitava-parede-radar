@@ -1,5 +1,5 @@
 /* Oitava Parede · navegação editorial unificada | 2026-11-03
-   Logo original centralizado, navegação por tarefas e menus de contexto acessíveis. */
+   Logo original centralizado, menus na ordem do conteúdo, com acesso por teclado. */
 .site-head.op-header-v2{
  --nav-navy:#0b205d;--nav-deep:#091943;--nav-light:#172d65;
  --nav-gold:#eab94a;--nav-cream:#fcf9f0;
@@ -104,17 +104,17 @@
  padding:19px;z-index:250;
 }
 .op-header-v2 .op-nav-panel[hidden]{display:none!important}
-.op-header-v2 [data-nav-menu="explorar"] .op-nav-panel{left:auto;right:0;width:430px}
+.op-header-v2 [data-nav-menu="central"] .op-nav-panel{left:auto;right:0;width:430px}
 .op-header-v2 .op-nav-panel:before{
  content:"";position:absolute;top:-10px;left:35px;width:13px;height:13px;
  background:var(--nav-gold);transform:rotate(45deg);z-index:-1;
 }
-.op-header-v2 [data-nav-menu="explorar"] .op-nav-panel:before{left:auto;right:33px}
+.op-header-v2 [data-nav-menu="central"] .op-nav-panel:before{left:auto;right:33px}
 .op-header-v2 .op-nav-panel-head{display:flex;flex-direction:column;gap:6px;padding:1px 4px 15px;border-bottom:1px solid #e4e5e7;margin-bottom:12px}
 .op-header-v2 .op-nav-panel-head span{color:#ac7d1b;letter-spacing:1.75px;font:900 10px/1.4 "DM Sans",system-ui,sans-serif}
 .op-header-v2 .op-nav-panel-head strong{font:800 21px/1.2 "Space Grotesk",system-ui,sans-serif;color:#182e5a;letter-spacing:-.65px}
 .op-header-v2 .op-nav-panel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
-.op-header-v2 [data-nav-menu="explorar"] .op-nav-panel-grid{grid-template-columns:1fr}
+.op-header-v2 [data-nav-menu="central"] .op-nav-panel-grid{grid-template-columns:1fr}
 .op-header-v2 .op-nav-v2 a.op-nav-drop-link{
  display:flex;align-items:center;gap:10px;padding:13px 10px;
  min-width:0;min-height:78px;border-radius:5px;border:1px solid #e9edf1;
@@ -149,8 +149,9 @@
  outline:3px solid #f5cb6a!important;outline-offset:2px!important
 }
 :root{--op-nav-offset:165px}
-#inicio-editorial,#monitor,#monitorMentions,#catalogo-projetos,#projetos,#agenda,#reunioes,#visao,#fontes,#oportunidades,#acervo,#notificacoes{
- scroll-margin-top:var(--op-nav-offset)!important;
+#inicio-editorial,#edPulse,#marcas,#acervo,#monitor,#monitorMentions,#visao,#catalogo-projetos,#projetos,#fontes,#oportunidades,#agenda,#reunioes,#notificacoes,#publicacao{
+ /* Soma-se aos 94px de scroll-padding do documento. */
+ scroll-margin-top:calc(var(--op-nav-offset) - 94px)!important;
 }
 @media(max-width:1130px){
  .op-header-v2 .op-masthead-line{font-size:10px;letter-spacing:1.2px}
@@ -198,7 +199,7 @@
  .op-header-v2 .op-nav-v2 .op-nav-link .op-nav-ico{width:21px;height:21px;flex-basis:21px}
  .op-header-v2 .op-nav-v2 .op-nav-caret{margin-left:auto}
  .op-header-v2 .op-nav-panel,
- .op-header-v2 [data-nav-menu="explorar"] .op-nav-panel{
+ .op-header-v2 [data-nav-menu="central"] .op-nav-panel{
    display:block;position:static!important;width:100%!important;max-width:100%!important;
    box-shadow:none!important;border:1px solid rgba(232,236,247,.23)!important;
    border-left:3px solid #e5b54b!important;border-radius:5px!important;
@@ -210,7 +211,7 @@
  .op-header-v2 .op-nav-panel-head span{color:#e7b745}
  .op-header-v2 .op-nav-panel-head strong{color:#fff;font-size:17px}
  .op-header-v2 .op-nav-panel-grid,
- .op-header-v2 [data-nav-menu="explorar"] .op-nav-panel-grid{grid-template-columns:1fr}
+ .op-header-v2 [data-nav-menu="central"] .op-nav-panel-grid{grid-template-columns:1fr}
  .op-header-v2 .op-nav-v2 a.op-nav-drop-link{
    background:rgba(255,255,255,.04);color:#fff!important;
    border-color:rgba(255,255,255,.08);min-height:66px;padding:11px
