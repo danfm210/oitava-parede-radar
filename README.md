@@ -136,3 +136,13 @@ O cabeçalho mantém o logotipo original da Oitava Parede **centralizado no azul
 - Arquivos: `docs/assets/navegacao.css`, `docs/assets/navegacao.js` e as cópias sob `assets/` para publicação pela raiz. Testes em `tests/test_navegacao.cjs`.
 
 Esta atualização modifica apenas a navegação: o radar, a agenda, os projetos cadastrados localmente, as menções e as notificações mantêm as funcionalidades existentes.
+
+## Refinamentos de experiência — 03/11/2026
+
+- **Busca rápida de seções:** botão de lupa no cabeçalho ou atalho **Ctrl+K / Cmd+K**. Pesquisa local nomes, termos-chave e ações, inclusive Giovanna, OitavaFest, PNAB, projetos, eventos e reuniões. Não pesquisa o texto de todos os PDFs; a busca detalhada de editais permanece no radar.
+- **Atalhos de ação:** permite ir diretamente ao campo de pesquisa do Radar, Projetos, Agenda ou Reuniões.
+- **Rolagem em páginas longas:** botão de **voltar ao topo** após rolar e barra dourada de progresso de leitura.
+- **Cabeçalho responsivo:** a área do logotipo se compacta discretamente durante a rolagem, preservando o alinhamento central e o fundo azul-marinho.
+- **Acessibilidade:** janela de busca com Escape, Tab, setas e Enter; foco devolvido ao controle anterior; suporte a preferência por movimento reduzido.
+
+A busca acontece inteiramente no navegador, sem enviar texto digitado a terceiros. Os recursos estão em `docs/assets/navegacao-extras.js` e `docs/assets/navegacao-extras.css`, com as versões correspondentes em `assets/`.
