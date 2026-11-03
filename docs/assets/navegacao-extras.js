@@ -7,7 +7,7 @@
 const DESTINATIONS=[
  {id:'inicio-editorial',label:'Início da Central',group:'Navegação',description:'Visão editorial da Oitava Parede',keywords:'home página inicial voltar'},
  {id:'monitor',label:'Radar de editais',group:'Editais',description:'Documentos e atualizações oficiais',keywords:'pnab lei paulo gustavo resultado edital diário'},
- {id:'monitorMentions',label:'Menções a conferir',group:'Editais',description:'Giovanna Barbosa, OitavaFest e termos de projetos',keywords:'check marcar conferida menções proponente'},
+ {id:'monitorMentions',label:'Menções a conferir',group:'Editais',description:'Giovanna Barbosa, OitavaFest e termos de projetos',keywords:'check marcar conferida menções proponente Oscar Stefanno Fornari Matheus de Castro Santos Soares Daniel Fernandes Melquiades dos Santos'},
  {id:'projetos',label:'Projetos cadastrados',group:'Projetos',description:'Acompanhar inscrições e protocolos',keywords:'cadastrar projeto status contemplado'},
  {id:'agenda',label:'Agenda cultural',group:'Cultura',description:'Shows, festivais, cinema e gastronomia',keywords:'evento eventos audiovisual música festival festivais passeios'},
  {id:'reunioes',label:'Pontos de encontro',group:'Encontros',description:'Cafés, bares e espaços para brainstorm',keywords:'reuniões café cerveja salas coworking'},

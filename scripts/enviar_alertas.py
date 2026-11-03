@@ -47,7 +47,7 @@ def build_email(recipient,items,test):
  mail=EmailMessage()
  mail["From"]=os.environ.get("EMAIL_FROM") or os.environ["EMAIL_USER"]
  mail["To"]=recipient
- mail["Subject"]=("[TESTE] " if test else "")+"[Oitava Parede] Alertas de editais - Giovanna e OitavaFest"
+ mail["Subject"]=("[TESTE] " if test else "")+"[Oitava Parede] Alertas de editais - integrantes e projetos monitorados"
  lines=["CENTRAL DE EDITAIS - OITAVA PAREDE","", "Esta mensagem foi gerada pelo radar do coletivo.", ""]
  if test:
   lines+=["TESTE DE CONFIGURACAO","A conexao SMTP esta funcionando. Esta mensagem NAO indica resultado de edital.",""]

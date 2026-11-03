@@ -53,12 +53,23 @@ def matching_terms(content,terms):
  hay=compact(content)
  flat=hay.replace(" ","")
  return [term for term in terms if compact(term) in hay or compact(term).replace(" ","") in flat]
+MONITORED_PEOPLE=(
+ "Giovanna Barbosa Arantes",
+ "Oscar Stefanno Fornari",
+ "Matheus de Castro Santos Soares",
+ "Daniel Fernandes Melquiades dos Santos",
+)
 def priority_for(matches):
  hits=[compact(x) for x in matches]
- person=any("giovanna barbosa" in x or "giovana barbosa" in x for x in hits)
+ people=[]
+ if any("giovanna barbosa" in x or "giovana barbosa" in x for x in hits):
+  people.append(MONITORED_PEOPLE[0])
+ people.extend(name for name in MONITORED_PEOPLE[1:] if compact(name) in hits)
  fest=any("oitava fest" in x or "oitavafest" in x for x in hits)
- if person and fest:return "maxima","Giovanna Barbosa e OitavaFest citados; confirmar vinculo, edital e decisao."
- if person:return "alta","Giovanna Barbosa citada; conferir se e proponente e qual foi a decisao."
+ if people:
+  note="Nomes monitorados citados: "+"; ".join(people)+". "
+  if fest:return "maxima",note+"OitavaFest tambem citado; confirmar vinculo, edital e decisao."
+  return "alta",note+"Conferir identidade, vinculo com o edital e decisao."
  if fest:return "alta","OitavaFest citado; conferir a proponente e a decisao."
  return "normal","Outra mencao ao coletivo; verificar documento original."
 def sort_mentions(collection):
