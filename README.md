@@ -21,6 +21,24 @@ O fluxo `.github/workflows/radar.yml` faz uma consulta programada diariamente po
 
 O GitHub pode atrasar execuções agendadas e desabilitar workflows sem atividade em repositórios públicos após 60 dias. Revise a aba **Actions** periodicamente e use **Run workflow** para retomar, se necessário. O GitHub Pages gratuito não oferece controle de acesso: **o site e o JSON de resultados serão públicos**.
 
+## Alertas automáticos por e-mail — configuração do administrador
+
+O GitHub Actions já inclui o envio de e-mail **apenas para novos documentos oficiais** que mencionem Giovanna Barbosa (incluindo Arantes) ou o Projeto OitavaFest. Uma menção não confirma aprovação, seleção ou reprovação. O sistema evita reenviar IDs já avisados e não dispara alertas para o inventário inicial. Não envia mensagens enquanto os segredos abaixo não forem configurados.
+
+**No GitHub:** abra [Settings → Secrets and variables → Actions](https://github.com/danfm210/oitava-parede-radar/settings/secrets/actions), selecione **New repository secret** e cadastre:
+
+| Secret | Valor | Observação |
+|---|---|---|
+| `EMAIL_USER` | E-mail Gmail utilizado para **enviar** alertas | Conta remetente que a equipe controla |
+| `EMAIL_APP_PASSWORD` | Senha de app gerada na conta Google remetente | Nunca use a senha normal ou publique no código |
+| `EMAIL_RECIPIENTS` | `giovannabarbosa46@gmail.com` | Destinatária desejada; para adicionar membros, separe e-mails por vírgula |
+
+Para gerar uma senha de app, na conta de envio Google ative a verificação em duas etapas e procure **Senhas de app** (a opção pode não estar disponível em todas as contas). A senha de app deve ser inserida **somente** em um secret; nunca compartilhe no chat.
+
+**Teste manual:** em [Actions](https://github.com/danfm210/oitava-parede-radar/actions), abra **Radar Oitava Parede - monitoramento e publicacao → Run workflow**, marque **email_test = true** e execute. Isso envia um e-mail claramente marcado **[TESTE]** a todos os destinatários configurados, sem anunciar resultados. Depois disso, verificações com documentos prioritários novos enviam avisos automaticamente, sem reenvio.
+
+O estado geral da conexão é mostrado na seção **Notificações** do site, sem publicar endereços de e-mail. Não existe cadastro público de usuários: como o GitHub Pages é um site estático, só o administrador adiciona ou retira destinatários por meio do secret `EMAIL_RECIPIENTS`. A conexão Gmail do ChatGPT **não fornece acesso SMTP** ao GitHub Actions.
+
 ## Estrutura
 
 ```
@@ -28,6 +46,9 @@ O GitHub pode atrasar execuções agendadas e desabilitar workflows sem atividad
 docs/index.html               → site responsivo da Oitava Parede
 docs/dados/radar.json          → saída publicada da varredura
 scripts/monitorar.py          → leitor de páginas, links e PDFs
+scripts/enviar_alertas.py     → e-mail SMTP sob credenciais protegidas
+config/alertas_enviados.json  → IDs já avisados (criado após envios)
+docs/dados/email_status.json  → estado do envio sem divulgar destinatários
 config/termos_publicos.txt    → nomes públicos procurados
 requirements.txt              → dependências do monitor
 ```
