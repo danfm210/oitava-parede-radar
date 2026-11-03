@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-03T02:56:00+00:00",
+  "generated_at": "2026-11-03T03:01:04+00:00",
   "observacao": "Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.",
   "fontes": [
     {
@@ -8,7 +8,7 @@
       "nome": "PNAB Praia Grande",
       "url": "https://www2.praiagrande.sp.gov.br/secretarias/cultura-turismo/lei-aldir-blanc",
       "situacao": "ok",
-      "verificado_em": "2026-11-03T02:56:00+00:00",
+      "verificado_em": "2026-11-03T03:01:04+00:00",
       "documentos_localizados": 85,
       "documentos_lidos": 4,
       "detalhe": ""
@@ -18,7 +18,7 @@
       "nome": "Lei Paulo Gustavo Praia Grande",
       "url": "https://www2.praiagrande.sp.gov.br/secretarias/cultura-turismo/lei-paulo-gustavo",
       "situacao": "ok",
-      "verificado_em": "2026-11-03T02:56:00+00:00",
+      "verificado_em": "2026-11-03T03:01:04+00:00",
       "documentos_localizados": 36,
       "documentos_lidos": 4,
       "detalhe": ""
@@ -28,7 +28,7 @@
       "nome": "Diário Oficial Praia Grande",
       "url": "https://plenussistemas.dioenet.com.br/list/praia-grande",
       "situacao": "ok",
-      "verificado_em": "2026-11-03T02:56:00+00:00",
+      "verificado_em": "2026-11-03T03:01:04+00:00",
       "documentos_localizados": 7,
       "documentos_lidos": 4,
       "detalhe": ""
