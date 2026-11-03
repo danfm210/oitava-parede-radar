@@ -17,6 +17,8 @@ from urllib.parse import urljoin, urlparse
 from xml.etree import ElementTree
 import requests
 from bs4 import BeautifulSoup
+try: from .pessoas import MONITORED_PEOPLE,NAME_ALIASES
+except ImportError: from pessoas import MONITORED_PEOPLE,NAME_ALIASES
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"docs/dados/radar.json"
@@ -53,20 +55,12 @@ def matching_terms(content,terms):
  hay=compact(content)
  flat=hay.replace(" ","")
  return [term for term in terms if compact(term) in hay or compact(term).replace(" ","") in flat]
-MONITORED_PEOPLE=(
- "Giovanna Barbosa Arantes",
- "Oscar Stefanno Fornari",
- "Matheus de Castro Santos Soares",
- "Daniel Fernandes Melquiades dos Santos",
- "Julia Xavier",
- "Enzo Borges",
-)
 def priority_for(matches):
  hits=[compact(x) for x in matches]
  people=[]
  if any("giovanna barbosa" in x or "giovana barbosa" in x for x in hits):
   people.append(MONITORED_PEOPLE[0])
- people.extend(name for name in MONITORED_PEOPLE[1:] if compact(name) in hits)
+ people.extend(name for name in MONITORED_PEOPLE[1:] if any(compact(variant) in hits for variant in (name,*NAME_ALIASES.get(name,()))))
  fest=any("oitava fest" in x or "oitavafest" in x for x in hits)
  if people:
   note="Nomes monitorados citados: "+"; ".join(people)+". "

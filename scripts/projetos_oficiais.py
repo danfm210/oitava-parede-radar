@@ -6,6 +6,8 @@ import re
 import unicodedata
 from pathlib import Path
 from urllib.parse import urlparse
+try: from .pessoas import MONITORED_PEOPLE,search_names
+except ImportError: from pessoas import MONITORED_PEOPLE,search_names
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'docs/dados/projetos-oficiais.json'
@@ -26,7 +28,7 @@ def parse_page(text,people):
  state=re.search(r'\bSTATUS\s+(.+?)\s+(?:MOTIVO|PROTOCOLO)\b',text,re.I|re.S)
  if not person or not title or not state:return None
  proponente=clean(person.group(1));nome=clean(title.group(1));situacao=clean(state.group(1))
- if norm(proponente) not in {norm(p) for p in people}:return None
+ if norm(proponente) not in {norm(p) for p in search_names(people)}:return None
  if not 2<=len(nome)<=500 or re.search(r'CPF|CNPJ|PROTOCOLO|CATEGORIA|PROPONENTE',nome,re.I):return None
  protocol=re.search(r'\bPROTOCOLO\s+([A-Z0-9-]{6,50})\b',text,re.I)
  return {'titulo':nome,'proponente':proponente,'protocolo':protocol.group(1) if protocol else '', 'situacao_na_fonte':situacao}
@@ -59,8 +61,7 @@ def merge_rows(existing,incoming):
 def save_rows(incoming):
  try:data=json.loads(OUT.read_text())
  except (OSError,ValueError):data={'schema':1,'projetos':[]}
- terms=ROOT/'config/termos_publicos.txt'
- if terms.exists():data['pessoas_monitoradas']=[clean(p) for p in terms.read_text().splitlines() if clean(p) and not p.startswith('#') and clean(p) not in {'Oitava Parede','Oitava Fest','OitavaFest','Projeto OitavaFest'}]
+ data['pessoas_monitoradas']=list(MONITORED_PEOPLE)
  data['schema']=1;data['projetos']=merge_rows(data.get('projetos',[]),incoming)
  data['atualizado_em']=dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds')
  OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')

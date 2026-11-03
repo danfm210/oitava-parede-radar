@@ -1,7 +1,7 @@
 /* Resultados confirmados por conferência documental; não infere aprovação de menções. */
 (function(){
 'use strict';
-const PEOPLE=['Giovanna Barbosa Arantes','Giovanna Barbosa','Giovana Barbosa','Oscar Stefanno Fornari','Matheus de Castro Santos Soares','Daniel Fernandes Melquiades dos Santos','Julia Xavier','Enzo Borges','Oitava Parede'];
+const PEOPLE=['Giovanna Barbosa Arantes','Giovanna Barbosa','Giovana Barbosa','Oscar Stefanno Fornari','Matheus de Castro Santos Soares','Daniel Fernandes Melquiades dos Santos','Julia Xavier de Freitas','Enzo Santana Borges','Julia Xavier','Enzo Borges','Oitava Parede'];
 const RESULTS={contemplado:'Projeto contemplado',selecionado:'Projeto selecionado no resultado final',aprovado:'Projeto aprovado'};
 const STAGES={resultado_final:'Resultado final',homologacao:'Homologação'};
 const SEEN='oitava_aprovacoes_vistas_v1';

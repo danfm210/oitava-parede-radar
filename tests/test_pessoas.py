@@ -23,4 +23,15 @@ class PessoasMonitoradasTests(unittest.TestCase):
  def test_nao_criar_alias_curto_generico(self):
   self.assertEqual(matching_terms('Daniel Fernandes e Matheus de Castro',load_terms()),[])
 
+
+class NomesAtualizadosTests(unittest.TestCase):
+ def test_formas_anteriores_mantem_busca_mas_recebem_nome_completo_sem_duplicar(self):
+  for canonical,alias in [('Julia Xavier de Freitas','Julia Xavier'),('Enzo Santana Borges','Enzo Borges')]:
+   matches=matching_terms(canonical.upper().replace(' ','\n'),load_terms())
+   self.assertIn(canonical,matches);self.assertIn(alias,matching_terms(alias.upper().replace(' ','\n'),load_terms()))
+   for hits in [matches,[alias],[canonical,alias]]:
+    level,note=priority_for(hits)
+    self.assertEqual(level,'alta');self.assertEqual(note.count(canonical),1)
+  self.assertEqual(matching_terms('Julia e Enzo',load_terms()),[])
+
 if __name__=='__main__':unittest.main()

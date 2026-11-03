@@ -63,3 +63,13 @@ test('ano informado no cadastro local é preservado e ausências não recebem o 
  assert.equal(api.filterRows(rows,{year:'sem-ano'})[0].id,'qa-none');
  assert.equal(api.filterRows(rows,{year:'2026'}).length,0);
 });
+
+test('nomes completos filtram cadastros antigos sem alterar a grafia informada',()=>{
+ for(const [canonical,alias] of [['Julia Xavier de Freitas','Julia Xavier'],['Enzo Santana Borges','Enzo Borges']]){
+  const rows=api.localRows([{id:'old',title:'Teste de nome',proponent:alias},{id:'new',title:'Outro teste',proponent:canonical}]);
+  assert.equal(api.personKey(alias),api.personKey(canonical));
+  assert.equal(api.filterRows(rows,{person:canonical}).length,2);
+  assert.equal(api.filterRows(rows,{query:canonical}).length,2);
+  assert.equal(rows[0].proponente,alias);
+ }
+});

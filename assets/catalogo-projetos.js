@@ -4,7 +4,10 @@
 const STORE='oitavaparede_web_projects_v1';
 const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const personKey=s=>['giovanna barbosa','giovana barbosa','giovanna barbosa arantes'].includes(norm(s))?'giovanna barbosa arantes':norm(s);
+const PERSON_LABELS={'giovanna barbosa arantes':'Giovanna Barbosa Arantes','julia xavier de freitas':'Julia Xavier de Freitas','enzo santana borges':'Enzo Santana Borges'};
+const PERSON_ALIASES={'giovanna barbosa':'giovanna barbosa arantes','giovana barbosa':'giovanna barbosa arantes','julia xavier':'julia xavier de freitas','enzo borges':'enzo santana borges'};
+const personKey=s=>PERSON_ALIASES[norm(s)]||norm(s);
+const personLabel=s=>PERSON_LABELS[personKey(s)]||s;
 function officialURL(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&(u.hostname.endsWith('.gov.br')||u.hostname==='plenussistemas.dioenet.com.br');}catch{return false;}}
 function yearFor(row){
  const explicit=Number(row.ano_edital||row.year);
@@ -32,7 +35,7 @@ function groupOfficial(rows){
 function localRows(rows){return (Array.isArray(rows)?rows:[]).filter(r=>r&&typeof r.id==='string'&&typeof r.title==='string'&&r.title.trim()).map(r=>({id:r.id,titulo:r.title,proponente:r.proponent||'Não informado',programa:r.program||'Edital não informado',protocolo:r.protocol||'',situacao_na_fonte:r.status||'',notes:r.notes||'',url:r.url||'',ano_edital:r.year||r.ano_edital||null,origin:'local'}));}
 function filterRows(rows,{query='',person='',origin='todos',year=''}={}){
  const words=norm(query).split(' ').filter(Boolean);
- return rows.filter(r=>(!year||(year==='sem-ano'?!yearFor(r):yearFor(r)===String(year)))&&(origin==='todos'||r.origin===origin)&&(!person||personKey(r.proponente)===personKey(person))&&words.every(w=>norm([r.titulo,r.proponente,r.programa,r.protocolo,r.edital].join(' ')).includes(w)));
+ return rows.filter(r=>(!year||(year==='sem-ano'?!yearFor(r):yearFor(r)===String(year)))&&(origin==='todos'||r.origin===origin)&&(!person||personKey(r.proponente)===personKey(person))&&words.every(w=>norm([r.titulo,r.proponente,personLabel(r.proponente),r.programa,r.protocolo,r.edital].join(' ')).includes(w)));
 }
 function init(){
  const node=document.getElementById('catalogo-projetos');if(!node)return;
@@ -44,7 +47,7 @@ function init(){
  function readLocals(){try{return localRows(JSON.parse(localStorage.getItem(STORE)||'[]'));}catch{return [];}}
  function options(rows){
   const previous=person.value,values=new Map();
-  for(const name of [...(data.pessoas_monitoradas||[]),...rows.map(r=>r.proponente)])if(name&&name!=='Não informado')values.set(personKey(name),personKey(name)==='giovanna barbosa arantes'?'Giovanna Barbosa Arantes':name);
+  for(const name of [...(data.pessoas_monitoradas||[]),...rows.map(r=>r.proponente)])if(name&&name!=='Não informado')values.set(personKey(name),personLabel(name));
   person.innerHTML='<option value="">Todas as pessoas</option>'+Array.from(values).sort((a,b)=>a[1].localeCompare(b[1],'pt-BR')).map(([value,label])=>'<option value="'+esc(value)+'">'+esc(label)+'</option>').join('');
   if(values.has(previous))person.value=previous;
   const years=Array.from(new Set([currentYear,...rows.map(yearFor).filter(Boolean)])).sort((a,b)=>Number(b)-Number(a));

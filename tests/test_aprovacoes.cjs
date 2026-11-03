@@ -44,3 +44,11 @@ test('cadastro publicado tem somente registros válidos, sem simulações',()=>{
  for(const r of data.aprovacoes)if(r.confirmado===true)assert.equal(api.eligible(r,day),true,r.id);
  assert.equal(fs.readFileSync('dados/aprovacoes.json','utf8'),fs.readFileSync('docs/dados/aprovacoes.json','utf8'));
 });
+
+test('nomes atualizados continuam exigindo conferência documental para aprovação',()=>{
+ for(const proponente of ['Julia Xavier de Freitas','Enzo Santana Borges','Julia Xavier','Enzo Borges']){
+  assert.equal(api.eligible({...row,proponente},today),true);
+  assert.equal(api.eligible({...row,proponente,conferencia:'automatica'},today),false);
+ }
+ assert.equal(api.eligible({...row,proponente:'Enzo Santana Borges Junior'},today),false);
+});

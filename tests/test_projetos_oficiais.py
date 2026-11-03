@@ -41,4 +41,10 @@ class OfficialProjectTests(unittest.TestCase):
   self.assertEqual(merged['acompanhamento'],progress);self.assertEqual(merged['ano_edital'],2024)
   self.assertEqual(merged['situacao_na_fonte'],'INSCRIÇÃO OK')
 
+ def test_nomes_atualizados_aceitam_alias_exato_sem_mudar_o_texto_da_fonte(self):
+  for name in ['JULIA XAVIER DE FREITAS','JULIA XAVIER','ENZO SANTANA BORGES','ENZO BORGES']:
+   page='PROPONENTE '+name+' CPF/CNPJ OMITIDO CATEGORIA ARTE PROJETO Nome conforme fonte STATUS ACEITO MOTIVO INSCRICAO VALIDA'
+   self.assertEqual(parse_page(page,MONITORED_PEOPLE)['proponente'],name)
+   self.assertIsNone(parse_page(page.replace(name,name+' JUNIOR'),MONITORED_PEOPLE))
+
 if __name__=='__main__':unittest.main()
