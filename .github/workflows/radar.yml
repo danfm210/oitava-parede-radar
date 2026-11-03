@@ -1,0 +1,56 @@
+name: Radar Oitava Parede - monitoramento e publicacao
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 11 * * *'
+  push:
+    branches: [main]
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: oitava-pages
+  cancel-in-progress: false
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq antiword
+      - name: Ler publicacoes oficiais
+        env:
+          OITAVA_TERMS: ${{ secrets.OITAVA_TERMS }}
+        run: python scripts/monitorar.py
+      - name: Guardar resultados
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/dados/radar.json
+          if ! git diff --staged --quiet; then
+            git commit -m "Atualizar radar oficial"
+            git push
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+  publicar:
+    needs: verificar
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Publicar site
+        id: deploy
+        uses: actions/deploy-pages@v4

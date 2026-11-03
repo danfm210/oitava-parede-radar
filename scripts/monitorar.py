@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+"""Monitor público de fontes oficiais; correspondências exigem conferência humana."""
+from __future__ import annotations
+import datetime as dt
+import hashlib
+import io
+import json
+import os
+import re
+import shutil
+import subprocess
+import tempfile
+import unicodedata
+import zipfile
+from pathlib import Path
+from urllib.parse import urljoin, urlparse
+from xml.etree import ElementTree
+import requests
+from bs4 import BeautifulSoup
+
+ROOT=Path(__file__).resolve().parents[1]
+OUT=ROOT/"docs/dados/radar.json"
+TERMS=ROOT/"config/termos_publicos.txt"
+SOURCES=[
+ {"id":"pnab_pg","name":"PNAB Praia Grande","url":"https://www2.praiagrande.sp.gov.br/secretarias/cultura-turismo/lei-aldir-blanc","mode":"portal"},
+ {"id":"lpg_pg","name":"Lei Paulo Gustavo Praia Grande","url":"https://www2.praiagrande.sp.gov.br/secretarias/cultura-turismo/lei-paulo-gustavo","mode":"portal"},
+ {"id":"diario_pg","name":"Diário Oficial Praia Grande","url":"https://plenussistemas.dioenet.com.br/list/praia-grande","mode":"diario"},
+]
+RELEVANT=re.compile(r"resultado|edital|inscri|sele[cç]|recurso|retifica|revoga|homologa|habilita|indefer|premia|projeto|audiovisual|multilinguagens|fomento|chamamento|cultura|aldir|pnab",re.I)
+CHANGES=re.compile(r"retifica|errata|revoga|republica|suspens",re.I)
+RESULT=re.compile(r"resultado|classifica|habilita|indefer|recurso|contempla|seleciona|homologa",re.I)
+OPPORTUNITY=re.compile(r"edital|chamamento|premia|fomento|inscri",re.I)
+HEADERS={"User-Agent":"OitavaParedeRadar/2.0 (consulta moderada a fontes publicas)","Accept":"text/html,application/pdf,*/*;q=0.5"}
+
+def now():return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+def clean(x):return re.sub(r"\s+"," ",str(x)).strip()
+def normal(x):return "".join(c for c in unicodedata.normalize("NFKD",str(x).casefold()) if not unicodedata.combining(c))
+def key(x):return hashlib.sha256(x.encode("utf-8")).hexdigest()[:20]
+def valid(url):
+ u=urlparse(url)
+ host=(u.hostname or "").lower()
+ return u.scheme=="https" and (host in {"plenussistemas.dioenet.com.br","www2.praiagrande.sp.gov.br","p-www2.praiagrande.sp.gov.br"} or host.endswith(".praiagrande.sp.gov.br"))
+def fetch(url,maximum=7_000_000):
+ if not valid(url):raise ValueError("Dominio nao autorizado")
+ with requests.get(url,headers=HEADERS,timeout=24,stream=True,allow_redirects=True) as response:
+  response.raise_for_status()
+  if not valid(response.url):raise ValueError("Redirecionamento nao autorizado")
+  chunks=[];size=0
+  for chunk in response.iter_content(65536):
+   size+=len(chunk)
+   if size>maximum:raise ValueError("Arquivo excede limite de tamanho")
+   chunks.append(chunk)
+  return b"".join(chunks),response.headers.get("Content-Type","").lower(),response.encoding or "utf-8"
+def kind(title):
+ if CHANGES.search(title):return "retificacao"
+ if RESULT.search(title):return "resultado"
+ if OPPORTUNITY.search(title):return "edital"
+ return "documento"
+def title_near(a):
+ for t in a.previous_elements:
+  if isinstance(t,str):
+   s=clean(t)
+   if len(s)>20 and s.casefold() not in {"visualizar","download"}:return s[:180]
+ return clean(a.get_text(" ",strip=True))[:180] or "Documento oficial"
+def discover(source,soup):
+ items=[];seen=set()
+ for a in soup.select("a[href]"):
+  url=urljoin(source["url"],a.get("href","")).split("#")[0]
+  if not valid(url) or url in seen:continue
+  path=urlparse(url).path.lower()
+  if source["mode"]=="diario":
+   if "/diario/publicacoes/" not in url:continue
+   title=clean(a.parent.parent.get_text(" ",strip=True))[:125] if a.parent and a.parent.parent else "Diário Oficial"
+   title="Publicações do Diário Oficial: "+title
+   typ="diario"
+  else:
+   if not path.endswith((".pdf",".doc",".docx",".xlsx",".xls")):continue
+   title=title_near(a)
+   if not RELEVANT.search(title):continue
+   typ=kind(title)
+  items.append({"url":url,"title":title,"kind":typ})
+  seen.add(url)
+  if len(items)>=(7 if source["mode"]=="diario" else 85):break
+ return items
+def document_text(url,data,ctype,encoding):
+ u=url.lower()
+ if u.endswith(".pdf") or "application/pdf" in ctype:
+  import fitz
+  with fitz.open(stream=data,filetype="pdf") as f:return "\n".join(p.get_text("text",sort=True) for p in f)
+ if u.endswith(".docx"):
+  with zipfile.ZipFile(io.BytesIO(data)) as z:root=ElementTree.fromstring(z.read("word/document.xml"))
+  return " ".join((e.text or "") for e in root.iter() if e.tag.endswith("}t"))
+ if u.endswith(".doc"):
+  antiword=shutil.which("antiword")
+  if not antiword:raise ValueError("Antiword indisponivel")
+  with tempfile.NamedTemporaryFile(suffix=".doc") as f:
+   f.write(data);f.flush()
+   process=subprocess.run([antiword,"-m","UTF-8.txt",f.name],capture_output=True,timeout=24)
+   if process.returncode:raise ValueError("Erro lendo DOC")
+   return process.stdout.decode("utf-8","replace")
+ if u.endswith((".xls",".xlsx")):raise ValueError("Formato de planilha ainda nao suportado")
+ return BeautifulSoup(data.decode(encoding,"replace"),"html.parser").get_text(" ",strip=True)
+def load():
+ try:
+  r=json.loads(OUT.read_text(encoding="utf-8"))
+  if r.get("schema")==2:return r
+ except (OSError,ValueError,TypeError):pass
+ return {"schema":2,"generated_at":None,"fontes":[],"publicacoes":[],"mencoes":[]}
+def load_terms():
+ terms=[clean(t) for t in TERMS.read_text(encoding="utf-8").splitlines() if clean(t) and not t.lstrip().startswith("#")]
+ terms.extend(clean(t) for t in re.split(r"[;\n]",os.getenv("OITAVA_TERMS","")) if len(clean(t))>=4)
+ return list(dict.fromkeys(terms))
+def scan():
+ old=load();stamp=now();first=not old.get("generated_at")
+ pubs={p["id"]:p for p in old.get("publicacoes",[]) if isinstance(p,dict) and "id" in p}
+ mentions={m["id"]:m for m in old.get("mencoes",[]) if isinstance(m,dict) and "id" in m}
+ terms=load_terms(); statuses=[]
+ for src in SOURCES:
+  st={"id":src["id"],"nome":src["name"],"url":src["url"],"situacao":"erro","verificado_em":stamp,"documentos_localizados":0,"documentos_lidos":0,"detalhe":""}
+  try:
+   raw,ctype,enc=fetch(src["url"])
+   soup=BeautifulSoup(raw.decode(enc,"replace"),"html.parser")
+   items=discover(src,soup);st["documentos_localizados"]=len(items);st["situacao"]="ok" if items else "parcial"
+   if not items:st["detalhe"]="Pagina acessivel, mas sem links reconhecidos."
+   for i,item in enumerate(items):
+    identifier=key(src["id"]+"\x00"+item["url"])
+    exists=identifier in pubs
+    if not exists:
+     pubs[identifier]={"id":identifier,"fonte":src["id"],"titulo":item["title"],"url":item["url"],"categoria":item["kind"],"primeira_detecao":stamp,"base_inicial":first,"revisao":"Pendente","resumo":"Publicacao localizada; conferir original."}
+    else:pubs[identifier]["titulo"]=item["title"]
+    if i>=12 or (exists and i>=4):continue
+    try:
+     body,ct,charset=fetch(item["url"],18_000_000)
+     content=document_text(item["url"],body,ct,charset)
+     st["documentos_lidos"]+=1
+     matches=[t for t in terms if normal(t) in normal(content)]
+     if matches:
+      mid=key("mention\x00"+identifier)
+      if mid not in mentions:mentions[mid]={"id":mid,"publicacao_id":identifier,"fonte":src["id"],"url":item["url"],"titulo":item["title"],"primeira_detecao":stamp,"base_inicial":first,"tipo":"possivel_mencao","mensagem":"Nome ou termo localizado. Conferir pessoa, projeto e decisao no original.","verificacao":"Nao confirmado"}
+    except Exception as exc:
+     st["situacao"]="parcial";st["detalhe"]=("Alguns anexos nao puderam ser lidos: "+type(exc).__name__)[:170]
+   main=soup.get_text(" ",strip=True)
+   if any(normal(t) in normal(main) for t in terms):
+    mid=key("mention_index\x00"+src["id"])
+    if mid not in mentions:mentions[mid]={"id":mid,"publicacao_id":"","fonte":src["id"],"url":src["url"],"titulo":"Possivel mencao no indice: "+src["name"],"primeira_detecao":stamp,"base_inicial":first,"tipo":"possivel_mencao","mensagem":"Conferir pagina original.","verificacao":"Nao confirmado"}
+  except Exception as exc:st["detalhe"]=(type(exc).__name__+": "+str(exc))[:200]
+  statuses.append(st)
+ report={"schema":2,"generated_at":stamp,"observacao":"Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.","fontes":statuses,"publicacoes":sorted(pubs.values(),key=lambda x:x.get("primeira_detecao",""),reverse=True)[:160],"mencoes":sorted(mentions.values(),key=lambda x:x.get("primeira_detecao",""),reverse=True)[:90]}
+ OUT.parent.mkdir(parents=True,exist_ok=True)
+ OUT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
+ print("[radar]",stamp,[(x["id"],x["situacao"],x["documentos_localizados"],x["documentos_lidos"]) for x in statuses])
+ return report
+if __name__=="__main__":scan()
