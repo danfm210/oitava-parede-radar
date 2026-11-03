@@ -1,6 +1,10 @@
 /* Radar organizado da Oitava Parede — agrupamento visual sem inferir decisões oficiais. */
 (function (root) {
   'use strict';
+  const OFFICIAL_LOGOS={
+    pnab_pg:'https://www.gov.br/cultura/pt-br/assuntos/politica-nacional-aldir-blanc/documentos/logos-e-reguas/rgb-horizontal.png',
+    lpg_pg:'https://www.gov.br/cultura/pt-br/assuntos/lei-paulo-gustavo/imagens/horizontal_preferencial.png'
+  };
   const PROGRAMS = {
     pnab_pg: {name:'Política Nacional Aldir Blanc',short:'PNAB',detail:'Praia Grande · Fomento cultural',tone:'pnab',order:1},
     lpg_pg: {name:'Lei Paulo Gustavo',short:'LPG',detail:'Praia Grande · Cultura e audiovisual',tone:'lpg',order:2},
@@ -95,14 +99,50 @@
     return '<span class="radar-theme-label">'+escapeHTML(theme)+'</span>';
   }
   let currentDocs=[];
-  let filterProgram='todos', filterType='todos', filterTheme='todos', query='';
+  let filterProgram='todos', filterType='todos', filterTheme='todos', query='', sortMode='recent', period='all';
+  function inferredDate(doc){
+    const own=safeText(doc.data_no_arquivo).slice(0,10);
+    if(/^20\d{2}-\d{2}-\d{2}$/.test(own))return own;
+    const found=safeText(doc.url).match(/(?:^|\/)20(\d{2})([01]\d)([0-3]\d)[_-]/);
+    if(found){const date='20'+found[1]+'-'+found[2]+'-'+found[3];if(!Number.isNaN(Date.parse(date)))return date;}
+    return '';
+  }
+  function firstSeen(doc){return safeText(doc.primeira_detecao).slice(0,10)}
+  function viewDate(doc){return inferredDate(doc)||firstSeen(doc)}
+  function relativePriority(doc){
+    const theme=documentTheme(doc),type=documentType(doc);
+    return (type==='retificacao'?15:type==='resultado'?12:type==='edital'?7:0)
+      + (theme==='audiovisual'?8:theme==='festivais'?6:0)
+      + (/oitava|giovanna|giovana/i.test(doc.titulo||'')?25:0);
+  }
+  function sortDocs(docs,sort=sortMode){
+    const copy=[...docs];
+    if(sort==='relevant')return copy.sort((a,b)=>relativePriority(b)-relativePriority(a)||viewDate(b).localeCompare(viewDate(a)));
+    if(sort==='indexed')return copy.sort((a,b)=>firstSeen(b).localeCompare(firstSeen(a)));
+    return copy.sort((a,b)=>viewDate(b).localeCompare(viewDate(a))||firstSeen(b).localeCompare(firstSeen(a)));
+  }
+  function withinPeriod(doc,p){
+    if(p==='all')return true;
+    const date=viewDate(doc);
+    if(!date)return false;
+    const ref=new Date(date+'T12:00:00Z');
+    const today=new Date(),days=Number(p);
+    return Number.isFinite(ref.getTime()) && ref.getTime()>=today.getTime()-days*86400000 && ref.getTime()<=today.getTime()+86400000;
+  }
+  function officialLogo(program){
+    const logo=OFFICIAL_LOGOS[program];
+    return logo?'<img class="ed-pub-logo" src="'+escapeHTML(logo)+'" alt="Marca oficial do programa" loading="lazy" onerror="this.hidden=true;this.nextElementSibling.hidden=false"/><span hidden class="ed-brand-fallback">'+escapeHTML(PROGRAMS[program]?.short||'')+'</span>':'';
+  }
   let allowLink=()=>false,htmlEscape=escapeHTML;
 
   function showItem(item) {
     const kind=classifyDocument(item);
     const number=editalNumber(item.titulo);
-    const date=safeText(item.primeira_detecao).slice(0,10);
-    const docLabel=item.base_inicial?'Inventário inicial':date ? 'Identificado em '+date.split('-').reverse().join('/'):'Documento identificado';
+    const reference=inferredDate(item),first=firstSeen(item),read=safeText(item.ultima_leitura).slice(0,10);
+    const fmt=d=>d?d.split('-').reverse().join('/'):'—';
+    const docLabel=reference?'Data identificada no arquivo: '+fmt(reference):'Data do documento não informada';
+    const meta='<span class="ed-doc-date"><time datetime="'+escapeHTML(reference||first)+'">'+escapeHTML(reference?fmt(reference):'Sem data')+'</time><small>'+escapeHTML(reference?'NO ARQUIVO':'NÃO INFORMADA')+'</small></span>';
+    const secondary='Adicionado ao radar: '+fmt(first)+(read?' · Lido em '+fmt(read):' · Leitura não registrada');
     const href=allowLink(item.url) ?
       '<a class="radar-entry-link" href="'+htmlEscape(item.url)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir documento oficial: '+htmlEscape(item.titulo)+'">Documento oficial <span aria-hidden="true">↗</span></a>':'';
     return '<article class="radar-entry">'+
@@ -110,7 +150,7 @@
       '<div class="radar-entry-labels"><span class="radar-type-pill type-'+kind.type+'">'+htmlEscape(TYPES[kind.type]?.short||'Documento')+'</span>'+
       (number?'<span class="radar-edital-pill">Edital '+htmlEscape(number)+'/2026</span>':'')+'</div>'+
       '<strong class="radar-entry-title">'+htmlEscape(item.titulo)+'</strong>'+
-      '<small>'+htmlEscape(docLabel)+' · Conferir publicação original</small></div>'+href+'</article>';
+      '<small>'+htmlEscape(docLabel)+'</small><small class="ed-date-meta">'+htmlEscape(secondary)+'</small></div>'+meta+href+'</article>';
   }
   function card(group) {
     const types=TYPES[group.type], theme=THEMES[group.theme]||THEMES.geral;
@@ -128,14 +168,14 @@
     const target=document.getElementById('monitorPublications');
     const counter=document.getElementById('radarVisibleCounter');
     if(!target || !sum)return;
-    const allGroups=groupPublications(currentDocs);
+    const allGroups=groupPublications(sortDocs(currentDocs.filter(p=>withinPeriod(p,period))));
     const programIDs=['pnab_pg','lpg_pg','diario_pg'];
     sum.innerHTML=programIDs.map(id=>{
       const data=PROGRAMS[id],amount=currentDocs.filter(d=>d.fonte===id).length;
       const active=filterProgram===id,logo=svgMark(id);
       return '<button type="button" class="radar-program-card program-'+data.tone+(active?' is-active':'')+
         '" data-program="'+id+'" aria-pressed="'+active+'">'+
-        '<span class="radar-program-icon">'+logo+'<b>'+data.short+'</b></span>'+
+        '<span class="radar-program-icon">'+(OFFICIAL_LOGOS[id]?officialLogo(id):logo)+'<b>'+data.short+'</b></span>'+
         '<span class="radar-program-content"><strong>'+data.short+'</strong><small>'+escapeHTML(data.name)+'</small><span>'+amount+' documentos · '+escapeHTML(data.detail)+'</span></span>'+
         '<span class="radar-program-arrow" aria-hidden="true">→</span></button>';
     }).join('');
@@ -150,6 +190,12 @@
       const terms=norm(query);
       filtered=filtered.map(g=>({...g,items:g.items.filter(p=>norm(p.titulo+' '+(p.url||'')+' '+(PROGRAMS[g.program]?.name||'')).includes(terms))})).filter(g=>g.items.length);
     }
+    filtered=filtered.map(g=>({...g,items:sortDocs(g.items)}));
+    if(sortMode==='recent'||sortMode==='indexed'){
+      filtered.sort((a,b)=>viewDate(sortDocs(b.items)[0]||{}).localeCompare(viewDate(sortDocs(a.items)[0]||{})));
+    }else if(sortMode==='relevant'){
+      filtered.sort((a,b)=>relativePriority(sortDocs(b.items)[0]||{})-relativePriority(sortDocs(a.items)[0]||{}));
+    }
     const total=filtered.reduce((acc,g)=>acc+g.items.length,0);
     if(counter)counter.textContent=total+' arquivo'+(total===1?'':'s')+' · '+filtered.length+' grupo'+(filtered.length===1?'':'s')+' visualizado'+(filtered.length===1?'':'s');
     if(!filtered.length){
@@ -162,7 +208,7 @@
       const source=PROGRAMS[program]||{short:'Outras fontes',name:'Outras fontes',tone:'other'};
       const count=groups.reduce((t,g)=>t+g.items.length,0);
       return '<section class="radar-source-section program-'+source.tone+'">'+
-        '<div class="radar-source-title"><span class="radar-source-emblem">'+svgMark(program)+'</span>'+
+        '<div class="radar-source-title"><span class="radar-source-emblem">'+(OFFICIAL_LOGOS[program]?officialLogo(program):svgMark(program))+'</span>'+
         '<div><small>FONTE / PROGRAMA</small><h3>'+escapeHTML(source.name)+'</h3>'+
         '<p>'+count+' documento'+(count===1?'':'s')+' agrupado'+(count===1?'':'s')+' por tipo e modalidade</p></div></div>'+
         '<div class="radar-topic-grid">'+groups.map(card).join('')+'</div></section>';
@@ -176,17 +222,28 @@
     const theme=document.getElementById('radarThemeFilter');
     const input=document.getElementById('radarDocQuery');
     const reset=document.getElementById('radarResetFilters');
+    const controls=document.querySelector('.radar-toolbar');
+    if(controls && !document.getElementById('edSortMode')){
+      const node=document.createElement('div');node.className='ed-date-tools';
+      node.innerHTML='<label for="edSortMode">Ordenar por<select id="edSortMode"><option value="recent">Mais recentes — data do arquivo</option><option value="relevant">Mais relevantes para audiovisual</option><option value="indexed">Adicionados recentemente ao radar</option></select></label>'+
+      '<label for="edPeriod">Período<select id="edPeriod"><option value="all">Todo o histórico</option><option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select></label>';
+      controls.prepend(node);
+      node.querySelector('#edSortMode').addEventListener('change',e=>{sortMode=e.target.value;renderCurrent();});
+      node.querySelector('#edPeriod').addEventListener('change',e=>{period=e.target.value;renderCurrent();});
+    }
     if(selector&&!selector.dataset.bound){selector.dataset.bound='1';selector.addEventListener('change',()=>{filterType=selector.value;renderCurrent();});}
     if(theme&&!theme.dataset.bound){theme.dataset.bound='1';theme.addEventListener('change',()=>{filterTheme=theme.value;renderCurrent();});}
     if(input&&!input.dataset.bound){input.dataset.bound='1';input.addEventListener('input',()=>{query=input.value.trim();renderCurrent();});}
     if(reset&&!reset.dataset.bound){reset.dataset.bound='1';reset.addEventListener('click',()=>{
-      filterProgram='todos';filterType='todos';filterTheme='todos';query='';
+      filterProgram='todos';filterType='todos';filterTheme='todos';query='';sortMode='recent';period='all';
+      const sort=document.getElementById('edSortMode'),p=document.getElementById('edPeriod');
+      if(sort)sort.value='recent';if(p)p.value='all';
       if(selector)selector.value='todos';if(theme)theme.value='todos';if(input)input.value='';
       renderCurrent();
     });}
     renderCurrent();
   }
-  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,editalNumber};
+  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,editalNumber,inferredDate,sortDocs,withinPeriod};
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root&&typeof document!=='undefined')root.renderRadarOrganizado=renderRadarOrganizado;
 })(typeof window!=='undefined'?window:null);
