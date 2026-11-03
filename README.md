@@ -150,3 +150,18 @@ A busca acontece inteiramente no navegador, sem enviar texto digitado a terceiro
 ## Visita rara do sapinho
 
 O sapinho ilustrado aparece em 3% das sessões elegíveis, cinco segundos após entrar, com intervalo mínimo de 14 dias neste navegador. Não aparece enquanto um formulário ou diálogo estiver em uso. O botão **Ouvir croac** sintetiza um som curto localmente, sem autoplay ou serviço externo; a caixa pode ser fechada e respeita a preferência por movimento reduzido. O teste `tests/test_sapinho.cjs` cobre probabilidade e intervalo, inclusive datas inválidas.
+
+## Aviso de aprovação confirmada
+
+`docs/dados/aprovacoes.json` (espelhado em `dados/aprovacoes.json`) é um cadastro editorial independente das possíveis menções do radar e dos projetos locais. Começa vazio: nenhum resultado é inferido ou simulado. Ao abrir o site, resultados positivos finais conferidos aparecem em um diálogo de destaque, com projeto, proponente, edital, etapa, data, explicação, trecho documental e link oficial. O aviso pode ser fechado; ele não repete na mesma sessão e permanece acessível pelo botão **Ver resultados confirmados** no Radar. Nova revisão volta a avisar. O preenchimento de um projeto local como “contemplado” não aciona este aviso público.
+
+Para registrar uma decisão, confira o documento original, identidade, projeto, edital e fase. Publique o mesmo registro nos dois arquivos, preservando os demais. Campos obrigatórios:
+
+- `id`: identificador estável (letras, números, hífen ou sublinhado); `revisao`: inteiro positivo, incrementado em cada alteração.
+- `confirmado`: `true`; `conferencia`: `documental`.
+- `projeto`, `proponente` (um dos nomes monitorados ou Oitava Parede), `programa`.
+- `resultado`: `contemplado`, `selecionado` ou `aprovado`, conforme a decisão oficial; `etapa`: `resultado_final` ou `homologacao`. Não use habilitação, classificação em cadastro reserva ou seleção preliminar como aprovação final.
+- `publicado_em` e `conferido_em`: datas reais `AAAA-MM-DD`, sem datas futuras; a conferência não pode anteceder a publicação.
+- `explicacao`: como ocorreu a decisão e o que ela concede (incluindo ressalvas de contratação/repasse, quando constarem); `trecho_fonte`: trecho fiel e curto que sustenta a decisão, respeitando direitos autorais; `fonte_url`: URL HTTPS do documento oficial em domínio `.gov.br` ou no Diário Oficial `plenussistemas.dioenet.com.br`.
+
+Em revogação, suspensão ou dúvida, incremente `revisao` e marque `confirmado: false` para retirar o aviso. Nunca mantenha uma aprovação superada como ativa. O processo de conferência documental é obrigatório; a busca por nomes e palavras como “aprovado” não substitui a leitura do resultado oficial. O monitoramento agendado do ChatGPT pode manter este cadastro após a conferência; a coleta simples do GitHub apenas identifica possíveis menções.
