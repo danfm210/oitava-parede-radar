@@ -53,6 +53,17 @@ config/termos_publicos.txt    → nomes públicos procurados
 requirements.txt              → dependências do monitor
 ```
 
+## Agenda cultural e pontos de encontro (novo)
+
+O site tem as abas **Agenda cultural** e **Reuniões**, com filtros por cidade, categoria e tipo de encontro, fotos externas com crédito quando disponíveis, links para as fontes e para o mapa, favoritos locais e botão para copiar convites.
+
+- A agenda inicial foi pesquisada em **03/11/2026**, com eventos publicados para Santos, Praia Grande e São Paulo. Fontes individuais e portais de referência aparecem nos cartões.
+- Eventos são **curados manualmente**, não há uma coleta automática de novos eventos nesta fase. O navegador oculta os que encerraram, conforme a data publicada. Para manter atualizada a programação após novembro, atualize `docs/dados/agenda.json` e `dados/agenda.json` simultaneamente (a ferramenta de criação online pode fazer isso por commit).
+- As cidades **Santos, São Vicente e Praia Grande** têm sugestões de cafés, bares e coworkings para reuniões. Os estabelecimentos e horários devem ser confirmados antes do encontro.
+- As fotos pertencem a seus respectivos proprietários e são referenciadas externamente com crédito e link de origem. Se alguma imagem externa não carregar, o site exibe uma ilustração de fallback; nenhuma imagem é reproduzida no repositório.
+- Favoritos e preferências são salvos apenas no navegador do dispositivo; não são compartilhados entre os membros e não há cadastro público.
+- Dados públicos e curadoria são informativos, não representam parceria com empresas, garantia de entrada ou reserva.
+
 ## Privacidade e colaboração
 
 - Os **documentos oficiais localizados** ficam em uma página pública, assim como os links originais; nenhuma anotação privada é enviada ao JSON.

@@ -1,0 +1,398 @@
+{
+  "schema": 1,
+  "curated_at": "2026-11-03",
+  "scope": "Baixada Santista e capital; agenda selecionada com fontes e datas de publicacao",
+  "notice": "Confira sempre programação, preços, disponibilidade e local com o organizador. Fotos dos estabelecimentos pertencem às fontes creditadas.",
+  "events": [
+    {
+      "id": "curta-santos-2026",
+      "title": "24º Curta Santos — 24 com Orgulho",
+      "category": "audiovisual",
+      "city": "Santos",
+      "start": "2026-11-04",
+      "end": "2026-11-08",
+      "time": "Consulte sessões",
+      "venue": "Sesc, Teatro Guarany e outros locais",
+      "price": "Gratuito",
+      "description": "Mostras competitivas, debates e oficinas com realizadores; destaque para o audiovisual da Baixada.",
+      "url": "https://www.juicysantos.com.br/noticias-da-regiao/curta-santos-chega-a-sua-24a-edicao-mais-atual-do-que-nunca/",
+      "source": "Juicy Santos",
+      "featured": true
+    },
+    {
+      "id": "cine-frances-2026",
+      "title": "17º Festival de Cinema Francês do Brasil",
+      "category": "audiovisual",
+      "city": "Santos",
+      "start": "2026-10-29",
+      "end": "2026-11-11",
+      "time": "Sessões conforme programação",
+      "venue": "Cine Roxy 5 · Gonzaga",
+      "price": "Ingressos conforme sessão",
+      "description": "Filmes franceses recentes, exibições de curtas e longas em programação especial.",
+      "url": "https://festivalcinefrances.com.br/cidade/santos-sp/",
+      "source": "Organização do festival",
+      "featured": true
+    },
+    {
+      "id": "cidade-essencial-2026",
+      "title": "Cidade Essencial — TAMTAM 37 anos",
+      "category": "cultura",
+      "city": "Santos",
+      "start": "2026-10-30",
+      "end": "2026-11-29",
+      "time": "Programação variada",
+      "venue": "Casa das Culturas, Sesc e Centro de Cultura Patrícia Galvão",
+      "price": "Gratuito",
+      "description": "Cinema, música, teatro, literatura, oficinas e exposição de fotografia.",
+      "url": "https://www.juicysantos.com.br/eventos-na-regiao/cidade-essencial/",
+      "source": "Juicy Santos"
+    },
+    {
+      "id": "tie-sesc-2026",
+      "title": "Tiê — Esgotada e Amorosa",
+      "category": "musica",
+      "city": "Santos",
+      "start": "2026-11-07",
+      "end": "2026-11-07",
+      "time": "20h",
+      "venue": "Sesc Santos",
+      "price": "Verificar ingresso",
+      "description": "Show musical no Sesc Santos; consulte disponibilidade antes de sair.",
+      "url": "https://oazis.app/en/whats-on/santos",
+      "source": "Oazis"
+    },
+    {
+      "id": "cafe-arte-futrica-2026",
+      "title": "Café, Arte e Coleção na Futrica",
+      "category": "cultura",
+      "city": "Santos",
+      "start": "2026-11-14",
+      "end": "2026-11-14",
+      "time": "16h–18h",
+      "venue": "Futrica Economia Criativa · Centro",
+      "price": "R$ 80 (anunciado)",
+      "description": "Encontro com artistas, processos criativos e experiências com café e arte.",
+      "url": "https://www.juicysantos.com.br/eventos-na-regiao/cafe-arte-e-colecao-na-futrica/",
+      "source": "Juicy Santos"
+    },
+    {
+      "id": "atrinca-2026",
+      "title": "Festival A Trinca — gastronomia e encontros",
+      "category": "gastronomia",
+      "city": "Santos",
+      "start": "2026-11-14",
+      "end": "2026-11-14",
+      "time": "13h–19h",
+      "venue": "Clube dos Ingleses · José Menino",
+      "price": "R$ 99–299 (lote divulgado)",
+      "description": "Experiência gastronômica com assadores, pratos variados e música.",
+      "url": "https://www.juicysantos.com.br/eventos-na-regiao/festival-a-trinca-em-santos/",
+      "source": "Juicy Santos",
+      "featured": true
+    },
+    {
+      "id": "violao-pg-2026",
+      "title": "16º Festival de Violões de Praia Grande",
+      "category": "musica",
+      "city": "Praia Grande",
+      "start": "2026-11-16",
+      "end": "2026-11-17",
+      "time": "19h30",
+      "venue": "Palácio das Artes · Boqueirão",
+      "price": "Gratuito",
+      "description": "Edição em homenagem a Antônio Manzione; consulte orientações de entrada.",
+      "url": "https://viverpraiagrande.com.br/eventos/",
+      "source": "Viver Praia Grande"
+    },
+    {
+      "id": "da-pele-pg-2026",
+      "title": "Da Pele para Dentro",
+      "category": "cultura",
+      "city": "Praia Grande",
+      "start": "2026-11-20",
+      "end": "2026-11-20",
+      "time": "21h",
+      "venue": "Palácio das Artes · Boqueirão",
+      "price": "Gratuito",
+      "description": "Espetáculo teatral na programação cultural de Praia Grande.",
+      "url": "https://viverpraiagrande.com.br/eventos/",
+      "source": "Viver Praia Grande"
+    },
+    {
+      "id": "cine-curtinhas-sp-2026",
+      "title": "2ª Mostra Cine Curtinhas — Spcine",
+      "category": "audiovisual",
+      "city": "São Paulo",
+      "start": "2026-11-12",
+      "end": "2026-11-18",
+      "time": "Conforme unidade",
+      "venue": "Biblioteca Roberto Santos e salas do Circuito Spcine",
+      "price": "Gratuito",
+      "description": "Mostra audiovisual dedicada às infâncias, em cinemas públicos da capital.",
+      "url": "https://spcine.com.br/circuito-spcine-e-itau-cultural-play-realizam-segunda-edicao-do-cine-curtinhas-com-foco-na-primeira-infancia/",
+      "source": "Spcine",
+      "featured": true
+    },
+    {
+      "id": "zona-sul-mesa-2026",
+      "title": "Da Zona Sul para a Mesa",
+      "category": "gastronomia",
+      "city": "São Paulo",
+      "start": "2026-11-07",
+      "end": "2026-11-29",
+      "time": "Sábados e domingos · 10h",
+      "venue": "Sesc Interlagos · Praça Pau-Brasil",
+      "price": "Gratuito",
+      "description": "Cultura alimentar, produção local e feira de sabores da zona sul de São Paulo. Apenas fins de semana.",
+      "url": "https://www.sescsp.org.br/programacao/da-zona-sul-para-a-mesa/",
+      "source": "Sesc São Paulo"
+    },
+    {
+      "id": "silva-sesc-2026",
+      "title": "Silva — show no Sesc Santos",
+      "category": "musica",
+      "city": "Santos",
+      "start": "2026-11-21",
+      "end": "2026-11-21",
+      "time": "20h (conforme agenda)",
+      "venue": "Sesc Santos",
+      "price": "Confirmar ingresso",
+      "description": "Música brasileira; confira programação e ingressos antes da visita.",
+      "url": "https://oazis.app/en/whats-on/santos",
+      "source": "Oazis"
+    }
+  ],
+  "places": [
+    {
+      "id": "juicyhub",
+      "name": "Juicyhub",
+      "city": "Santos",
+      "type": "trabalho",
+      "style": "Reunião de projeto",
+      "tags": [
+        "Coworking",
+        "Wi-Fi",
+        "Sala sob consulta"
+      ],
+      "address": "Av. Ana Costa, 433, 4º andar · Gonzaga, Santos",
+      "why": "Estrutura de coworking para pauta, apresentações e reuniões que precisam de concentração.",
+      "best": "Planejamento, roteiro, produção e reuniões de equipe",
+      "watch": "Valores, acesso avulso e reserva de salas devem ser consultados.",
+      "url": "https://www.juicyhub.com.br/",
+      "photo": "https://static.wixstatic.com/media/2573cd_8258123eba0b492fb24e27739f044e20~mv2.jpg/v1/fill/w_900%2Ch_600%2Cal_c/2573cd_8258123eba0b492fb24e27739f044e20~mv2.jpg",
+      "credit": "Foto: Juicyhub",
+      "credit_url": "https://www.juicyhub.com.br/lp-mudanca-santos"
+    },
+    {
+      "id": "verso",
+      "name": "Verso Café",
+      "city": "Santos",
+      "type": "cafe",
+      "style": "Café criativo",
+      "tags": [
+        "Café",
+        "Livros",
+        "Conversa"
+      ],
+      "address": "R. Oswaldo Cruz, 430 · Boqueirão, Santos",
+      "why": "Ambiente de livros e café para conversar sobre referências e organizar ideias.",
+      "best": "Brainstorm leve, referências visuais e encontro de duplas",
+      "watch": "Evite horários cheios se precisar de silêncio.",
+      "url": "https://www.google.com/maps/search/?api=1&query=Verso+Caf%C3%A9+Santos",
+      "photo": "https://cdn.diariodolitoral.com.br/upload/dn_arquivo/2025/08/novo-cafe-com-livros-no-litoral-de-sp-impressiona-visitantes-conheca-6.jpg",
+      "credit": "Foto: Diário do Litoral",
+      "credit_url": "https://www.diariodolitoral.com.br/diario-mais/novo-cafe-com-livros-no-litoral-de-sp-impressiona-visitantes-conheca/200999/"
+    },
+    {
+      "id": "revo",
+      "name": "Revo Manufactory",
+      "city": "Santos",
+      "type": "social",
+      "style": "Brunch e conversa",
+      "tags": [
+        "Café",
+        "Gastronomia",
+        "Encontro"
+      ],
+      "address": "Av. Dr. Epitácio Pessoa, 737 · Ponta da Praia, Santos",
+      "why": "Casa gastronômica com estética industrial e café especial, boa para encontro descontraído.",
+      "best": "Pós-produção, encontro informal e troca de ideias",
+      "watch": "Pode ser movimentado; confirme espaço e horário.",
+      "url": "https://www.google.com/maps/search/?api=1&query=Revo+Manufactory+Santos",
+      "photo": "https://p2.trrsf.com/image/fget/cf/1200/900/middle/images.terra.com/2022/09/29/95198087-revo-01-15.jpg",
+      "credit": "Foto: Terra",
+      "credit_url": "https://www.terra.com.br/vida-e-estilo/degusta/centro-gastronomico-ocupa-antigo-predio-residencial-em-santos%2C72e3fbf890bde228db86ffb3d5c2b7cf74vkj3lx.html"
+    },
+    {
+      "id": "ideall",
+      "name": "Ideall Coworking",
+      "city": "São Vicente",
+      "type": "trabalho",
+      "style": "Sala e foco",
+      "tags": [
+        "Coworking",
+        "Wi-Fi",
+        "Reserva"
+      ],
+      "address": "Av. Prefeito José Monteiro, 577, sala 46 · Jardim Independência, São Vicente",
+      "why": "Mesas de trabalho e estrutura para reunião com uso sob reserva.",
+      "best": "Desenvolvimento de projeto, reuniões estruturadas e apresentações",
+      "watch": "Verifique contratação, capacidade e disponibilidade da sala.",
+      "url": "https://portal.woba.com.br/coworking/space/ideall-coworking--santos",
+      "photo": "https://d1y4va1nna2r1p.cloudfront.net/spaces/a8a08404-8ebc-4355-ae96-67a76e50ba31.jpeg",
+      "credit": "Foto: Woba",
+      "credit_url": "https://portal.woba.com.br/coworking/space/ideall-coworking--santos"
+    },
+    {
+      "id": "viva",
+      "name": "Viva Café",
+      "city": "São Vicente",
+      "type": "cafe",
+      "style": "Café rápido",
+      "tags": [
+        "Café",
+        "Centro",
+        "Bate-papo"
+      ],
+      "address": "R. Martim Afonso, 184 · Centro, São Vicente",
+      "why": "Cafeteria central para encontros curtos e decisões práticas do coletivo.",
+      "best": "Reunião rápida, revisar tarefas e café no intervalo",
+      "watch": "Ambiente comercial; confirme condições para ficar muito tempo.",
+      "url": "https://www.google.com/maps/search/?api=1&query=Viva+Caf%C3%A9+S%C3%A3o+Vicente",
+      "photo": "",
+      "credit": "",
+      "credit_url": ""
+    },
+    {
+      "id": "botecagem",
+      "name": "Botecagem Ramalho",
+      "city": "São Vicente",
+      "type": "social",
+      "style": "Pós-reunião",
+      "tags": [
+        "Bar",
+        "Petiscos",
+        "Happy hour"
+      ],
+      "address": "R. João Ramalho, 215 · Centro, São Vicente",
+      "why": "Bar com comidas e bebidas para conversar após o expediente e celebrar entregas.",
+      "best": "Confraternização, brainstorm informal e encontros sociais",
+      "watch": "Há música ao vivo em algumas noites; pode ser barulhento para uma reunião formal.",
+      "url": "https://www.google.com/maps/search/?api=1&query=Botecagem+Ramalho+S%C3%A3o+Vicente",
+      "photo": "https://img02.restaurantguru.com/c286-Pub-and-bar-Botecagem-Ramalho-exterior.jpg",
+      "credit": "Foto: Restaurant Guru",
+      "credit_url": "https://restaurantguru.com.br/Botecagem-Ramalho-Sao-Vicente"
+    },
+    {
+      "id": "benkell",
+      "name": "BenKell Coffee",
+      "city": "Praia Grande",
+      "type": "cafe",
+      "style": "Café e cultura",
+      "tags": [
+        "Café",
+        "Arte",
+        "Brechó"
+      ],
+      "address": "Av. Pres. Kennedy, 587 · Boqueirão, Praia Grande",
+      "why": "Cafeteria integrada a espaço cultural e garimpo de peças, boa para inspirações criativas.",
+      "best": "Brainstorm visual, pesquisa de referências e encontro de membros",
+      "watch": "Confirme oficinas e horários diretamente com o local.",
+      "url": "https://www.google.com/maps/search/?api=1&query=BenKell+Coffee+Praia+Grande",
+      "photo": "",
+      "credit": "",
+      "credit_url": ""
+    },
+    {
+      "id": "bistro-praia",
+      "name": "Cafeteria Bistrô da Praia",
+      "city": "Praia Grande",
+      "type": "cafe",
+      "style": "Café de trabalho",
+      "tags": [
+        "Café",
+        "Boqueirão",
+        "Conversa"
+      ],
+      "address": "R. Campinas, 195 · Boqueirão, Praia Grande",
+      "why": "Opção central para um café e alinhamento de propostas sem formalidade.",
+      "best": "Alinhamento de projetos, pauta rápida e encontro diurno",
+      "watch": "Confirme Wi-Fi e ocupação antes de trabalhar por períodos longos.",
+      "url": "https://www.google.com/maps/search/?api=1&query=Cafeteria+Bistro+da+Praia+Praia+Grande",
+      "photo": "",
+      "credit": "",
+      "credit_url": ""
+    },
+    {
+      "id": "vixe",
+      "name": "Vixe Bar Mallet",
+      "city": "Praia Grande",
+      "type": "social",
+      "style": "Happy hour coletivo",
+      "tags": [
+        "Bar",
+        "Petiscos",
+        "Confraternização"
+      ],
+      "address": "Av. Mal. Mallet, 1155 · Canto do Forte, Praia Grande",
+      "why": "Lugar animado para reunir os membros depois de uma semana de trabalho.",
+      "best": "Happy hour, comemoração e conversa sem pauta rígida",
+      "watch": "Prefira o início da noite para conversar; costuma ter mais movimento em horários de pico.",
+      "url": "https://www.google.com/maps/search/?api=1&query=Vixe+Bar+Mallet+Praia+Grande",
+      "photo": "https://img.restaurantguru.com/rdc2-Vixe-Bar-Mallet-food.jpg",
+      "credit": "Foto: Restaurant Guru",
+      "credit_url": "https://restaurantguru.com.br/Vixe-Bar-Mallet-Praia-Grande"
+    }
+  ],
+  "sources": [
+    {
+      "city": "Santos / Baixada",
+      "title": "Agenda Juicy Santos",
+      "url": "https://www.juicysantos.com.br/eventos-na-regiao/",
+      "kind": "Eventos e lazer"
+    },
+    {
+      "city": "Santos",
+      "title": "Programação Sesc Santos",
+      "url": "https://www.sescsp.org.br/guia-de-programacao-sesc-santos/",
+      "kind": "Arte, música, cinema"
+    },
+    {
+      "city": "Santos",
+      "title": "Agenda Cultural da Prefeitura",
+      "url": "https://www.santos.sp.gov.br/?q=taxonomy%2Fterm%2F16344",
+      "kind": "Programação municipal"
+    },
+    {
+      "city": "Praia Grande",
+      "title": "Agenda Viver Praia Grande",
+      "url": "https://viverpraiagrande.com.br/eventos/",
+      "kind": "Shows, teatro e oficinas"
+    },
+    {
+      "city": "São Vicente",
+      "title": "Portal da Prefeitura de São Vicente",
+      "url": "https://www.saovicente.sp.gov.br/",
+      "kind": "Agenda e comunicados"
+    },
+    {
+      "city": "São Paulo",
+      "title": "Programação Sesc São Paulo",
+      "url": "https://www.sescsp.org.br/",
+      "kind": "Shows e atividades"
+    },
+    {
+      "city": "São Paulo",
+      "title": "Circuito Spcine",
+      "url": "https://spcine.com.br/",
+      "kind": "Cinema e mostras"
+    },
+    {
+      "city": "São Paulo",
+      "title": "Programação MIS-SP",
+      "url": "https://mis-sp.org.br/",
+      "kind": "Cinema e exposições"
+    }
+  ]
+}

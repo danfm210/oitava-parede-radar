@@ -36,6 +36,8 @@ jobs:
         run: |
           node --check docs/assets/radar-organizado.js
           node --test tests/test_radar_ui.cjs
+          node --check docs/assets/agenda-reunioes.js
+          node --test tests/test_agenda.cjs
       - name: Ler publicacoes oficiais
         env:
           OITAVA_TERMS: ${{ secrets.OITAVA_TERMS }}
