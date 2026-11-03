@@ -199,3 +199,14 @@ A agenda ganhou **Quando** (toda a agenda, hoje, próximos sete dias e fim de se
 ## Nomes completos de acompanhamento — 03/11/2026
 
 Enzo Santana Borges e Julia Xavier de Freitas passam a ser os nomes principais no radar, filtros, busca rápida e sugestões de preenchimento. Enzo Borges e Julia Xavier continuam apenas como variações de busca. O cadastro Python de pessoas e aliases fica em `scripts/pessoas.py`; a coleta mantém seis nomes principais na lista de pessoas e usa as variantes para encontrar documentos antigos. Nomes, títulos e trechos copiados das fontes continuam com a grafia publicada. O filtro por pessoa e a pesquisa do catálogo reconhecem os nomes anteriores sem reescrever projetos locais. Uma possível correspondência ainda exige conferir identidade e vínculo; a atualização de nome não confirma aprovação.
+
+
+## Direção visual e navegação por cenas — 03/11/2026
+
+A atualização usa como referência os critérios públicos do Awwwards: Design 40%, Usabilidade 30%, Criatividade 20% e Conteúdo 10% ([avaliação oficial](https://www.awwwards.com/about-evaluation/)). Não representa nota, submissão ou certificação do Awwwards. A marca original centralizada no cabeçalho azul foi preservada.
+
+A abertura cinematográfica reúne um painel de quatro tarefas — Radar, Projetos, Agenda e Encontros — com chamada direta para cada seção e contagens reais dos componentes correspondentes. Números de projetos, eventos e locais acompanham a seleção de filtros; ausência ou falha de carregamento aparece como travessão, sem inventar zero ou totais. A busca da abertura usa a busca rápida existente. O painel admite setas, Home e End, com seleção, foco e rótulos acessíveis. Não há rotação automática.
+
+Tipografia, cores, espaçamento, cartões e estados de foco formam um sistema comum. Entradas discretas no campo de visão e luz reativa ao ponteiro usam recursos nativos, sem novas bibliotecas, vídeo, som automático ou cursor personalizado. A preferência por movimento reduzido desativa as animações. Os cartões permanecem visíveis mesmo sem IntersectionObserver. A seção de compartilhamento informa os limites reais do armazenamento local e copia apenas o endereço da central após o clique.
+
+Os arquivos `assets/experiencia.js` e `assets/experiencia.css` são espelhados em `docs/assets/`. O script aguarda DOMContentLoaded também no estado interactive para iniciar após a capa editorial. Os testes `tests/test_experiencia.cjs` verificam essa ordem, contagens e navegação por teclado. Os fluxos de cadastro, histórico, fontes, convites e pontos personalizados permanecem nos componentes existentes.
