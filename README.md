@@ -122,3 +122,17 @@ A seção **Publicações por programa e tipo de edital** agora permite abrir ou
 - **Tipo de publicação:** Resultados, Retificações, Editais e inscrições, Anexos, Edições oficiais e outros documentos. Dentro de categorias extensas, há também um botão "Mostrar outros documentos".
 
 Os controles **Expandir tudo** / **Recolher tudo** ajudam a ver ou ocultar todos os grupos. Os filtros de data, tipo, modalidade e busca por nome ou número do edital continuam em funcionamento, expandindo automaticamente grupos correspondentes à busca. O sistema usa os elementos acessíveis `<details>` e `<summary>`, utilizáveis com teclado. Nenhuma publicação foi removida: mudou apenas a organização visual.
+
+## Barra de navegação unificada — 03/11/2026
+
+O cabeçalho mantém o logotipo original da Oitava Parede **centralizado no azul-marinho**, com menu organizado por tarefas para facilitar o acesso a todas as informações.
+
+- Acesso direto a **Início**, **Projetos**, **Agenda cultural**, **Reuniões** e **Ajuda**.
+- **Editais e resultados:** menu que abre o Radar automático, possíveis menções a conferir, fontes oficiais e oportunidades de fomento.
+- **Explorar:** menu para a visão geral, o acervo da Oitava Parede e avisos/notificações.
+- Atalho **Ajuda** abre a janela contextual existente, sem expor chaves de IA.
+- O item da seção atual fica destacado em amarelo conforme o usuário navega ou rola a página. O cabeçalho fixo calcula uma margem para não cobrir o título da seção.
+- Em celulares, o menu abre verticalmente com grupos expansíveis; permite uso por toque, teclado, Escape e rótulos acessíveis.
+- Arquivos: `docs/assets/navegacao.css`, `docs/assets/navegacao.js` e as cópias sob `assets/` para publicação pela raiz. Testes em `tests/test_navegacao.cjs`.
+
+Esta atualização modifica apenas a navegação: o radar, a agenda, os projetos cadastrados localmente, as menções e as notificações mantêm as funcionalidades existentes.
