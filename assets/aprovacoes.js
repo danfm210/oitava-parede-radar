@@ -50,6 +50,8 @@ async function init(){
   rows=confirmedResults(await response.json(),new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'}));
  }catch{return;}
  if(!rows.length)return;
+ const note=document.querySelector('#visao .guide-note');
+ if(note)note.textContent='Há resultados positivos confirmados no cadastro. Use “Ver resultados confirmados” no Radar para consultar a etapa e o documento oficial de cada projeto.';
  const dialog=document.createElement('dialog');dialog.id='opApprovalDialog';dialog.className='op-approval-dialog';
  dialog.setAttribute('aria-modal','true');
  dialog.setAttribute('aria-labelledby','opApprovalTitle');dialog.setAttribute('aria-describedby','opApprovalIntro');
