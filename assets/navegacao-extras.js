@@ -9,7 +9,7 @@ const DESTINATIONS=[
  {id:'monitor',label:'Radar de editais',group:'Editais',description:'Documentos e atualizações oficiais',keywords:'pnab lei paulo gustavo resultado edital diário'},
  {id:'monitorMentions',label:'Menções a conferir',group:'Editais',description:'Giovanna Barbosa, OitavaFest e termos de projetos',keywords:'check marcar conferida menções proponente'},
  {id:'projetos',label:'Projetos cadastrados',group:'Projetos',description:'Acompanhar inscrições e protocolos',keywords:'cadastrar projeto status contemplado'},
- {id:'agenda',label:'Agenda cultural',group:'Cultura',description:'Shows, festivais, cinema e gastronomia',keywords:'eventos audiovisual música passeios'},
+ {id:'agenda',label:'Agenda cultural',group:'Cultura',description:'Shows, festivais, cinema e gastronomia',keywords:'evento eventos audiovisual música festival festivais passeios'},
  {id:'reunioes',label:'Pontos de encontro',group:'Encontros',description:'Cafés, bares e espaços para brainstorm',keywords:'reuniões café cerveja salas coworking'},
  {id:'fontes',label:'Fontes oficiais',group:'Editais',description:'Portais dos órgãos e documentos originais',keywords:'site oficial prefeitura governo'},
  {id:'oportunidades',label:'Oportunidades de fomento',group:'Editais',description:'Programas, editais e linhas de apoio',keywords:'proac rouanet pnab cultura'},
@@ -61,7 +61,7 @@ function init(){
  '<div class="op-search-heading"><span>OITAVA PAREDE · ACESSO RÁPIDO</span><button class="op-search-close" type="button" data-search-close aria-label="Fechar busca rápida">×</button></div>'+
  '<h2 id="opSearchTitle">O que você procura?</h2><p id="opSearchDesc">Encontre uma seção ou abra diretamente um campo de busca do site.</p>'+
  '<div class="op-search-field"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5.2 5.2"/></svg>'+
- '<input type="search" id="opQuickSearchInput" aria-label="Buscar seções e ações" autocomplete="off" placeholder="Editais, OitavaFest, reuniões, projetos..."/><kbd>Esc</kbd></div>'+
+ '<input type="search" id="opQuickSearchInput" aria-label="Buscar seções e ações" role="combobox" aria-autocomplete="list" aria-controls="opQuickSearchResults" aria-expanded="true" autocomplete="off" placeholder="Editais, OitavaFest, reuniões, projetos..."/><kbd>Esc</kbd></div>'+
  '<div id="opQuickSearchResults" class="op-search-results" role="listbox" aria-label="Resultados da busca"></div>'+
  '<div class="op-search-footer"><span>↑↓ Navegar &nbsp; ↵ Abrir</span><span>Busca local, sem envio de dados</span></div>'+
  '</section>';
@@ -110,6 +110,7 @@ function init(){
  function close(){
    if(modal.hidden)return;
    modal.hidden=true;
+   trigger.setAttribute('aria-expanded','false');
    document.body.style.overflow=previousOverflow;
    field.value='';
    const focus=restoreFocus;
@@ -121,6 +122,7 @@ function init(){
    restoreFocus=document.activeElement;
    previousOverflow=document.body.style.overflow;
    modal.hidden=false;
+   trigger.setAttribute('aria-expanded','true');
    document.body.style.overflow='hidden';
    field.value='';
    render();
