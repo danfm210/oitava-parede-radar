@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-03T03:09:04+00:00",
+  "generated_at": "2026-11-03T03:25:23+00:00",
   "observacao": "Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.",
   "fontes": [
     {
@@ -8,9 +8,9 @@
       "nome": "PNAB Praia Grande",
       "url": "https://www2.praiagrande.sp.gov.br/secretarias/cultura-turismo/lei-aldir-blanc",
       "situacao": "ok",
-      "verificado_em": "2026-11-03T03:09:04+00:00",
+      "verificado_em": "2026-11-03T03:25:23+00:00",
       "documentos_localizados": 85,
-      "documentos_lidos": 4,
+      "documentos_lidos": 12,
       "detalhe": ""
     },
     {
@@ -18,9 +18,9 @@
       "nome": "Lei Paulo Gustavo Praia Grande",
       "url": "https://www2.praiagrande.sp.gov.br/secretarias/cultura-turismo/lei-paulo-gustavo",
       "situacao": "ok",
-      "verificado_em": "2026-11-03T03:09:04+00:00",
+      "verificado_em": "2026-11-03T03:25:23+00:00",
       "documentos_localizados": 36,
-      "documentos_lidos": 4,
+      "documentos_lidos": 12,
       "detalhe": ""
     },
     {
@@ -28,12 +28,17 @@
       "nome": "Diário Oficial Praia Grande",
       "url": "https://plenussistemas.dioenet.com.br/list/praia-grande",
       "situacao": "ok",
-      "verificado_em": "2026-11-03T03:09:04+00:00",
+      "verificado_em": "2026-11-03T03:25:23+00:00",
       "documentos_localizados": 7,
-      "documentos_lidos": 4,
+      "documentos_lidos": 7,
       "detalhe": ""
     }
   ],
+  "rotacao": {
+    "pnab_pg": 12,
+    "lpg_pg": 12,
+    "diario_pg": 0
+  },
   "publicacoes": [
     {
       "id": "a83d0567538b3b1fc131",
@@ -1445,6 +1450,72 @@
     }
   ],
   "mencoes": [
+    {
+      "id": "cf5bf56af902e8c7f408",
+      "publicacao_id": "6de817eb0d396e460911",
+      "fonte": "pnab_pg",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_rw0wr5ka.d2q.pdf",
+      "titulo": "Resultado Inscricoes Edital 19 - 2026",
+      "primeira_detecao": "2026-11-03T03:25:23+00:00",
+      "base_inicial": false,
+      "tipo": "possivel_mencao",
+      "mensagem": "Giovanna Barbosa e OitavaFest citados; confirmar vinculo, edital e decisao.",
+      "verificacao": "Nao confirmado",
+      "prioridade": "maxima",
+      "termos_encontrados": [
+        "Giovanna Barbosa",
+        "Oitava Fest",
+        "OitavaFest"
+      ]
+    },
+    {
+      "id": "2936820ee4cf5843fb46",
+      "publicacao_id": "c77d703f1cce2ae4b88c",
+      "fonte": "pnab_pg",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_xdcc5rxd.pu0.pdf",
+      "titulo": "Resultado Inscricoes Edital 16 - 2026",
+      "primeira_detecao": "2026-11-03T03:25:23+00:00",
+      "base_inicial": false,
+      "tipo": "possivel_mencao",
+      "mensagem": "Giovanna Barbosa citada; conferir se e proponente e qual foi a decisao.",
+      "verificacao": "Nao confirmado",
+      "prioridade": "alta",
+      "termos_encontrados": [
+        "Giovanna Barbosa"
+      ]
+    },
+    {
+      "id": "a62e204229450b898ab8",
+      "publicacao_id": "6e9fbf0da558b9cb2fe6",
+      "fonte": "pnab_pg",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_tth3um0q.exz.pdf",
+      "titulo": "Resultado Inscricoes Edital 20 - 2026",
+      "primeira_detecao": "2026-11-03T03:25:23+00:00",
+      "base_inicial": false,
+      "tipo": "possivel_mencao",
+      "mensagem": "Giovanna Barbosa citada; conferir se e proponente e qual foi a decisao.",
+      "verificacao": "Nao confirmado",
+      "prioridade": "alta",
+      "termos_encontrados": [
+        "Giovanna Barbosa"
+      ]
+    },
+    {
+      "id": "ade2b89e89f03b0c2c5c",
+      "publicacao_id": "ee21ff980265c7e437fd",
+      "fonte": "pnab_pg",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
+      "titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
+      "primeira_detecao": "2026-11-03T03:25:23+00:00",
+      "base_inicial": false,
+      "tipo": "possivel_mencao",
+      "mensagem": "Giovanna Barbosa citada; conferir se e proponente e qual foi a decisao.",
+      "verificacao": "Nao confirmado",
+      "prioridade": "alta",
+      "termos_encontrados": [
+        "Giovanna Barbosa"
+      ]
+    },
     {
       "id": "78a114a2ab2a0dce0bf9",
       "publicacao_id": "c77d703f1cce2ae4b88c",
