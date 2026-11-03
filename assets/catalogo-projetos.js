@@ -6,8 +6,8 @@ const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLo
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const PERSON_LABELS={'giovanna barbosa arantes':'Giovanna Barbosa Arantes','julia xavier de freitas':'Julia Xavier de Freitas','enzo santana borges':'Enzo Santana Borges'};
 const PERSON_ALIASES={'giovanna barbosa':'giovanna barbosa arantes','giovana barbosa':'giovanna barbosa arantes','julia xavier':'julia xavier de freitas','enzo borges':'enzo santana borges'};
-const personKey=s=>PERSON_ALIASES[norm(s)]||norm(s);
-const personLabel=s=>PERSON_LABELS[personKey(s)]||s;
+const personKey=s=>{const key=norm(s);return Object.hasOwn(PERSON_ALIASES,key)?PERSON_ALIASES[key]:key;};
+const personLabel=s=>{const key=personKey(s);return Object.hasOwn(PERSON_LABELS,key)?PERSON_LABELS[key]:s;};
 function officialURL(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&(u.hostname.endsWith('.gov.br')||u.hostname==='plenussistemas.dioenet.com.br');}catch{return false;}}
 function yearFor(row){
  const explicit=Number(row.ano_edital||row.year);
