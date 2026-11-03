@@ -32,7 +32,9 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/dados/radar.json
+          mkdir -p dados
+          cp docs/dados/radar.json dados/radar.json
+          git add docs/dados/radar.json dados/radar.json
           if ! git diff --staged --quiet; then
             git commit -m "Atualizar radar oficial"
             git push
