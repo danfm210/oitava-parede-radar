@@ -5,7 +5,7 @@
 (function(root){
 'use strict';
 const SECTIONS=[
-  'inicio-editorial','monitor','monitorMentions','projetos','agenda',
+  'inicio-editorial','monitor','monitorMentions','catalogo-projetos','projetos','agenda',
   'reunioes','visao','fontes','oportunidades','acervo','notificacoes'
 ];
 const MENUS={

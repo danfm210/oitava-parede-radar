@@ -149,7 +149,7 @@
  outline:3px solid #f5cb6a!important;outline-offset:2px!important
 }
 :root{--op-nav-offset:165px}
-#inicio-editorial,#monitor,#monitorMentions,#projetos,#agenda,#reunioes,#visao,#fontes,#oportunidades,#acervo,#notificacoes{
+#inicio-editorial,#monitor,#monitorMentions,#catalogo-projetos,#projetos,#agenda,#reunioes,#visao,#fontes,#oportunidades,#acervo,#notificacoes{
  scroll-margin-top:var(--op-nav-offset)!important;
 }
 @media(max-width:1130px){

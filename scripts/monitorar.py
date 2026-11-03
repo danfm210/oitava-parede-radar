@@ -156,7 +156,7 @@ def scan():
  old=load();stamp=now();first=not old.get("generated_at")
  pubs={p["id"]:p for p in old.get("publicacoes",[]) if isinstance(p,dict) and "id" in p}
  mentions={m["id"]:m for m in old.get("mencoes",[]) if isinstance(m,dict) and "id" in m}
- terms=load_terms(); statuses=[]; rotations=old.get("rotacao",{})
+ terms=load_terms(); statuses=[]; rotations=old.get("rotacao",{}); extracted_projects=[]
  for src in SOURCES:
   st={"id":src["id"],"nome":src["name"],"url":src["url"],"situacao":"erro","verificado_em":stamp,"documentos_localizados":0,"documentos_lidos":0,"detalhe":""}
   try:
@@ -193,6 +193,14 @@ def scan():
      st["documentos_lidos"]+=1
      pubs[identifier]["ultima_leitura"]=stamp
      matches=matching_terms(content,terms)
+     if matches and item["url"].lower().endswith(".pdf"):
+      try:
+       try: from scripts.projetos_oficiais import extract_pdf
+       except ModuleNotFoundError: from projetos_oficiais import extract_pdf
+       people=[p for p in terms if p not in {"Oitava Parede","Oitava Fest","OitavaFest","Projeto OitavaFest"}]
+       extracted_projects.extend(extract_pdf(body,item["url"],item["title"],src["name"],people,stamp))
+      except Exception as project_error:
+       print("[projetos] Extracao ignorada:",type(project_error).__name__)
      if matches:
       priority,note=priority_for(matches)
       mid=key("mention\\x00"+identifier)
@@ -213,6 +221,11 @@ def scan():
   if not p.get("data_no_arquivo"):
    p["data_no_arquivo"]=filename_date(p.get("url",""))
  report={"schema":2,"generated_at":stamp,"observacao":"Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.","fontes":statuses,"rotacao":rotations,"publicacoes":sorted(pubs.values(),key=lambda x:(x.get("data_no_arquivo") or x.get("primeira_detecao","")[:10],x.get("primeira_detecao","")),reverse=True)[:160],"mencoes":sort_mentions(mentions.values())[:90]}
+ try:
+  from scripts.projetos_oficiais import save_rows
+ except ModuleNotFoundError:
+  from projetos_oficiais import save_rows
+ save_rows(extracted_projects)
  OUT.parent.mkdir(parents=True,exist_ok=True)
  OUT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  print("[radar]",stamp,[(x["id"],x["situacao"],x["documentos_localizados"],x["documentos_lidos"]) for x in statuses])

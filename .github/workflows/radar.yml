@@ -46,6 +46,8 @@ jobs:
           node --test tests/test_navegacao.cjs
           node --check docs/assets/navegacao-extras.js
           node --test tests/test_navegacao_extras.cjs
+          node --check docs/assets/catalogo-projetos.js
+          node --test tests/test_catalogo_projetos.cjs
           node --check docs/assets/sapinho.js
           node --test tests/test_sapinho.cjs
           node --test tests/test_sons.cjs
@@ -68,6 +70,8 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           mkdir -p dados
           cp docs/dados/radar.json dados/radar.json
+          cp docs/dados/projetos-oficiais.json dados/projetos-oficiais.json
+          git add docs/dados/projetos-oficiais.json dados/projetos-oficiais.json
           cp docs/dados/email_status.json dados/email_status.json
           git add docs/dados/radar.json dados/radar.json docs/dados/email_status.json dados/email_status.json
           if [ -f config/alertas_enviados.json ]; then git add config/alertas_enviados.json; fi
