@@ -58,6 +58,8 @@ MONITORED_PEOPLE=(
  "Oscar Stefanno Fornari",
  "Matheus de Castro Santos Soares",
  "Daniel Fernandes Melquiades dos Santos",
+ "Julia Xavier",
+ "Enzo Borges",
 )
 def priority_for(matches):
  hits=[compact(x) for x in matches]
@@ -195,7 +197,7 @@ def scan():
       priority,note=priority_for(matches)
       mid=key("mention\\x00"+identifier)
       previous=mentions.get(mid,{})
-      mentions[mid]={**previous,"id":mid,"publicacao_id":identifier,"fonte":src["id"],"url":item["url"],"titulo":item["title"],"primeira_detecao":previous.get("primeira_detecao",stamp),"base_inicial":previous.get("base_inicial",first),"tipo":"possivel_mencao","mensagem":note,"verificacao":"Nao confirmado","prioridade":priority,"termos_encontrados":matches[:10]}
+      mentions[mid]={**previous,"id":mid,"publicacao_id":identifier,"fonte":src["id"],"url":item["url"],"titulo":item["title"],"primeira_detecao":previous.get("primeira_detecao",stamp),"base_inicial":previous.get("base_inicial",first),"tipo":"possivel_mencao","mensagem":note,"verificacao":"Nao confirmado","prioridade":priority,"termos_encontrados":matches[:20]}
     except Exception as exc:
      st["situacao"]="parcial";st["detalhe"]=("Alguns anexos nao puderam ser lidos: "+type(exc).__name__)[:170]
    main=soup.get_text(" ",strip=True)
@@ -204,7 +206,7 @@ def scan():
     priority,note=priority_for(index_matches)
     mid=key("mention_index\\x00"+src["id"])
     previous=mentions.get(mid,{})
-    mentions[mid]={**previous,"id":mid,"publicacao_id":"","fonte":src["id"],"url":src["url"],"titulo":"Possivel mencao no indice: "+src["name"],"primeira_detecao":previous.get("primeira_detecao",stamp),"base_inicial":previous.get("base_inicial",first),"tipo":"possivel_mencao","mensagem":note+" Conferir anexos.","verificacao":"Nao confirmado","prioridade":priority,"termos_encontrados":index_matches[:10]}
+    mentions[mid]={**previous,"id":mid,"publicacao_id":"","fonte":src["id"],"url":src["url"],"titulo":"Possivel mencao no indice: "+src["name"],"primeira_detecao":previous.get("primeira_detecao",stamp),"base_inicial":previous.get("base_inicial",first),"tipo":"possivel_mencao","mensagem":note+" Conferir anexos.","verificacao":"Nao confirmado","prioridade":priority,"termos_encontrados":index_matches[:20]}
   except Exception as exc:st["detalhe"]=(type(exc).__name__+": "+str(exc))[:200]
   statuses.append(st)
  for p in pubs.values():
