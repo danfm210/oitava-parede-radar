@@ -116,7 +116,7 @@ function renderPlaces(){
  const target=document.getElementById('opPlaceGrid');if(!target)return;
  target.innerHTML=filtered.length?filtered.map(placeCard).join(''):
  '<div class="op-noresults"><strong>Sem locais para estes filtros</strong><p>Experimente outro estilo de encontro ou cidade.</p></div>';
- const count=document.getElementById('opPlaceCount');if(count)count.textContent=filtered.length+' sugestão'+(filtered.length===1?'':'ões');
+ const count=document.getElementById('opPlaceCount');if(count)count.textContent=filtered.length+' '+(filtered.length===1?'sugestão':'sugestões');
  syncToggles(document.getElementById('opMeetCities'),'[data-value]',meetCity);
  syncToggles(document.getElementById('opMeetKinds'),'[data-value]',meetKind);
  const savedButton=document.getElementById('opMeetSaved');if(savedButton){savedButton.classList.toggle('active',meetSavedOnly);savedButton.setAttribute('aria-pressed',String(meetSavedOnly));savedButton.textContent='♡ Salvos ('+savedPlaces.size+')'}
@@ -135,11 +135,13 @@ function copyText(txt){
 function hook(){
  document.getElementById('opEventCities')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;eventCity=b.dataset.value;renderEvents();});
  document.getElementById('opEventCategories')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;eventCat=b.dataset.value;renderEvents();});
+ document.getElementById('opEventReset')?.addEventListener('click',()=>{eventCity='Todas';eventCat='todos';eventSearch='';eventSavedOnly=false;document.getElementById('opEventSearch').value='';renderEvents();});
  document.getElementById('opEventSearch')?.addEventListener('input',e=>{eventSearch=e.target.value;renderEvents();});
  document.getElementById('opEventSaved')?.addEventListener('click',()=>{eventSavedOnly=!eventSavedOnly;renderEvents();});
  document.getElementById('opEventGrid')?.addEventListener('click',e=>{const b=e.target.closest('[data-favevent]');if(!b)return;const id=b.dataset.favevent;savedEvents.has(id)?savedEvents.delete(id):savedEvents.add(id);storage.set(STORAGE_EVENTS,savedEvents);renderEvents();});
  document.getElementById('opMeetCities')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;meetCity=b.dataset.value;renderPlaces();});
  document.getElementById('opMeetKinds')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;meetKind=b.dataset.value;renderPlaces();});
+ document.getElementById('opMeetReset')?.addEventListener('click',()=>{meetCity='Todas';meetKind='todos';meetSearch='';meetSavedOnly=false;document.getElementById('opMeetSearch').value='';renderPlaces();});
  document.getElementById('opMeetSearch')?.addEventListener('input',e=>{meetSearch=e.target.value;renderPlaces();});
  document.getElementById('opMeetSaved')?.addEventListener('click',()=>{meetSavedOnly=!meetSavedOnly;renderPlaces();});
  document.getElementById('opPlaceGrid')?.addEventListener('click',e=>{
@@ -181,7 +183,7 @@ function buildUI(){
  '<div class="op-event-controls" aria-label="Filtros da agenda"><div class="op-controls-row">',
  '<div class="op-chipset" id="opEventCities" aria-label="Cidades">'+cityEvents+'</div>',
  '<div class="op-control-right"><input id="opEventSearch" type="search" class="op-text-search" placeholder="Buscar evento ou local" aria-label="Pesquisar evento">',
- '<button id="opEventSaved" class="op-saved" type="button" aria-pressed="false">♡ Salvos</button></div></div>',
+ '<button id="opEventReset" type="button" class="op-saved">Limpar filtros</button><button id="opEventSaved" class="op-saved" type="button" aria-pressed="false">♡ Salvos</button></div></div>',
  '<div class="op-chipset" id="opEventCategories" aria-label="Categorias">'+catEvents+'</div>',
  '<div class="op-control-foot"><strong id="opEventCount" aria-live="polite">Carregando programação...</strong><span id="opAgendaCurated">Confirme ingressos e horários na fonte.</span></div></div>',
  '<div class="op-event-grid" id="opEventGrid" aria-live="polite"><div class="op-noresults">Carregando eventos...</div></div>',
@@ -198,7 +200,7 @@ function buildUI(){
  '<div class="op-meet-controls" aria-label="Filtros dos locais"><div class="op-controls-row">',
  '<div class="op-chipset" id="opMeetCities" aria-label="Cidades">'+cityPlaces+'</div>',
  '<div class="op-control-right"><input id="opMeetSearch" class="op-text-search" type="search" placeholder="Café, bar ou bairro" aria-label="Pesquisar local">',
- '<button id="opMeetSaved" type="button" class="op-saved" aria-pressed="false">♡ Salvos</button></div></div>',
+ '<button id="opMeetReset" type="button" class="op-saved">Limpar filtros</button><button id="opMeetSaved" type="button" class="op-saved" aria-pressed="false">♡ Salvos</button></div></div>',
  '<div class="op-chipset" id="opMeetKinds" aria-label="Tipo de encontro">'+kindPlaces+'</div>',
  '<div class="op-control-foot"><strong id="opPlaceCount" aria-live="polite">Carregando locais...</strong><span>Salve os favoritos e copie um convite para o grupo.</span></div></div>',
  '<div class="op-place-grid" id="opPlaceGrid" aria-live="polite"><div class="op-noresults">Carregando sugestões...</div></div>',

@@ -121,6 +121,11 @@ function init(){
    closeDrops();
    closeMobile();
    setActive(link.dataset.section);
+   const destination=document.getElementById(link.dataset.section);
+   if(destination){
+     if(!destination.hasAttribute('tabindex'))destination.setAttribute('tabindex','-1');
+     destination.focus({preventScroll:true});
+   }
  });
  mobile.addEventListener('click',event=>{
    // O controle original já alterna .open. Este listener sincroniza rótulos e foco.
@@ -147,6 +152,7 @@ function init(){
    if(launch)launch.click();
    else document.getElementById('notificacoes')?.scrollIntoView({behavior:'smooth',block:'start'});
  });
+ if(typeof ResizeObserver!=='undefined')new ResizeObserver(updateOffset).observe(header);
  window.addEventListener('scroll',requestActive,{passive:true});
  window.addEventListener('resize',updateOffset,{passive:true});
  window.addEventListener('hashchange',()=>{

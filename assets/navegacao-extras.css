@@ -161,3 +161,32 @@
  .op-header-v2 .op-header-masthead,
  .op-header-v2 .op-header-masthead .brand-logo{transition:none!important}
 }
+
+/* UX: formulários acima do cabeçalho, controles legíveis e navegação sem barreiras. */
+.modal-back{z-index:500}
+.toast{z-index:550}
+.modal-close,.op-search-close{min-width:44px;min-height:44px}
+.op-search-close:focus-visible,.op-saved:focus-visible{outline:3px solid #b8861f;outline-offset:3px}
+section[tabindex="-1"]:focus,main[tabindex="-1"]:focus{outline:none}
+@media(max-width:1040px){
+ .op-header-v2 .op-header-masthead{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+ .op-header-v2 .op-masthead-tools{justify-self:end}
+ .op-control-right{flex-wrap:wrap}
+ .op-saved,.op-chip,.op-review-tab,.radar-filter-reset{min-height:44px}
+}
+@media(max-width:600px){
+ input.input,input.op-text-search,input.radar-search,
+ .op-search-field input,.op-help-form input,select,textarea{font-size:16px!important}
+ .op-control-right{width:100%}
+ .op-control-right .op-text-search{width:100%;flex-basis:100%}
+ .modal-back{padding:10px}
+ .modal{max-height:calc(100dvh - 20px)}
+}
+@media(max-width:400px){
+ .op-header-v2 .op-mobile-toggle-label{display:none}
+ .op-header-v2 .op-mobile-toggle{min-width:44px;min-height:44px;padding:10px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto!important}
+ *,*::before,*::after{animation:none!important;transition:none!important}
+}

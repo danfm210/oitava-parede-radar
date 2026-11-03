@@ -131,18 +131,29 @@ function init(){
      const panel=header.querySelector('[data-nav-panel="'+button.dataset.navTrigger+'"]');
      if(panel)panel.hidden=true;
    });
+   navClose();
    field.focus();
+ }
+ function navClose(){
+   document.getElementById('nav')?.classList.remove('open');
+   const mobile=document.getElementById('menuButton');
+   mobile?.setAttribute('aria-expanded','false');
+   mobile?.setAttribute('aria-label','Abrir menu de navegação');
+   const label=mobile?.querySelector('.op-mobile-toggle-label');
+   if(label)label.textContent='Menu';
  }
  function go(item){
    if(!item)return;
    close();
    const dest=document.getElementById(item.target||item.id);
    if(!dest)return;
+   if(!dest.hasAttribute('tabindex'))dest.setAttribute('tabindex','-1');
+   dest.focus({preventScroll:true});
    if(window.location.hash!=='#'+dest.id)history.replaceState(null,'','#'+dest.id);
    dest.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
    if(item.target){
      // O alvo pode estar numa seção mais abaixo, porém o campo já está presente.
-     window.setTimeout(()=>{const input=document.getElementById(item.id);if(input){input.focus({preventScroll:true});input.scrollIntoView({behavior:'smooth',block:'center'});}},200);
+     window.setTimeout(()=>{const input=document.getElementById(item.id);if(input){input.focus({preventScroll:true});input.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});}},200);
    }
  }
  trigger.addEventListener('click',()=>modal.hidden?open():close());
