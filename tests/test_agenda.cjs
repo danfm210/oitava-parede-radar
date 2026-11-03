@@ -74,3 +74,43 @@ test('Curta Santos tem programação detalhada e o circuito preserva festivais e
  assert.equal(agenda.festivalState({},'2026-11-03'),'Datas a confirmar');
  assert.equal(agenda.upcomingEvents([kinoforum],'2026-11-03').length,0);
 });
+
+test('convite preserva título e fonte, separa o encontro do grupo e incorpora sua mensagem',()=>{
+ const event=data.events.find(e=>e.id==='curta-santos-2026');
+ const text=agenda.eventInvitation(event,{date:'2026-11-07',time:'14:15',meeting:'Entrada do Sesc Santos',note:'Vamos chegar juntos?'});
+ assert.ok(text.includes('Vamos juntos ao '+event.title+'?'));
+ assert.ok(text.includes('Nosso encontro: 07/11/2026 às 14:15'));
+ assert.ok(text.includes('Entrada do Sesc Santos · Santos'));
+ assert.ok(text.includes('Período do evento: 04/11/2026 a 08/11/2026'));
+ assert.ok(text.includes('Vamos chegar juntos?'));assert.ok(text.includes(event.url));
+ assert.equal(event.venue,'Sesc, Teatro Guarany e outros locais');
+});
+test('convite rejeita data impossível, dia fora do evento, horário inválido e fonte executável',()=>{
+ const event=data.events.find(e=>e.id==='curta-santos-2026');
+ for(const date of ['2026-11-03','2026-11-09','2026-02-30','',undefined])assert.equal(agenda.eventInvitation(event,{date}),'');
+ for(const time of ['25:00','14:60','9h'])assert.equal(agenda.eventInvitation(event,{date:'2026-11-07',time}),'');
+ assert.equal(agenda.eventInvitation({...event,url:'javascript:alert(1)'},{date:'2026-11-07'}),'');
+ const text=agenda.eventInvitation(event,{date:'2026-11-07'});
+ assert.ok(text.includes('horário a combinar'));assert.ok(!text.includes('19h'));
+});
+test('data inicial do convite acompanha o evento em andamento e os dias de atividade',()=>{
+ const event=data.events.find(e=>e.id==='curta-santos-2026');
+ assert.equal(agenda.defaultInviteDate(event,'2026-11-03'),'2026-11-04');
+ assert.equal(agenda.defaultInviteDate(event,'2026-11-06'),'2026-11-06');
+ const weekend={...event,start:'2026-11-07',end:'2026-11-29',weekdays:[0,6]};
+ assert.equal(agenda.defaultInviteDate(weekend,'2026-11-10'),'2026-11-14');
+ assert.equal(agenda.eventInvitation(weekend,{date:'2026-11-10'}),'');
+});
+test('períodos consideram hoje, sete dias inclusivos e o fim de semana, inclusive aos domingos',()=>{
+ assert.deepEqual(agenda.periodBounds('today','2026-11-03'),['2026-11-03','2026-11-03']);
+ assert.deepEqual(agenda.periodBounds('week','2026-12-29'),['2026-12-29','2027-01-04']);
+ assert.deepEqual(agenda.periodBounds('weekend','2026-11-03'),['2026-11-07','2026-11-08']);
+ assert.deepEqual(agenda.periodBounds('weekend','2026-11-08'),['2026-11-07','2026-11-08']);
+ assert.equal(agenda.periodBounds('all','2026-11-03'),null);
+ const multi={start:'2026-11-01',end:'2026-11-20'};
+ assert.equal(agenda.eventInPeriod(multi,'today','2026-11-03'),true);
+ assert.equal(agenda.eventInPeriod({start:'2026-11-10',end:'2026-11-11'},'week','2026-11-03'),false);
+ const weekend={start:'2026-11-07',end:'2026-11-29',weekdays:[0,6]};
+ assert.equal(agenda.eventInPeriod(weekend,'today','2026-11-10'),false);
+ assert.equal(agenda.eventInPeriod(weekend,'weekend','2026-11-10'),true);
+});

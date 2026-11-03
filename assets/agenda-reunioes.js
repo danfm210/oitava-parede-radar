@@ -26,7 +26,8 @@ const storage={
 };
 let data={events:[],places:[],sources:[],festivals:[],curated_at:null};
 let customPlaces=[],editingPlaceId=null,placeTrigger=null;
-let eventCity='Todas',eventCat='todos',eventSearch='',eventSavedOnly=false;
+let eventCity='Todas',eventCat='todos',eventSearch='',eventSavedOnly=false,eventPeriod='all';
+let currentInviteEvent=null,inviteTrigger=null;
 let meetCity='Todas',meetKind='todos',meetSearch='',meetSavedOnly=false;
 let savedEvents=new Set(),savedPlaces=new Set();
 function safeURL(value){try{const u=new URL(clean(value).trim());return ['https:','http:'].includes(u.protocol)&&!u.username&&!u.password?u.href:'';}catch{return '';}}
@@ -48,6 +49,36 @@ function festivalState(f,today){
  const day=today||new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
  if(!f.start||!f.end)return 'Datas a confirmar';
  return f.end<day?'Edição encerrada':f.start>day?'Em breve':'Em andamento';
+}
+const todayBR=()=>new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
+function validDay(day){return typeof day==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(day)&&Number.isFinite(Date.parse(day+'T12:00:00Z'))&&new Date(day+'T12:00:00Z').toISOString().slice(0,10)===day;}
+function addDays(day,n){const d=new Date(day+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);}
+function periodBounds(period,today=todayBR()){
+ if(!validDay(today)||period==='all')return null;
+ if(period==='today')return [today,today];
+ if(period==='week')return [today,addDays(today,6)];
+ if(period==='weekend'){const day=new Date(today+'T12:00:00Z').getUTCDay(),start=addDays(today,day===0?-1:6-day);return [start,addDays(start,1)];}
+ return null;
+}
+function eventRunsOn(event,day){return !Array.isArray(event.weekdays)||!event.weekdays.length||event.weekdays.includes(new Date(day+'T12:00:00Z').getUTCDay());}
+function eventInPeriod(event,period,today){
+ const bounds=periodBounds(period,today);if(!bounds)return true;
+ const start=event.start>bounds[0]?event.start:bounds[0],end=event.end<bounds[1]?event.end:bounds[1];
+ for(let day=start;day<=end;day=addDays(day,1))if(eventRunsOn(event,day))return true;
+ return false;
+}
+function defaultInviteDate(event,today=todayBR()){
+ for(let day=today>=event.start&&today<=event.end?today:event.start;day<=event.end;day=addDays(day,1))if(eventRunsOn(event,day))return day;
+ return '';
+}
+function eventInvitation(event,{date,time='',meeting='',note=''}={}){
+ if(!event||!validDay(date)||date<event.start||date>event.end||!eventRunsOn(event,date)||!safeURL(event.url)||time&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(time))return '';
+ const day=date.split('-').reverse().join('/'),lines=['Oitava Parede · convite cultural','','Vamos juntos ao '+clean(event.title)+'?','','📅 Nosso encontro: '+day+(time?' às '+time:' · horário a combinar'),'📍 '+(clean(meeting).trim().slice(0,220)||clean(event.venue))+' · '+clean(event.city)];
+ if(event.start!==event.end)lines.push('Período do evento: '+event.start.split('-').reverse().join('/')+' a '+event.end.split('-').reverse().join('/'));
+ if(event.price)lines.push('Entrada anunciada: '+clean(event.price));
+ if(clean(note).trim())lines.push('',clean(note).trim().slice(0,300));
+ lines.push('','Programação e fonte: '+safeURL(event.url),'Confira a sessão e a disponibilidade antes de ir.');
+ return lines.join('\n');
 }
 function upcomingEvents(events,today){const day=today||new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});return events.filter(e=>e&&e.end>=day).sort((a,b)=>a.start.localeCompare(b.start)||a.title.localeCompare(b.title));}
 function filterEvents(events,city,cat,query,savedOnly,saved){
@@ -90,8 +121,9 @@ function eventCard(e){
    '<p>'+esc(e.description)+'</p>'+
    '<div class="op-event-meta"><span>◷ '+esc(e.time||'Consultar horários')+'</span><span>◈ '+esc(e.price||'Consultar')+'</span></div>'+eventDetails(e)+
    '<div class="op-card-actions">'+
-    '<a class="op-primary-link" target="_blank" rel="noopener noreferrer" href="'+esc(e.url)+'">Programação <span aria-hidden="true">↗</span></a>'+
-    '<button type="button" class="op-icon-button '+(saved?'is-saved':'')+'" data-favevent="'+esc(e.id)+'" aria-pressed="'+saved+'" title="'+(saved?'Remover dos salvos':'Salvar evento')+'" aria-label="'+(saved?'Remover evento salvo':'Salvar evento')+'">'+(saved?'♥':'♡')+'</button>'+
+    '<a class="op-primary-link" target="_blank" rel="noopener noreferrer" href="'+esc(e.url)+'">Ver programação <span aria-hidden="true">↗</span></a>'+
+    '<button type="button" class="op-icon-button '+(saved?'is-saved':'')+'" data-favevent="'+esc(e.id)+'" aria-pressed="'+saved+'" title="'+(saved?'Remover dos salvos':'Salvar evento')+'" aria-label="'+(saved?'Remover evento salvo: ':'Salvar evento: ')+esc(e.title)+'">'+(saved?'♥':'♡')+'</button>'+
+    '<button type="button" class="op-event-invite" data-invite-event="'+esc(e.id)+'" aria-label="Criar convite para '+esc(e.title)+'">Criar convite <span aria-hidden="true">↗</span></button>'+
    '</div>'+sourceFooter(e)+
    (e.image&&e.imageSource?'<a class="op-image-credit" target="_blank" rel="noopener noreferrer" href="'+esc(e.imageSource)+'">'+esc(e.imageCredit||'Imagem da fonte')+' ↗</a>':'')+'</div></article>';
  return item;
@@ -130,14 +162,15 @@ function toast(msg){const el=document.getElementById('opToast');if(!el)return;el
 function syncToggles(container,selector,value){container?.querySelectorAll(selector).forEach(el=>{const selected=el.dataset.value===value;el.classList.toggle('active',selected);el.setAttribute('aria-pressed',String(selected))})}
 function renderEvents(){
  const all=upcomingEvents(data.events);
- const filtered=filterEvents(all,eventCity,eventCat,eventSearch,eventSavedOnly,savedEvents);
+ const filtered=filterEvents(all,eventCity,eventCat,eventSearch,eventSavedOnly,savedEvents).filter(e=>eventInPeriod(e,eventPeriod));
  const count=document.getElementById('opEventCount');if(count)count.textContent=filtered.length+' evento'+(filtered.length===1?'':'s')+' na seleção';
  const target=document.getElementById('opEventGrid');if(!target)return;
  target.innerHTML=filtered.length?filtered.map(eventCard).join(''):
- '<div class="op-noresults"><strong>Nenhum evento encontrado</strong><p>Altere a região ou categoria, ou explore as agendas de referência abaixo.</p></div>';
+ '<div class="op-noresults"><strong>Nenhum evento nesta seleção</strong><p>Experimente outro período, cidade ou categoria.</p><button type="button" class="op-saved" data-reset-events>Limpar filtros da agenda</button></div>';
  const tabs=document.getElementById('opEventCities');syncToggles(tabs,'[data-value]',eventCity);
  const categories=document.getElementById('opEventCategories');syncToggles(categories,'[data-value]',eventCat);
  const savedButton=document.getElementById('opEventSaved');if(savedButton){savedButton.classList.toggle('active',eventSavedOnly);savedButton.setAttribute('aria-pressed',String(eventSavedOnly));savedButton.textContent='♡ Salvos ('+savedEvents.size+')'}
+ const summary=document.getElementById('opEventSelection');if(summary)summary.textContent=[eventCity==='Todas'?'Todas as cidades':eventCity,catInfo[eventCat]?.label||'Todas as categorias',{'all':'Toda a agenda','today':'Hoje','week':'Próximos 7 dias','weekend':'Fim de semana'}[eventPeriod],eventSavedOnly?'Apenas salvos':'',eventSearch?'Busca: “'+eventSearch+'”':''].filter(Boolean).join(' · ');
 }
 function renderPlaces(){
  const places=allPlaces(),cities=[...new Set(['Santos','São Vicente','Praia Grande',...places.map(p=>p.city)])];
@@ -193,17 +226,63 @@ function renderSources(){
  const stamp=document.getElementById('opAgendaCurated');
  if(stamp&&data.curated_at){const [y,m,d]=data.curated_at.split('-');stamp.textContent='Curadoria inicial: '+d+'/'+m+'/'+y+' · datas conferidas nas fontes indicadas'}
 }
-function copyText(txt){
- if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function')return navigator.clipboard.writeText(txt);
- const textarea=document.createElement('textarea');textarea.value=txt;document.body.appendChild(textarea);textarea.select();document.execCommand('copy');textarea.remove();return Promise.resolve();
+async function copyText(txt){
+ if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){try{await navigator.clipboard.writeText(txt);return;}catch{}}
+ const active=document.activeElement,textarea=document.createElement('textarea');textarea.value=txt;textarea.readOnly=true;textarea.style.cssText='position:fixed;left:0;top:0;width:1px;height:1px;opacity:0';
+ (document.querySelector('dialog[open]')||document.body).appendChild(textarea);textarea.select();
+ let copied=false;try{copied=typeof document.execCommand==='function'&&document.execCommand('copy');}finally{textarea.remove();active?.focus({preventScroll:true});}
+ if(!copied)throw new Error('Cópia indisponível');
+}
+function resetEventFilters(){
+ eventCity='Todas';eventCat='todos';eventSearch='';eventSavedOnly=false;eventPeriod='all';document.getElementById('opEventSearch').value='';document.getElementById('opEventPeriod').value='all';renderEvents();
+}
+function refreshEventInvite(){
+ if(!currentInviteEvent)return '';
+ const text=eventInvitation(currentInviteEvent,{date:document.getElementById('opInviteDay').value,time:document.getElementById('opInviteTime').value,meeting:document.getElementById('opInviteMeeting').value,note:document.getElementById('opInviteNote').value});
+ document.getElementById('opInvitePreview').value=text;
+ document.getElementById('opInviteCopy').disabled=!text;document.getElementById('opInviteShare').disabled=!text;
+ document.getElementById('opInviteStatus').textContent=text?'':'Escolha uma data com atividade no evento e um horário válido.';
+ return text;
+}
+function openEventInvite(event,trigger){
+ currentInviteEvent=event;inviteTrigger=trigger;
+ document.getElementById('opInviteForm').reset();
+ document.getElementById('opInviteEventTitle').textContent=event.title;
+ document.getElementById('opInviteEventMeta').textContent=calendarLabel(event)+' · '+event.city+' · '+(event.time||'Horários na programação');
+ const day=document.getElementById('opInviteDay');day.min=event.start;day.max=event.end;day.value=defaultInviteDate(event);
+ document.getElementById('opInviteMeeting').value=event.venue||'';
+ document.getElementById('opInviteSource').href=safeURL(event.url);
+ document.getElementById('opInviteShare').hidden=typeof navigator.share!=='function';
+ refreshEventInvite();document.getElementById('opEventInviteDialog').showModal();day.focus();
+}
+function hookEventInvites(){
+ const dialog=document.getElementById('opEventInviteDialog'),form=document.getElementById('opInviteForm');if(!dialog||!form)return;
+ dialog.querySelectorAll('[data-close-invite]').forEach(button=>button.addEventListener('click',()=>dialog.close()));
+ dialog.addEventListener('close',()=>{const target=inviteTrigger?.isConnected?inviteTrigger:document.getElementById('opEventSearch');target?.focus({preventScroll:true});currentInviteEvent=null;});
+ form.addEventListener('input',refreshEventInvite);
+ form.addEventListener('submit',async e=>{
+  e.preventDefault();const text=refreshEventInvite();if(!text||!form.reportValidity())return;
+  try{await copyText(text);document.getElementById('opInviteStatus').textContent='Convite copiado. Agora é só colar no grupo!';}
+  catch{const preview=document.getElementById('opInvitePreview');preview.focus();preview.select();document.getElementById('opInviteStatus').textContent='A cópia automática não funcionou. O texto está selecionado para copiar manualmente.';}
+ });
+ document.getElementById('opInviteShare').addEventListener('click',async()=>{
+  const text=refreshEventInvite();if(!text||!form.reportValidity()||typeof navigator.share!=='function')return;
+  try{await navigator.share({title:'Convite · '+currentInviteEvent.title,text});document.getElementById('opInviteStatus').textContent='Compartilhamento concluído pelo aparelho.';}
+  catch(error){document.getElementById('opInviteStatus').textContent=error.name==='AbortError'?'Compartilhamento cancelado.':'Não foi possível compartilhar. Use Copiar convite.';}
+ });
 }
 function hook(){
  document.getElementById('opEventCities')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;eventCity=b.dataset.value;renderEvents();});
  document.getElementById('opEventCategories')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;eventCat=b.dataset.value;renderEvents();});
- document.getElementById('opEventReset')?.addEventListener('click',()=>{eventCity='Todas';eventCat='todos';eventSearch='';eventSavedOnly=false;document.getElementById('opEventSearch').value='';renderEvents();});
+ document.getElementById('opEventReset')?.addEventListener('click',resetEventFilters);
+ document.getElementById('opEventPeriod')?.addEventListener('change',e=>{eventPeriod=e.target.value;renderEvents();});
  document.getElementById('opEventSearch')?.addEventListener('input',e=>{eventSearch=e.target.value;renderEvents();});
  document.getElementById('opEventSaved')?.addEventListener('click',()=>{eventSavedOnly=!eventSavedOnly;renderEvents();});
- document.getElementById('opEventGrid')?.addEventListener('click',e=>{const b=e.target.closest('[data-favevent]');if(!b)return;const id=b.dataset.favevent;savedEvents.has(id)?savedEvents.delete(id):savedEvents.add(id);storage.set(STORAGE_EVENTS,savedEvents);renderEvents();});
+ document.getElementById('opEventGrid')?.addEventListener('click',e=>{
+  const invite=e.target.closest('[data-invite-event]');if(invite){const event=data.events.find(row=>row.id===invite.dataset.inviteEvent);if(event)openEventInvite(event,invite);return;}
+  if(e.target.closest('[data-reset-events]')){resetEventFilters();document.getElementById('opEventSearch').focus();return;}
+  const b=e.target.closest('[data-favevent]');if(!b)return;const id=b.dataset.favevent;savedEvents.has(id)?savedEvents.delete(id):savedEvents.add(id);storage.set(STORAGE_EVENTS,savedEvents);renderEvents();
+ });
  document.getElementById('opMeetCities')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;meetCity=b.dataset.value;renderPlaces();});
  document.getElementById('opMeetKinds')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;meetKind=b.dataset.value;renderPlaces();});
  document.getElementById('opMeetReset')?.addEventListener('click',()=>{meetCity='Todas';meetKind='todos';meetSearch='';meetSavedOnly=false;document.getElementById('opMeetSearch').value='';renderPlaces();});
@@ -219,6 +298,19 @@ function hook(){
   copyText(txt.replaceAll('\\n','\n')).then(()=>toast('Convite copiado. Agora é só enviar no grupo!')).catch(()=>toast('Não foi possível copiar. Use o mapa para compartilhar o local.'));
  });
 }
+
+function eventInviteMarkup(){return `<dialog id="opEventInviteDialog" class="op-place-dialog op-invite-dialog" aria-labelledby="opEventInviteTitle">
+<div class="op-place-dialog-head"><h2 id="opEventInviteTitle">Criar convite cultural</h2><button type="button" data-close-invite aria-label="Fechar convite">×</button></div>
+<div class="op-invite-context"><strong id="opInviteEventTitle"></strong><p id="opInviteEventMeta"></p><a id="opInviteSource" target="_blank" rel="noopener noreferrer">Programação do evento ↗</a></div>
+<p class="op-place-dialog-note">Escolha como reunir a equipe e confira o texto antes de compartilhar.</p>
+<form id="opInviteForm"><div class="op-place-form-grid">
+<label>Dia do encontro<input id="opInviteDay" type="date" required></label>
+<label>Hora do encontro (opcional)<input id="opInviteTime" type="time"></label>
+<label class="op-form-wide">Ponto de encontro<input id="opInviteMeeting" maxlength="220" placeholder="Ex.: entrada principal do cinema"></label>
+<label class="op-form-wide">Mensagem para o grupo (opcional)<textarea id="opInviteNote" maxlength="300" rows="2" placeholder="Ex.: vamos chegar 15 minutos antes?"></textarea></label>
+<label class="op-form-wide op-invite-preview-label">Prévia do convite<textarea id="opInvitePreview" readonly rows="7" spellcheck="false"></textarea></label>
+</div><p id="opInviteStatus" class="op-invite-status" role="status" aria-live="polite"></p>
+<div class="op-place-form-actions op-invite-actions"><button type="button" data-close-invite>Fechar</button><button type="button" id="opInviteShare" hidden>Compartilhar</button><button type="submit" id="opInviteCopy" class="op-add-place">Copiar convite</button></div></form></dialog>`;}
 
 function placeDialogMarkup(){return `<dialog id="opPlaceDialog" class="op-place-dialog" aria-labelledby="opPlaceDialogTitle">
 <div class="op-place-dialog-head"><h2 id="opPlaceDialogTitle">Cadastrar ponto de encontro</h2><button type="button" data-close-place aria-label="Fechar cadastro">×</button></div>
@@ -264,9 +356,10 @@ function buildUI(){
  '<a class="op-circuit-shortcut" href="#opCinemaCircuit">Explorar festivais e mostras de cinema ↓</a>',
  '<div class="op-event-controls" aria-label="Filtros da agenda"><div class="op-controls-row">',
  '<div class="op-chipset" id="opEventCities" aria-label="Cidades">'+cityEvents+'</div>',
- '<div class="op-control-right"><input id="opEventSearch" type="search" class="op-text-search" placeholder="Buscar evento ou local" aria-label="Pesquisar evento">',
+ '<div class="op-control-right"><label class="op-period-label" for="opEventPeriod">Quando<select id="opEventPeriod"><option value="all">Toda a agenda</option><option value="today">Hoje</option><option value="week">Próximos 7 dias</option><option value="weekend">Fim de semana</option></select></label><input id="opEventSearch" type="search" class="op-text-search" placeholder="Evento, cinema ou cidade" aria-label="Pesquisar evento">',
  '<button id="opEventReset" type="button" class="op-saved">Limpar filtros</button><button id="opEventSaved" class="op-saved" type="button" aria-pressed="false">♡ Salvos</button></div></div>',
  '<div class="op-chipset" id="opEventCategories" aria-label="Categorias">'+catEvents+'</div>',
+ '<p id="opEventSelection" class="op-filter-selection"></p>',
  '<div class="op-control-foot"><strong id="opEventCount" aria-live="polite">Carregando programação...</strong><span id="opAgendaCurated">Confirme ingressos e horários na fonte.</span></div></div>',
  '<div class="op-event-grid" id="opEventGrid" aria-live="polite"><div class="op-noresults">Carregando eventos...</div></div>',
  '<section class="op-cinema-circuit" id="opCinemaCircuit" aria-labelledby="opCinemaTitle"><div class="op-circuit-heading"><div><span class="op-eyebrow">Circuito audiovisual</span><h3 id="opCinemaTitle">Festivais e mostras para acompanhar</h3></div><p>Referências para assistir, trocar ideias e circular seus filmes. Edições encerradas continuam aqui para pesquisa; novas datas e inscrições dependem do anúncio da organização.</p></div><div class="op-festival-grid" id="opFestivalGrid">Carregando festivais…</div></section>',
@@ -289,7 +382,7 @@ function buildUI(){
  '<div class="op-control-foot"><strong id="opPlaceCount" aria-live="polite">Carregando locais...</strong><span id="opPlaceSourceStatus">Salve os favoritos e copie um convite para o grupo.</span></div></div>',
  '<div class="op-place-grid" id="opPlaceGrid" aria-live="polite"><div class="op-noresults">Carregando sugestões...</div></div>',
  '<p class="op-meeting-footnote">Locais independentes, sem parceria com a Oitava Parede. Antes de reunir a equipe, confirme horário, lotação, consumo mínimo, Wi-Fi, reserva e se há espaço para conversas longas.</p>',
- '</div></section>'+placeDialogMarkup()+'<div id="opToast" class="op-toast" role="status" aria-live="polite"></div>'
+ '</div></section>'+placeDialogMarkup()+eventInviteMarkup()+'<div id="opToast" class="op-toast" role="status" aria-live="polite"></div>'
  ].join('');
  place.insertAdjacentHTML('beforebegin',markup);
  try{
@@ -306,7 +399,7 @@ async function init(){
  const src=document.getElementById('opEventGrid');if(!src)return;
  savedEvents=storage.get(STORAGE_EVENTS);savedPlaces=storage.get(STORAGE_PLACES);
  try{customPlaces=readCustomPlaces(localStorage.getItem(STORAGE_CUSTOM));}catch{customPlaces=[];}
- hook();hookCustomPlaces();if(customPlaces.length)renderPlaces();
+ hook();hookCustomPlaces();hookEventInvites();if(customPlaces.length)renderPlaces();
  try{
   const resp=await fetch('./dados/agenda.json?t='+Date.now(),{cache:'no-store'});
   if(!resp.ok)throw new Error('Agenda indisponível');
@@ -321,7 +414,7 @@ async function init(){
   console.warn('[agenda]',e);
  }
 }
-const api={upcomingEvents,filterEvents,filterPlaces,catInfo,kindInfo,customPlace,readCustomPlaces,safeURL,festivalState};
+const api={upcomingEvents,filterEvents,filterPlaces,catInfo,kindInfo,customPlace,readCustomPlaces,safeURL,festivalState,periodBounds,eventInPeriod,defaultInviteDate,eventInvitation,validDay};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(typeof document!=='undefined')if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })(typeof window!=='undefined'?window:null);
