@@ -156,6 +156,11 @@ function buildUI(){
   const before=nav.querySelector('[href="#notificacoes"]');
   if(before)before.insertAdjacentHTML('beforebegin','<a href="#agenda">Agenda cultural</a><a href="#reunioes">Reuniões</a>');
   if(before)before.textContent='Avisos';
+  nav.querySelectorAll('a[href="#agenda"],a[href="#reunioes"]').forEach(a=>a.addEventListener('click',()=>{
+   nav.classList.remove('open');
+   const menu=document.getElementById('menuButton');
+   if(menu)menu.setAttribute('aria-expanded','false');
+  }));
   const edit=nav.querySelector('[href="#oportunidades"]');if(edit)edit.textContent='Editais';
  }
  const place=document.getElementById('notificacoes');if(!place)return;
