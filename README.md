@@ -91,3 +91,16 @@ O site tem as abas **Agenda cultural** e **Reuniões**, com filtros por cidade, 
 ## Uso de nomes
 
 Os termos públicos foram incluídos apenas para verificar **ocorrências em documentos oficiais**. O resultado publicado não reproduz conteúdo pessoal dos arquivos, não armazena números privados e não pode substituir a consulta ao documento original.
+## Reformulação editorial — 03/11/2026
+
+O layout foi repensado para uma experiência de revista cultural e pesquisa interna, tomando como referências o tratamento editorial de [Frans Hals Museum](https://www.awwwards.com/sites/franshals-museum), [The Beautiful Truth](https://thebeautifultruth.org) e [WePresent](https://wepresent.wetransfer.com). É um projeto visual original, não uma cópia.
+
+- **Capa e narrativa:** tipografia maior, blocos editoriais, marca Oitava Parede original (já fornecida), tentáculos discretos, alto contraste e menu responsivo.
+- **Marcas oficiais:** logos PNAB, Lei Paulo Gustavo e ProAC referenciados diretamente dos portais institucionais, com links de origem e fallback. O Diário Oficial mantém identificação tipográfica, pois não há marca individual confirmada.
+- **Datas claras:** `data_no_arquivo` identifica somente data presente no nome do arquivo, quando disponível, sem atribuir falsamente data de publicação. `primeira_detecao` é a data em que o radar detectou o link; `ultima_leitura` indica a última leitura real do documento. `generated_at` informa a última execução do radar.
+- **Filtros:** ordenar por data de referência, relevância editorial para audiovisual ou inclusão no radar; limitar a 7, 30 ou 90 dias; pesquisar e filtrar programa, tipo e modalidade.
+- **Instagram:** o acesso automatizado às fotos do perfil [@oitavaparede](https://www.instagram.com/oitavaparede/) não estava disponível. O site utiliza o logotipo do coletivo e um link para o acervo oficial, sem inventar ou incorporar imagens de terceiros como se fossem da produtora.
+- As funções anteriores (cadastro local de projetos, monitoramento de editais, agenda cultural e pontos de encontro) foram mantidas.
+
+Arquivos principais: `docs/assets/editorial.css`, `docs/assets/editorial.js` (com cópias em `assets/` para a publicação pela raiz).
+
