@@ -1,6 +1,12 @@
 name: Radar Oitava Parede - monitoramento e publicacao
 on:
   workflow_dispatch:
+    inputs:
+      email_test:
+        description: 'Enviar email de teste aos destinatarios configurados'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '37 11 * * *'
   push:
@@ -24,17 +30,28 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq antiword
+      - name: Executar testes do monitor
+        run: python -m unittest discover -s tests -v
       - name: Ler publicacoes oficiais
         env:
           OITAVA_TERMS: ${{ secrets.OITAVA_TERMS }}
         run: python scripts/monitorar.py
+      - name: Enviar alertas de email quando houver mencoes novas
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_APP_PASSWORD: ${{ secrets.EMAIL_APP_PASSWORD }}
+          EMAIL_RECIPIENTS: ${{ secrets.EMAIL_RECIPIENTS }}
+          EMAIL_TEST: ${{ inputs.email_test }}
+        run: python scripts/enviar_alertas.py
       - name: Guardar resultados
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           mkdir -p dados
           cp docs/dados/radar.json dados/radar.json
-          git add docs/dados/radar.json dados/radar.json
+          cp docs/dados/email_status.json dados/email_status.json
+          git add docs/dados/radar.json dados/radar.json docs/dados/email_status.json dados/email_status.json
+          if [ -f config/alertas_enviados.json ]; then git add config/alertas_enviados.json; fi
           if ! git diff --staged --quiet; then
             git commit -m "Atualizar radar oficial"
             git push
