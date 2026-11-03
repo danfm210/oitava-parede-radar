@@ -1,7 +1,7 @@
 /* Oitava Parede · agenda cultural e pontos de encontro. Dados editoriais de fontes públicas. */
 (function(root){
 'use strict';
-const STORAGE_EVENTS='oitava_favoritos_eventos_v1', STORAGE_PLACES='oitava_favoritos_encontros_v1';
+const STORAGE_EVENTS='oitava_favoritos_eventos_v1', STORAGE_PLACES='oitava_favoritos_encontros_v1', STORAGE_CUSTOM='oitava_locais_personalizados_v1';
 const labelCity={'Santos':'Santos','São Vicente':'São Vicente','Praia Grande':'Praia Grande','São Paulo':'São Paulo'};
 const catInfo={
  audiovisual:{label:'Audiovisual',glyph:'▶',color:'violet'},
@@ -12,7 +12,8 @@ const catInfo={
 const kindInfo={
  trabalho:{label:'Reunião & foco',glyph:'▤',color:'indigo'},
  cafe:{label:'Café & ideias',glyph:'◉',color:'mustard'},
- social:{label:'Bar & conversa',glyph:'✺',color:'coral'}
+ social:{label:'Bar & conversa',glyph:'✺',color:'coral'},
+ cultural:{label:'Cultura & ar livre',glyph:'✳',color:'teal'}
 };
 const clean=(x)=>String(x==null?'':x);
 const esc=(v)=>clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -23,10 +24,31 @@ const storage={
  get(key){try{const x=JSON.parse(localStorage.getItem(key)||'[]');return new Set(Array.isArray(x)?x:[])}catch{return new Set()}},
  set(key,vals){try{localStorage.setItem(key,JSON.stringify([...vals]))}catch{}}
 };
-let data={events:[],places:[],sources:[],curated_at:null};
+let data={events:[],places:[],sources:[],festivals:[],curated_at:null};
+let customPlaces=[],editingPlaceId=null,placeTrigger=null;
 let eventCity='Todas',eventCat='todos',eventSearch='',eventSavedOnly=false;
 let meetCity='Todas',meetKind='todos',meetSearch='',meetSavedOnly=false;
 let savedEvents=new Set(),savedPlaces=new Set();
+function safeURL(value){try{const u=new URL(clean(value).trim());return ['https:','http:'].includes(u.protocol)&&!u.username&&!u.password?u.href:'';}catch{return '';}}
+function customPlace(value,id){
+ if(!value||typeof value!=='object')return null;
+ const text=(key,max)=>typeof value[key]==='string'?value[key].trim().slice(0,max):'';
+ const name=text('name',100),city=text('city',80),address=text('address',220),type=text('type',30);
+ if(!name||!city||!address||!Object.hasOwn(kindInfo,type)||!/^custom-[a-z0-9-]+$/.test(id||''))return null;
+ return {id,name,city,address,type,why:text('why',500),best:text('best',160)||'Encontro personalizado',watch:text('watch',350)||'Confirme disponibilidade e condições com o local.',url:safeURL(text('url',1000)),style:'Personalizado · neste navegador',tags:['Seu cadastro'],custom:true};
+}
+function readCustomPlaces(raw){
+ try{const rows=JSON.parse(raw||'[]');if(!Array.isArray(rows))return [];
+ const unique=new Map();for(const row of rows){const p=customPlace(row,row?.id);if(p&&!unique.has(p.id))unique.set(p.id,p);}return [...unique.values()];
+ }catch{return [];}
+}
+function allPlaces(){return [...customPlaces,...data.places];}
+function persistCustom(rows){try{localStorage.setItem(STORAGE_CUSTOM,JSON.stringify(rows));customPlaces=rows;return true;}catch{toast('Não foi possível salvar neste navegador. Verifique o espaço e as permissões de armazenamento.');return false;}}
+function festivalState(f,today){
+ const day=today||new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
+ if(!f.start||!f.end)return 'Datas a confirmar';
+ return f.end<day?'Edição encerrada':f.start>day?'Em breve':'Em andamento';
+}
 function upcomingEvents(events,today){const day=today||new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});return events.filter(e=>e&&e.end>=day).sort((a,b)=>a.start.localeCompare(b.start)||a.title.localeCompare(b.title));}
 function filterEvents(events,city,cat,query,savedOnly,saved){
  return events.filter(e=>(city==='Todas'||e.city===city)&&(cat==='todos'||e.category===cat)
@@ -45,6 +67,10 @@ function calendarLabel(e){
 function sourceFooter(e){
  return '<span class="op-source"><span class="op-source-dot"></span>'+esc(e.source)+'</span>';
 }
+function eventDetails(e){
+ if(!Array.isArray(e.highlights)||!e.highlights.length)return '';
+ return '<details class="op-event-details"><summary>Informações e destaques</summary><ul>'+e.highlights.map(h=>'<li><strong>'+esc(h.title)+'</strong><span>'+esc(h.when)+' · '+esc(h.venue)+'</span></li>').join('')+'</ul>'+(Array.isArray(e.references)?e.references.filter(r=>safeURL(r.url)).map(r=>'<a target="_blank" rel="noopener noreferrer" href="'+esc(safeURL(r.url))+'">'+esc(r.title)+' ↗</a>').join(''):safeURL(e.details_url)?'<a target="_blank" rel="noopener noreferrer" href="'+esc(safeURL(e.details_url))+'">Consultar programação detalhada ↗</a>':'')+'</details>';
+}
 function eventCard(e){
  const t=catInfo[e.category]||catInfo.cultura;
  const saved=savedEvents.has(e.id);
@@ -62,7 +88,7 @@ function eventCard(e){
    '<div class="op-event-venue">'+esc(e.venue)+'</div>'+
    '<h3>'+esc(e.title)+'</h3>'+
    '<p>'+esc(e.description)+'</p>'+
-   '<div class="op-event-meta"><span>◷ '+esc(e.time||'Consultar horários')+'</span><span>◈ '+esc(e.price||'Consultar')+'</span></div>'+
+   '<div class="op-event-meta"><span>◷ '+esc(e.time||'Consultar horários')+'</span><span>◈ '+esc(e.price||'Consultar')+'</span></div>'+eventDetails(e)+
    '<div class="op-card-actions">'+
     '<a class="op-primary-link" target="_blank" rel="noopener noreferrer" href="'+esc(e.url)+'">Programação <span aria-hidden="true">↗</span></a>'+
     '<button type="button" class="op-icon-button '+(saved?'is-saved':'')+'" data-favevent="'+esc(e.id)+'" aria-pressed="'+saved+'" title="'+(saved?'Remover dos salvos':'Salvar evento')+'" aria-label="'+(saved?'Remover evento salvo':'Salvar evento')+'">'+(saved?'♥':'♡')+'</button>'+
@@ -95,6 +121,8 @@ function placeCard(p){
      '<button type="button" class="op-copy-button" data-invite="'+esc(p.id)+'">Copiar convite</button>'+
      '<button type="button" class="op-icon-button '+(saved?'is-saved':'')+'" data-favplace="'+esc(p.id)+'" aria-pressed="'+saved+'" aria-label="'+(saved?'Remover local salvo':'Salvar local')+'">'+(saved?'♥':'♡')+'</button>'+
     '</div>'+
+    (safeURL(p.url)?'<a class="op-place-source" href="'+esc(safeURL(p.url))+'" target="_blank" rel="noopener noreferrer">Site / informações do local ↗</a>':'')+
+    (p.custom?'<div class="op-custom-actions"><button type="button" data-edit-place="'+esc(p.id)+'">Editar ponto</button><button type="button" data-delete-place="'+esc(p.id)+'">Excluir ponto</button></div>':'')+
     (p.credit&&p.credit_url?'<div class="op-photo-credit"><a href="'+esc(p.credit_url)+'" target="_blank" rel="noopener noreferrer">'+esc(p.credit)+' ↗</a></div>':'')+
    '</div></article>';
 }
@@ -112,14 +140,51 @@ function renderEvents(){
  const savedButton=document.getElementById('opEventSaved');if(savedButton){savedButton.classList.toggle('active',eventSavedOnly);savedButton.setAttribute('aria-pressed',String(eventSavedOnly));savedButton.textContent='♡ Salvos ('+savedEvents.size+')'}
 }
 function renderPlaces(){
- const filtered=filterPlaces(data.places,meetCity,meetKind,meetSearch,meetSavedOnly,savedPlaces);
+ const places=allPlaces(),cities=[...new Set(['Santos','São Vicente','Praia Grande',...places.map(p=>p.city)])];
+ const cityRoot=document.getElementById('opMeetCities');
+ if(cityRoot&&cityRoot.dataset.cities!==JSON.stringify(cities)){
+  cityRoot.innerHTML=[['Todas','Todas as cidades'],...cities.map(c=>[c,c])].map(([v,label])=>'<button type="button" class="op-chip" data-value="'+esc(v)+'" aria-pressed="false">'+esc(label)+'</button>').join('');cityRoot.dataset.cities=JSON.stringify(cities);
+ }
+ if(meetCity!=='Todas'&&!cities.includes(meetCity))meetCity='Todas';
+ const badge=document.getElementById('opMeetCityCount');if(badge)badge.textContent=String(cities.length).padStart(2,'0');
+ const filtered=filterPlaces(places,meetCity,meetKind,meetSearch,meetSavedOnly,savedPlaces);
  const target=document.getElementById('opPlaceGrid');if(!target)return;
  target.innerHTML=filtered.length?filtered.map(placeCard).join(''):
  '<div class="op-noresults"><strong>Sem locais para estes filtros</strong><p>Experimente outro estilo de encontro ou cidade.</p></div>';
- const count=document.getElementById('opPlaceCount');if(count)count.textContent=filtered.length+' '+(filtered.length===1?'sugestão':'sugestões');
+ const count=document.getElementById('opPlaceCount');if(count)count.textContent=filtered.length+' '+(filtered.length===1?'sugestão':'sugestões')+' · '+customPlaces.length+' '+(customPlaces.length===1?'ponto personalizado':'pontos personalizados');
  syncToggles(document.getElementById('opMeetCities'),'[data-value]',meetCity);
  syncToggles(document.getElementById('opMeetKinds'),'[data-value]',meetKind);
  const savedButton=document.getElementById('opMeetSaved');if(savedButton){savedButton.classList.toggle('active',meetSavedOnly);savedButton.setAttribute('aria-pressed',String(meetSavedOnly));savedButton.textContent='♡ Salvos ('+savedPlaces.size+')'}
+}
+function renderFestivals(){
+ const node=document.getElementById('opFestivalGrid');if(!node)return;
+ node.innerHTML=(data.festivals||[]).map(f=>'<article class="op-festival-card"><div class="op-festival-kicker">'+esc(f.city)+' · '+esc(f.focus)+'</div><h4>'+esc(f.title)+'</h4><p>'+esc(f.description)+'</p><p class="op-festival-state">'+esc(festivalState(f))+' · '+esc(f.edition)+'</p><p class="op-festival-dates">'+esc(calendarLabel(f))+'</p><p class="op-festival-participate">'+esc(f.participate)+'</p><a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer">Programação e fonte ↗</a></article>').join('');
+}
+function openPlace(p,trigger){
+ const dialog=document.getElementById('opPlaceDialog'),form=document.getElementById('opPlaceForm');
+ form.reset();editingPlaceId=p?.id||null;placeTrigger=trigger||document.activeElement;
+ document.getElementById('opPlaceDialogTitle').textContent=p?'Editar ponto personalizado':'Cadastrar ponto de encontro';
+ document.getElementById('opPlaceFormError').textContent='';
+ for(const key of ['name','city','address','type','why','best','watch','url'])if(p&&form.elements.namedItem(key))form.elements.namedItem(key).value=p[key]||'';
+ dialog.showModal();form.elements.namedItem('name').focus();
+}
+function hookCustomPlaces(){
+ const dialog=document.getElementById('opPlaceDialog'),form=document.getElementById('opPlaceForm');if(!dialog||!form)return;
+ document.getElementById('opAddPlace').addEventListener('click',e=>openPlace(null,e.currentTarget));
+ dialog.querySelectorAll('[data-close-place]').forEach(b=>b.addEventListener('click',()=>dialog.close()));
+ dialog.addEventListener('close',()=>{const target=editingPlaceId?document.querySelector('[data-edit-place=\"'+editingPlaceId+'\"]'):placeTrigger;(target?.isConnected?target:document.getElementById('opAddPlace')).focus();editingPlaceId=null;});
+ form.addEventListener('submit',e=>{
+  e.preventDefault();const values=Object.fromEntries(new FormData(form)),error=document.getElementById('opPlaceFormError');
+  const id=editingPlaceId||'custom-'+(root.crypto?.randomUUID?.()||Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+  const p=customPlace(values,id);
+  if(!p){error.textContent='Preencha nome, cidade, endereço e tipo do encontro.';return;}
+  if(values.url.trim()&&!p.url){error.textContent='Use um link http ou https válido, sem usuário ou senha.';form.elements.namedItem('url').focus();return;}
+  const rows=editingPlaceId?customPlaces.map(old=>old.id===editingPlaceId?p:old):[...customPlaces,p];
+  if(!persistCustom(rows)){error.textContent='O ponto não foi salvo. Verifique as permissões de armazenamento do navegador.';return;}
+  meetCity='Todas';meetKind='todos';meetSearch='';meetSavedOnly=false;document.getElementById('opMeetSearch').value='';
+  dialog.close();renderPlaces();toast('Ponto salvo neste navegador.');
+ });
+ window.addEventListener('storage',e=>{if(e.key===STORAGE_CUSTOM){customPlaces=readCustomPlaces(e.newValue);renderPlaces();}});
 }
 function renderSources(){
  const root=document.getElementById('opEventSources');if(!root)return;
@@ -145,13 +210,29 @@ function hook(){
  document.getElementById('opMeetSearch')?.addEventListener('input',e=>{meetSearch=e.target.value;renderPlaces();});
  document.getElementById('opMeetSaved')?.addEventListener('click',()=>{meetSavedOnly=!meetSavedOnly;renderPlaces();});
  document.getElementById('opPlaceGrid')?.addEventListener('click',e=>{
+  const edit=e.target.closest('[data-edit-place]');if(edit){const p=customPlaces.find(p=>p.id===edit.dataset.editPlace);if(p)openPlace(p,edit);return;}
+  const del=e.target.closest('[data-delete-place]');if(del){const p=customPlaces.find(p=>p.id===del.dataset.deletePlace);if(!p||!confirm('Excluir o ponto personalizado “'+p.name+'” deste navegador?'))return;if(persistCustom(customPlaces.filter(row=>row.id!==p.id))){savedPlaces.delete(p.id);storage.set(STORAGE_PLACES,savedPlaces);renderPlaces();document.getElementById('opAddPlace').focus();toast('Ponto personalizado excluído.');}return;}
   const f=e.target.closest('[data-favplace]');if(f){const id=f.dataset.favplace;savedPlaces.has(id)?savedPlaces.delete(id):savedPlaces.add(id);storage.set(STORAGE_PLACES,savedPlaces);renderPlaces();return;}
   const invite=e.target.closest('[data-invite]');if(!invite)return;
-  const p=data.places.find(p=>p.id===invite.dataset.invite);if(!p)return;
+  const p=allPlaces().find(p=>p.id===invite.dataset.invite);if(!p)return;
   const txt='Oitava Parede · Ideia de encontro\\n📍 '+p.name+' ('+p.city+')\\n'+p.address+'\\nMapa: '+mapUrl(p)+'\\nVamos combinar dia e horário?';
   copyText(txt.replaceAll('\\n','\n')).then(()=>toast('Convite copiado. Agora é só enviar no grupo!')).catch(()=>toast('Não foi possível copiar. Use o mapa para compartilhar o local.'));
  });
 }
+
+function placeDialogMarkup(){return `<dialog id="opPlaceDialog" class="op-place-dialog" aria-labelledby="opPlaceDialogTitle">
+<div class="op-place-dialog-head"><h2 id="opPlaceDialogTitle">Cadastrar ponto de encontro</h2><button type="button" data-close-place aria-label="Fechar cadastro">×</button></div>
+<p class="op-place-dialog-note">Seu cadastro fica neste navegador. Informe um local público ou um endereço que você queira guardar para seus encontros.</p>
+<form id="opPlaceForm"><div class="op-place-form-grid">
+<label>Nome do local *<input name="name" required maxlength="100" autocomplete="organization" placeholder="Ex.: Café da esquina"></label>
+<label>Cidade *<input name="city" required maxlength="80" list="opCustomCityList" autocomplete="address-level2" placeholder="Ex.: Santos"><datalist id="opCustomCityList"><option value="Santos"><option value="São Vicente"><option value="Praia Grande"><option value="São Paulo"></datalist></label>
+<label>Tipo de encontro *<select name="type" required>${Object.entries(kindInfo).map(([key,info])=>'<option value="'+key+'">'+info.label+'</option>').join('')}</select></label>
+<label>Bom para<input name="best" maxlength="160" placeholder="Ex.: roteiro, referências e conversa"></label>
+<label class="op-form-wide">Endereço ou ponto de referência *<input name="address" required maxlength="220" autocomplete="street-address" placeholder="Rua, número e bairro"></label>
+<label class="op-form-wide">Por que se encontrar aqui?<textarea name="why" rows="2" maxlength="500" placeholder="Conte um pouco sobre o ambiente"></textarea></label>
+<label class="op-form-wide">Link do local (opcional)<input name="url" type="url" maxlength="1000" placeholder="https://…"></label>
+<label class="op-form-wide">Observações<textarea name="watch" rows="2" maxlength="350" placeholder="Reserva, horário, barulho, acesso ou outros cuidados"></textarea></label>
+</div><p id="opPlaceFormError" class="op-place-form-error" role="alert"></p><div class="op-place-form-actions"><button type="button" data-close-place>Cancelar</button><button type="submit" class="op-add-place">Salvar ponto</button></div></form></dialog>`;}
 
 function buildUI(){
  if(document.getElementById('agenda'))return;
@@ -173,13 +254,14 @@ function buildUI(){
  const cityEvents=buttons([['Todas','Todas as cidades'],['Santos','Santos'],['São Vicente','São Vicente'],['Praia Grande','Praia Grande'],['São Paulo','São Paulo']],'');
  const catEvents=buttons([['todos','Todas as experiências'],['audiovisual','▶ Audiovisual & cinema'],['musica','♫ Música & shows'],['gastronomia','✦ Gastronomia'],['cultura','✳ Arte & cultura']],'category-active');
  const cityPlaces=buttons([['Todas','Toda a Baixada'],['Santos','Santos'],['São Vicente','São Vicente'],['Praia Grande','Praia Grande']],'');
- const kindPlaces=buttons([['todos','Todos os encontros'],['trabalho','▤ Reunião & foco'],['cafe','◉ Café & brainstorm'],['social','✺ Bar & confraternização']],'category-active');
+ const kindPlaces=buttons([['todos','Todos os encontros'],['trabalho','▤ Reunião & foco'],['cafe','◉ Café & brainstorm'],['social','✺ Bar & confraternização'],['cultural','✳ Cultura & ar livre']],'category-active');
  const markup=[
  '<section class="op-section op-agenda" id="agenda" aria-label="Agenda cultural da Baixada e São Paulo"><div class="wrap">',
  '<div class="op-eyebrow">Para criar, circular e sair juntos</div>',
  '<div class="op-header"><div><h2>Agenda <span style="color:#c29329">cultural</span> da equipe</h2>',
  '<p>Festivais de cinema, shows, arte, oficinas e gastronomia na Baixada Santista e na capital. Um espaço para ampliar repertório, encontrar referências, fazer networking e combinar um rolê em grupo.</p></div>',
  '<div class="op-header-badge"><strong>04</strong><span>temas para explorar</span></div></div>',
+ '<a class="op-circuit-shortcut" href="#opCinemaCircuit">Explorar festivais e mostras de cinema ↓</a>',
  '<div class="op-event-controls" aria-label="Filtros da agenda"><div class="op-controls-row">',
  '<div class="op-chipset" id="opEventCities" aria-label="Cidades">'+cityEvents+'</div>',
  '<div class="op-control-right"><input id="opEventSearch" type="search" class="op-text-search" placeholder="Buscar evento ou local" aria-label="Pesquisar evento">',
@@ -187,25 +269,27 @@ function buildUI(){
  '<div class="op-chipset" id="opEventCategories" aria-label="Categorias">'+catEvents+'</div>',
  '<div class="op-control-foot"><strong id="opEventCount" aria-live="polite">Carregando programação...</strong><span id="opAgendaCurated">Confirme ingressos e horários na fonte.</span></div></div>',
  '<div class="op-event-grid" id="opEventGrid" aria-live="polite"><div class="op-noresults">Carregando eventos...</div></div>',
+ '<section class="op-cinema-circuit" id="opCinemaCircuit" aria-labelledby="opCinemaTitle"><div class="op-circuit-heading"><div><span class="op-eyebrow">Circuito audiovisual</span><h3 id="opCinemaTitle">Festivais e mostras para acompanhar</h3></div><p>Referências para assistir, trocar ideias e circular seus filmes. Edições encerradas continuam aqui para pesquisa; novas datas e inscrições dependem do anúncio da organização.</p></div><div class="op-festival-grid" id="opFestivalGrid">Carregando festivais…</div></section>',
  '<div class="op-agenda-bottom"><div class="op-agenda-bottom-head"><h3>Onde descobrir outras programações</h3>',
  '<span>Portais e instituições para consultar a agenda mais recente</span></div>',
  '<div class="op-portals" id="opEventSources">Carregando fontes...</div></div>',
  '<p class="op-meeting-footnote">Esta é uma seleção editorial. Eventos encerrados são ocultados por data, mas novos anúncios não entram automaticamente: consulte as fontes acima para a programação mais recente. Horários, preços e sessões podem mudar.</p>',
  '</div></section>',
  '<section class="op-section op-meetings" id="reunioes" aria-label="Reuniões e pontos de encontro"><div class="wrap">',
- '<div class="op-eyebrow">Pontos de encontro · Santos, São Vicente e Praia Grande</div>',
+ '<div class="op-eyebrow">Pontos de encontro · Baixada Santista e seus locais</div>',
  '<div class="op-header"><div><h2>Reuniões, café <span style="color:#c29329">& boas ideias.</span></h2>',
- '<p>Onde desenvolver um projeto, trocar referências ou tomar uma cerveja depois da entrega. Cafés, coworkings e bares, com fotos, perfis de ambiente e links diretos para chegar.</p></div>',
- '<div class="op-header-badge"><strong>03</strong><span>cidades da Baixada</span></div></div>',
+ '<p>Onde desenvolver um projeto, trocar referências ou tomar uma cerveja depois da entrega. Cafés, coworkings, espaços culturais e opções ao ar livre. Veja as fontes, salve favoritos ou cadastre um ponto do seu jeito.</p></div>',
+ '<div class="op-header-badge"><strong id="opMeetCityCount">03</strong><span>cidades para se encontrar</span></div></div>',
+ '<div class="op-custom-bar"><div><strong>Seu próximo encontro pode ser em outro lugar.</strong><p>Cadastre um endereço com suas observações. Os pontos personalizados ficam salvos apenas neste navegador.</p></div><button type="button" id="opAddPlace" class="op-add-place">＋ Cadastrar ponto</button></div>',
  '<div class="op-meet-controls" aria-label="Filtros dos locais"><div class="op-controls-row">',
  '<div class="op-chipset" id="opMeetCities" aria-label="Cidades">'+cityPlaces+'</div>',
  '<div class="op-control-right"><input id="opMeetSearch" class="op-text-search" type="search" placeholder="Café, bar ou bairro" aria-label="Pesquisar local">',
  '<button id="opMeetReset" type="button" class="op-saved">Limpar filtros</button><button id="opMeetSaved" type="button" class="op-saved" aria-pressed="false">♡ Salvos</button></div></div>',
  '<div class="op-chipset" id="opMeetKinds" aria-label="Tipo de encontro">'+kindPlaces+'</div>',
- '<div class="op-control-foot"><strong id="opPlaceCount" aria-live="polite">Carregando locais...</strong><span>Salve os favoritos e copie um convite para o grupo.</span></div></div>',
+ '<div class="op-control-foot"><strong id="opPlaceCount" aria-live="polite">Carregando locais...</strong><span id="opPlaceSourceStatus">Salve os favoritos e copie um convite para o grupo.</span></div></div>',
  '<div class="op-place-grid" id="opPlaceGrid" aria-live="polite"><div class="op-noresults">Carregando sugestões...</div></div>',
  '<p class="op-meeting-footnote">Locais independentes, sem parceria com a Oitava Parede. Antes de reunir a equipe, confirme horário, lotação, consumo mínimo, Wi-Fi, reserva e se há espaço para conversas longas.</p>',
- '</div></section><div id="opToast" class="op-toast" role="status" aria-live="polite"></div>'
+ '</div></section>'+placeDialogMarkup()+'<div id="opToast" class="op-toast" role="status" aria-live="polite"></div>'
  ].join('');
  place.insertAdjacentHTML('beforebegin',markup);
  try{
@@ -221,22 +305,23 @@ async function init(){
  buildUI();
  const src=document.getElementById('opEventGrid');if(!src)return;
  savedEvents=storage.get(STORAGE_EVENTS);savedPlaces=storage.get(STORAGE_PLACES);
- hook();
+ try{customPlaces=readCustomPlaces(localStorage.getItem(STORAGE_CUSTOM));}catch{customPlaces=[];}
+ hook();hookCustomPlaces();if(customPlaces.length)renderPlaces();
  try{
   const resp=await fetch('./dados/agenda.json?t='+Date.now(),{cache:'no-store'});
   if(!resp.ok)throw new Error('Agenda indisponível');
   const json=await resp.json();
   if(json.schema!==1||!Array.isArray(json.events)||!Array.isArray(json.places))throw new Error('Formato inválido');
   data=json;
-  renderEvents();renderPlaces();renderSources();
+  renderEvents();renderPlaces();renderSources();renderFestivals();
  }catch(e){
   src.innerHTML='<div class="op-noresults"><strong>Não foi possível carregar a agenda.</strong><p>Utilize os portais de programação indicados na seção.</p></div>';
-  const pl=document.getElementById('opPlaceGrid');
-  if(pl)pl.innerHTML='<div class="op-noresults"><strong>Não foi possível carregar os locais.</strong><p>Recarregue a página.</p></div>';
+  renderPlaces();document.getElementById('opPlaceSourceStatus').textContent='As sugestões públicas não carregaram. Seus pontos personalizados continuam disponíveis.';
+  document.getElementById('opFestivalGrid').textContent='Não foi possível carregar os festivais. Recarregue a página.';
   console.warn('[agenda]',e);
  }
 }
-const api={upcomingEvents,filterEvents,filterPlaces,catInfo,kindInfo};
+const api={upcomingEvents,filterEvents,filterPlaces,catInfo,kindInfo,customPlace,readCustomPlaces,safeURL,festivalState};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(typeof document!=='undefined')if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })(typeof window!=='undefined'?window:null);

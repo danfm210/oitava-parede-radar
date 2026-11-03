@@ -14,14 +14,47 @@
       "time": "Consulte sessões",
       "venue": "Sesc, Teatro Guarany e outros locais",
       "price": "Gratuito",
-      "description": "Mostras competitivas, debates e oficinas com realizadores; destaque para o audiovisual da Baixada.",
+      "description": "Curtas, videoclipes, oficinas e conversas com realizadores. A edição “24 com Orgulho” aproxima a produção caiçara do cinema brasileiro e internacional.",
       "url": "https://www.juicysantos.com.br/noticias-da-regiao/curta-santos-chega-a-sua-24a-edicao-mais-atual-do-que-nunca/",
       "source": "Juicy Santos",
       "featured": true,
       "image": "https://mirada2022.sescsp.org.br/wp-content/uploads/2022/08/09223431/SescSantos_Sesc-Santos_20220715_Espacos-Mirada_FT-Matheus-Jose-Maria65.jpg",
       "imageCredit": "Foto do Sesc Santos · Festival Mirada / Sesc",
       "imageSource": "https://mirada2022.sescsp.org.br/espacos/",
-      "imageType": "local"
+      "imageType": "local",
+      "details_url": "https://www.bs9.com.br/variedades/2026/11/01/release-24-curta-santos-de-4-a-8-de-novembro.html",
+      "highlights": [
+        {
+          "title": "Abertura e filme O Filho de Mil Homens",
+          "when": "04/11 · 19h",
+          "venue": "Sesc Santos"
+        },
+        {
+          "title": "Bate-papo com Daniel Rezende",
+          "when": "05/11 · 15h",
+          "venue": "Sesc Santos"
+        },
+        {
+          "title": "Fórum: narrativas verticais e inteligência artificial",
+          "when": "07/11 · 14h30 às 17h30",
+          "venue": "Sesc Santos"
+        },
+        {
+          "title": "Mostra de Videoclipe Caiçara",
+          "when": "07/11 · 18h",
+          "venue": "Teatro Guarany"
+        }
+      ],
+      "references": [
+        {
+          "title": "Abertura · Sesc Santos",
+          "url": "https://www.sescsp.org.br/programacao/cerimonia-de-abertura-24o-curta-santos/"
+        },
+        {
+          "title": "Programação completa · release",
+          "url": "https://www.bs9.com.br/variedades/2026/11/01/release-24-curta-santos-de-4-a-8-de-novembro.html"
+        }
+      ]
     },
     {
       "id": "cine-frances-2026",
@@ -177,6 +210,21 @@
       "description": "Música brasileira; confira programação e ingressos antes da visita.",
       "url": "https://oazis.app/en/whats-on/santos",
       "source": "Oazis"
+    },
+    {
+      "id": "repescagem-mostra-2026",
+      "title": "Repescagem da 50ª Mostra de Cinema de São Paulo",
+      "category": "audiovisual",
+      "city": "São Paulo",
+      "start": "2026-10-30",
+      "end": "2026-11-04",
+      "time": "Conforme a sessão",
+      "venue": "CineSesc e Cine Satyros Bijou",
+      "price": "Consultar ingressos",
+      "description": "Mais uma oportunidade de assistir a filmes da Mostra. As sessões da repescagem seguem até 4 de novembro; veja títulos, horários e ingressos na organização.",
+      "url": "https://mostra.org/jornal-da-mostra/repescagem-50a-mostra",
+      "source": "Mostra Internacional de Cinema · organização",
+      "featured": false
     }
   ],
   "places": [
@@ -359,6 +407,120 @@
       "photo": "https://img.restaurantguru.com/rdc2-Vixe-Bar-Mallet-food.jpg",
       "credit": "Foto: Restaurant Guru",
       "credit_url": "https://restaurantguru.com.br/Vixe-Bar-Mallet-Praia-Grande"
+    },
+    {
+      "id": "rei-do-cafe",
+      "name": "Rei do Café — Matriz e Torrefação",
+      "city": "Santos",
+      "type": "cafe",
+      "style": "Café no Centro Histórico",
+      "address": "Rua Gonçalves Dias, 34/36 · Centro, Santos",
+      "why": "Café tradicional para uma pausa entre visitas ao Centro e uma conversa sobre projetos.",
+      "best": "Encontros curtos e troca de referências",
+      "watch": "Sugestão editorial para conversa informal. Confirme espaço para grupos; não há sala privativa indicada.",
+      "tags": [
+        "Café",
+        "Centro Histórico",
+        "Conversa"
+      ],
+      "url": "https://reidocafe.com.br/pages/contato",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "cafeteria-museu-cafe",
+      "name": "Cafeteria do Museu do Café",
+      "city": "Santos",
+      "type": "cafe",
+      "style": "Café e patrimônio",
+      "address": "Rua XV de Novembro, 95 · Centro, Santos",
+      "why": "Uma pausa com café em um dos espaços de memória da cidade, para combinar repertório cultural e encontro.",
+      "best": "Referências visuais, conversa em duplas e visita ao Centro",
+      "watch": "Confirme horários e condições de acesso à cafeteria. Uma visita ao museu pode ter ingresso próprio.",
+      "tags": [
+        "Café",
+        "Patrimônio",
+        "Centro Histórico"
+      ],
+      "url": "https://www.turismosantos.com.br/pt-br/content/cafeteria-do-museu-do-caf%C3%A9",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "cafe-carioca",
+      "name": "Café Carioca",
+      "city": "Santos",
+      "type": "cafe",
+      "style": "Encontro rápido no Centro",
+      "address": "Praça Visconde de Mauá, 1 · Centro, Santos",
+      "why": "Café e lanches em endereço tradicional para alinhar uma pauta antes de circular pelo Centro.",
+      "best": "Alinhamentos rápidos e pausa entre compromissos",
+      "watch": "Pode haver movimento e ruído. Consulte o local para receber um grupo.",
+      "tags": [
+        "Café",
+        "Lanches",
+        "Centro"
+      ],
+      "url": "https://www.cafecarioca.com.br/",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "parque-cultural-vila-sv",
+      "name": "Parque Cultural Vila de São Vicente",
+      "city": "São Vicente",
+      "type": "cultural",
+      "style": "Cultura e convivência",
+      "address": "Praça João Pessoa · Centro, São Vicente",
+      "why": "Espaço cultural para encontrar o grupo e acompanhar atividades da cidade.",
+      "best": "Encontro antes de eventos e pesquisa de referências",
+      "watch": "Consulte a programação e as condições de acesso. Não é uma sala reservada para reuniões.",
+      "tags": [
+        "Cultura",
+        "Centro",
+        "Encontro"
+      ],
+      "url": "https://www.saovicente.sp.gov.br/informacao/jogada-cultural-vila-de-sao-vicente-transmitira-jogos-da-selecao-na-copa-do-mundo",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "biblioteca-porto-saber",
+      "name": "Biblioteca Porto do Saber — Palácio das Artes",
+      "city": "Praia Grande",
+      "type": "trabalho",
+      "style": "Leitura e pesquisa",
+      "address": "Av. Presidente Costa e Silva, 1600 · Boqueirão, Praia Grande",
+      "why": "Biblioteca com espaços de leitura, estudo individual e pesquisa para desenvolver referências de um projeto.",
+      "best": "Pesquisa de roteiro, leitura e trabalho individual",
+      "watch": "Respeite o silêncio. Confirme com a equipe se há espaço e autorização para atividades em grupo.",
+      "tags": [
+        "Biblioteca",
+        "Pesquisa",
+        "Leitura"
+      ],
+      "url": "https://turismo.praiagrande.sp.gov.br/2021/08/03/pda-biblioteca/",
+      "photo": "https://turismo.praiagrande.sp.gov.br/wp-content/uploads/2021/08/BibliotecaPortoDoSaberRetomaAtendimento-FelipeFranca-08.07.2021-20-705x470.jpg",
+      "credit": "Foto: Felipe França · Prefeitura de Praia Grande",
+      "credit_url": "https://turismo.praiagrande.sp.gov.br/2021/08/03/pda-biblioteca/",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "portinho-pg",
+      "name": "Portinho — Área de Lazer Ézio Dall’Acqua",
+      "city": "Praia Grande",
+      "type": "cultural",
+      "style": "Ideias ao ar livre",
+      "address": "Rua Paulo Sérgio Garcia, s/nº · Sítio do Campo, Praia Grande",
+      "why": "Área de lazer com quiosques e espaço de convivência para uma conversa informal fora da rotina.",
+      "best": "Brainstorm ao ar livre e encontro descontraído",
+      "watch": "Planeje conforme o clima e confirme as regras de uso dos quiosques. Não há garantia de Wi-Fi ou tomadas.",
+      "tags": [
+        "Ar livre",
+        "Convivência",
+        "Quiosques"
+      ],
+      "url": "https://turismo.praiagrande.sp.gov.br/2021/04/16/area-de-lazer-ezio-dallacqua-portinho/",
+      "photo": "https://turismo.praiagrande.sp.gov.br/wp-content/uploads/2021/05/revitalizacao_portinho_fotofredcasagrande_10-08-19_-93-1-scaled.jpg",
+      "credit": "Foto: Fred Casagrande · Prefeitura de Praia Grande",
+      "credit_url": "https://turismo.praiagrande.sp.gov.br/2021/04/16/area-de-lazer-ezio-dallacqua-portinho/",
+      "verified_at": "2026-11-03"
     }
   ],
   "sources": [
@@ -411,5 +573,72 @@
       "kind": "Cinema e exposições"
     }
   ],
-  "photos_reviewed_at": "2026-11-03"
+  "photos_reviewed_at": "2026-11-03",
+  "festivals": [
+    {
+      "id": "curta-santos",
+      "title": "Curta Santos",
+      "city": "Santos",
+      "focus": "Curtas e videoclipes",
+      "edition": "24ª edição · 2026",
+      "start": "2026-11-04",
+      "end": "2026-11-08",
+      "description": "Festival com mostras da Baixada, produções brasileiras e internacionais, formação e encontros entre realizadores.",
+      "participate": "Para assistir: consulte cada sessão. Para inscrever filmes: acompanhe o regulamento de cada edição; a programação não indica inscrições abertas.",
+      "url": "https://www.bs9.com.br/variedades/2026/11/01/release-24-curta-santos-de-4-a-8-de-novembro.html",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "santos-film-fest",
+      "title": "Santos Film Fest",
+      "city": "Santos",
+      "focus": "Curtas, longas e encontros",
+      "edition": "Edição de 2026",
+      "start": "2026-08-18",
+      "end": "2026-08-26",
+      "description": "Festival de cinema com exibições, homenagens e bate-papos em diferentes espaços da cidade.",
+      "participate": "Consulte a programação publicada pela organização e acompanhe o anúncio da próxima edição.",
+      "url": "https://santosfilmfest.wordpress.com/programacao-completa-pdf-para-download/",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "kinoforum",
+      "title": "Curta Kinoforum",
+      "city": "São Paulo",
+      "focus": "Curtas-metragens",
+      "edition": "37ª edição · 2026",
+      "start": "2026-08-20",
+      "end": "2026-08-30",
+      "description": "Festival Internacional de Curtas de São Paulo: encontro entre a produção brasileira e filmes de vários países.",
+      "participate": "O regulamento de 2026 é referência histórica. Consulte a próxima convocatória antes de preparar uma inscrição.",
+      "url": "https://2026.kinoforum.org/sobre-o-festival/regulamento",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "mostra-sp",
+      "title": "Mostra Internacional de Cinema em São Paulo",
+      "city": "São Paulo",
+      "focus": "Cinema brasileiro e mundial",
+      "edition": "50ª edição · repescagem",
+      "start": "2026-10-30",
+      "end": "2026-11-04",
+      "description": "Panorama de filmes e realizadores, com sessões para ampliar referências. A edição principal ocorreu de 15 a 29 de outubro; a repescagem segue até 4 de novembro.",
+      "participate": "Confira salas, disponibilidade e ingressos por sessão. As datas aqui correspondem à repescagem.",
+      "url": "https://mostra.org/jornal-da-mostra/repescagem-50a-mostra",
+      "verified_at": "2026-11-03"
+    },
+    {
+      "id": "cine-curtinhas",
+      "title": "Cine Curtinhas",
+      "city": "São Paulo",
+      "focus": "Curtas para a primeira infância",
+      "edition": "2ª edição · 2026",
+      "start": "2026-11-12",
+      "end": "2026-11-18",
+      "description": "Mostra de curtas voltada à primeira infância, realizada pelo Circuito Spcine e Itaú Cultural Play.",
+      "participate": "Consulte o serviço oficial para conhecer as salas e as sessões indicadas para crianças.",
+      "url": "https://spcine.com.br/circuito-spcine-e-itau-cultural-play-realizam-segunda-edicao-do-cine-curtinhas-com-foco-na-primeira-infancia/",
+      "verified_at": "2026-11-03"
+    }
+  ]
 }
