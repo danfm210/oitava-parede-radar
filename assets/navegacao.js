@@ -39,7 +39,7 @@ function init(){
  const helper=nav.querySelector('[data-nav-help]');
  const panelFor=key=>nav.querySelector('[data-nav-panel="'+key+'"]');
  const triggerFor=key=>nav.querySelector('[data-nav-trigger="'+key+'"]');
- let pending=false;
+ let pending=false,activeSection=null;
  function setDrop(key,expanded){
    const trigger=triggerFor(key),panel=panelFor(key);
    if(!trigger||!panel)return;
@@ -67,6 +67,7 @@ function init(){
  }
  function setActive(id){
    if(!id)return;
+   const changed=id!==activeSection;activeSection=id;
    allLinks.forEach(a=>{
      const match=a.dataset.section===id;
      a.classList.toggle('is-active',match);
@@ -77,6 +78,7 @@ function init(){
      const match=MENUS[button.dataset.navTrigger]?.includes(id);
      button.classList.toggle('is-active',Boolean(match));
    });
+   if(changed)window.dispatchEvent(new CustomEvent('op:sectionchange',{detail:{id}}));
  }
  function scrollActive(){
    pending=false;

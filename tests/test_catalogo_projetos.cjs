@@ -2,6 +2,8 @@ const test=require('node:test'),assert=require('node:assert/strict');
 const api=require('../docs/assets/catalogo-projetos.js');
 const data=require('../docs/dados/projetos-oficiais.json');
 const expected=['OITAVAFEST','LIVRO "OITAVO AMOR"','ZEBOLA DANCE - VIDEOCLIPE','CURSO PROFISSIONALIZANTE EM PÓS PRODUÇÃO','FASHION FILM'];
+// Fixture auditada: a coleta pode acrescentar outros projetos sem invalidar estes cenários.
+const audited=data.projetos.filter(row=>expected.includes(row.titulo));
 test('cinco títulos auditados são idênticos ao campo PROJETO, sem usar nome de edital como projeto',()=>{
  assert.equal(data.schema,1);
  for(const title of expected)assert.ok(data.projetos.some(r=>r.titulo===title),title);
@@ -15,7 +17,7 @@ test('retificações acrescentam evidência sem duplicar um mesmo projeto no mes
  assert.equal(api.groupOfficial([one,{...one,edital:'999/2026'}]).length,2);
 });
 test('busca ignora caixa e acento, preserva título exibido e filtra origem e pessoa',()=>{
- const rows=api.groupOfficial(data.projetos);
+ const rows=api.groupOfficial(audited);
  assert.equal(api.filterRows(rows,{query:'pos producao'})[0].titulo,expected[3]);
  assert.equal(api.filterRows(rows,{query:'oitavofest'}).length,0);
  assert.equal(api.filterRows(rows,{query:'oitavafest',person:'Giovanna Barbosa Arantes'}).length,1);
@@ -37,7 +39,7 @@ test('ano do edital separa o histórico da data de publicação e de conferênci
  assert.equal(api.yearFor({ano_edital:2024,programa:'Edital publicado em 2026'}),'2024');
  assert.equal(api.yearFor({programa:'PNAB · Edital 019/2026'}),'2026');
  assert.equal(api.yearFor({titulo:'Projeto de 2024',verificado_em:'2026-11-03'}),'');
- const rows=api.groupOfficial(data.projetos);
+ const rows=api.groupOfficial(audited);
  assert.equal(api.filterRows(rows,{year:'2026'}).length,4);
  assert.deepEqual(api.filterRows(rows,{year:'2024'}).map(r=>r.titulo),['FASHION FILM']);
  assert.equal(api.filterRows(rows,{year:'2026',query:'fashion'}).length,0);

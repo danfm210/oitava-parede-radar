@@ -215,3 +215,12 @@ Os arquivos `assets/experiencia.js` e `assets/experiencia.css` são espelhados e
 ### Navegação sequencial — 03/11/2026
 
 Os links do cabeçalho seguem a mesma ordem física das seções. O destaque acompanha a rolagem nos dois sentidos, inclusive em Últimas movimentações, Programas e na seção final de compartilhamento. No fim da página, a última área pode ser reconhecida mesmo quando não tem altura suficiente para alcançar o cabeçalho. Os menus mantêm abertura por clique ou seta para baixo, fechamento por Escape e retorno de foco; não abrem automaticamente durante a rolagem. As âncoras compensam o cabeçalho fixo e o scroll-padding global sem duplicar o espaço acima da seção.
+
+
+## Experiência mobile — 03/11/2026
+
+Até 760 px, a Central tem atalhos inferiores para Radar, Projetos, Agenda, Encontros e Ajuda. O destaque acompanha a seção real, usando o mesmo evento do cabeçalho; não há um segundo detector de rolagem. O botão original de ajuda muda para a barra inferior e volta ao seu lugar no desktop, preservando as respostas, o estado, o fechamento por Escape e o foco. Busca e Menu têm rótulos visíveis, com o logo original centralizado. O aviso inicial recebe uma versão curta no celular.
+
+Filtros secundários de Radar, catálogo, Agenda e locais ficam em painéis nativos expansíveis, com indicador de seleções ativas. Busca, contagem e resultados continuam visíveis. São os mesmos controles e listeners: a interface move os elementos e os restaura nas posições originais ao voltar para desktop, sem clonar campos, limpar filtros ou alterar armazenamento. Todos os filtros ficam disponíveis sem JavaScript adicional; os painéis são criados apenas após os componentes existentes.
+
+A atualização melhora tamanho dos textos, áreas de toque, espaçamento dos cartões, formulários, convites e uso do teclado. A barra inferior reserva espaço no documento e respeita áreas seguras; fica oculta durante formulários modais e busca. Mensagens de confirmação ficam acima dela. A ajuda possui layout compacto para telas baixas. A navegação completa e a ordem das seções continuam no cabeçalho. Não há gestos obrigatórios, novos serviços, rastreamento ou bibliotecas. Os arquivos `mobile.css` e `mobile.js` em `assets/` são espelhados em `docs/assets/`.
