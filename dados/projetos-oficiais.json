@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "atualizado_em": "2026-11-03T21:29:09+00:00",
+  "atualizado_em": "2026-11-03T23:01:30+00:00",
   "projetos": [
     {
       "id": "bc2ec8694ce4d6667845",
@@ -30,7 +30,7 @@
       "situacao_na_fonte": "ACEITO",
       "data_documento": "2026-10-24",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-03T16:24:42+00:00",
+      "verificado_em": "2026-11-03T23:00:23+00:00",
       "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
       "pagina": 65,
@@ -47,7 +47,7 @@
       "situacao_na_fonte": "ACEITO",
       "data_documento": "2026-10-24",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-03T16:24:42+00:00",
+      "verificado_em": "2026-11-03T23:00:23+00:00",
       "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
       "pagina": 66,
@@ -139,6 +139,22 @@
       "verificado_em": "2026-11-03T21:28:07+00:00",
       "fonte_titulo": "Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_xdcc5rxd.pu0.pdf",
+      "pagina": 203
+    },
+    {
+      "titulo": "ELE - UM VIDEOCLIPE ALIADOS",
+      "proponente": "JULIA XAVIER DE FREITAS",
+      "protocolo": "20261AFF24C9E82",
+      "situacao_na_fonte": "PENDENTE",
+      "id": "0326604fa142339cefdf",
+      "programa": "PNAB Praia Grande · Edital 016/2026",
+      "edital": "016/2026",
+      "ano_edital": 2026,
+      "etapa": "Resultado de inscrições",
+      "conferencia": "campos_rotulados",
+      "verificado_em": "2026-11-03T23:00:23+00:00",
+      "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
+      "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
       "pagina": 203
     }
   ],
