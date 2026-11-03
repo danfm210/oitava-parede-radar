@@ -16,7 +16,8 @@
       "verificado_em": "2026-11-03",
       "fonte_titulo": "Resultado Inscricoes Edital 19 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_rw0wr5ka.d2q.pdf",
-      "pagina": 15
+      "pagina": 15,
+      "ano_edital": 2026
     },
     {
       "id": "b0ac8df0c711014e4f2d",
@@ -32,7 +33,8 @@
       "verificado_em": "2026-11-03",
       "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
-      "pagina": 65
+      "pagina": 65,
+      "ano_edital": 2026
     },
     {
       "id": "3c2efe2e0b21d2932ad1",
@@ -48,7 +50,8 @@
       "verificado_em": "2026-11-03",
       "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
-      "pagina": 66
+      "pagina": 66,
+      "ano_edital": 2026
     },
     {
       "id": "5af3f4b31efcb7253c36",
@@ -64,7 +67,8 @@
       "verificado_em": "2026-11-03",
       "fonte_titulo": "Resultado Inscricoes Edital 20 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_tth3um0q.exz.pdf",
-      "pagina": 17
+      "pagina": 17,
+      "ano_edital": 2026
     },
     {
       "id": "3c6a3c51f9222a57621a",
@@ -80,7 +84,14 @@
       "verificado_em": "2026-11-03",
       "fonte_titulo": "Lista de inscrições PNAB 042/2024",
       "fonte_url": "https://www.praiagrande.sp.gov.br/arquivos/ChamadaPublica/43634.pdf",
-      "pagina": 17
+      "pagina": 17,
+      "ano_edital": 2024,
+      "acompanhamento": {
+        "aprovacao": "aprovado",
+        "execucao": "concluido",
+        "origem": "informado_pelo_coletivo",
+        "atualizado_em": "2026-11-03"
+      }
     }
   ],
   "nota": "O título foi conferido no campo PROJETO. A situação é a do documento indicado, não confirmação de aprovação ou vigência atual.",

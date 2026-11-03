@@ -27,5 +27,18 @@ class OfficialProjectTests(unittest.TestCase):
   old={'fonte_url':'https://www.gov.br/a.pdf','pagina':1,'titulo':'Antes'}
   new={**old,'titulo':'Depois'}
   self.assertEqual(merge_rows([old],[new]),[new])
+ def test_ano_extraido_e_do_edital_e_nao_da_data_de_publicacao(self):
+  import fitz
+  doc=fitz.open();p=doc.new_page();p.insert_text((50,50),'Chamamento Publico no 042/2024\nResultado de inscricoes publicado em 2026\nPROPONENTE GIOVANNA BARBOSA CPF/CNPJ OMITIDO\nCATEGORIA AUDIOVISUAL\nPROJETO FASHION FILM\nSTATUS ACEITO MOTIVO INSCRICAO VALIDA')
+  b=doc.tobytes();doc.close()
+  rows=extract_pdf(b,'https://www2.praiagrande.sp.gov.br/a.pdf','Publicacao de 2026','PNAB',load_terms(),'2026-11-03')
+  self.assertEqual(len(rows),1);self.assertEqual(rows[0]['ano_edital'],2024)
+ def test_atualizacao_da_fonte_preserva_conclusao_informada_pelo_coletivo(self):
+  progress={'aprovacao':'aprovado','execucao':'concluido','origem':'informado_pelo_coletivo'}
+  old={'fonte_url':'https://www.gov.br/a.pdf','pagina':17,'titulo':'FASHION FILM','ano_edital':2024,'acompanhamento':progress}
+  incoming={'fonte_url':old['fonte_url'],'pagina':17,'titulo':'FASHION FILM','situacao_na_fonte':'INSCRIÇÃO OK','verificado_em':'2026-11-04'}
+  merged=merge_rows([old],[incoming])[0]
+  self.assertEqual(merged['acompanhamento'],progress);self.assertEqual(merged['ano_edital'],2024)
+  self.assertEqual(merged['situacao_na_fonte'],'INSCRIÇÃO OK')
 
 if __name__=='__main__':unittest.main()

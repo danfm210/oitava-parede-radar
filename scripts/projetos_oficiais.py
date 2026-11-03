@@ -43,7 +43,7 @@ def extract_pdf(data,url,document_title,source_name,people,stamp):
   for i,page in enumerate(document):
    row=parse_page(page.get_text('text',sort=True),people)
    if not row:continue
-   row.update(id=hashlib.sha256((url+'#'+str(i+1)).encode()).hexdigest()[:20],programa=source_name+' · Edital '+edital.group(1),edital=edital.group(1),etapa='Resultado de inscrições',conferencia='campos_rotulados',verificado_em=stamp,fonte_titulo=document_title,fonte_url=url,pagina=i+1)
+   row.update(id=hashlib.sha256((url+'#'+str(i+1)).encode()).hexdigest()[:20],programa=source_name+' · Edital '+edital.group(1),edital=edital.group(1),ano_edital=int(edital.group(1).split('/')[-1]),etapa='Resultado de inscrições',conferencia='campos_rotulados',verificado_em=stamp,fonte_titulo=document_title,fonte_url=url,pagina=i+1)
    rows.append(row)
   return rows
 
