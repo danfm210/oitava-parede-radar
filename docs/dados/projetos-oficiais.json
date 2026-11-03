@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "atualizado_em": "2026-11-03",
+  "atualizado_em": "2026-11-03T16:07:29+00:00",
   "projetos": [
     {
       "id": "bc2ec8694ce4d6667845",
@@ -86,6 +86,8 @@
   "nota": "O título foi conferido no campo PROJETO. A situação é a do documento indicado, não confirmação de aprovação ou vigência atual.",
   "pessoas_monitoradas": [
     "Giovanna Barbosa Arantes",
+    "Giovanna Barbosa",
+    "Giovana Barbosa",
     "Oscar Stefanno Fornari",
     "Matheus de Castro Santos Soares",
     "Daniel Fernandes Melquiades dos Santos",
