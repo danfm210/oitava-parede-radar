@@ -37,6 +37,18 @@ def clean(x):return re.sub(r"\s+"," ",str(x)).strip()
 def normal(x):return "".join(c for c in unicodedata.normalize("NFKD",str(x).casefold()) if not unicodedata.combining(c))
 def key(x):return hashlib.sha256(x.encode("utf-8")).hexdigest()[:20]
 def compact(x):return re.sub(r"[^a-z0-9]+"," ",normal(x)).strip()
+def filename_date(url):
+ """Data codificada no nome do arquivo; NAO e data oficial de publicacao."""
+ from urllib.parse import unquote
+ name=unquote(urlparse(url).path.rsplit("/",1)[-1])
+ match=re.search(r"(?<![0-9])((?:20)[0-9]{2})([01][0-9])([0-3][0-9])(?:[_-]|$)",name)
+ if not match:return ""
+ try:
+  value=dt.date(*map(int,match.groups()))
+  if value>dt.datetime.now(dt.timezone.utc).date()+dt.timedelta(days=2):return ""
+  return value.isoformat()
+ except ValueError:return ""
+
 def matching_terms(content,terms):
  hay=compact(content)
  flat=hay.replace(" ","")
@@ -142,7 +154,7 @@ def scan():
    if items:
     limit=7 if src["mode"]=="diario" else 12
     start=int(rotations.get(src["id"],0)) % len(items)
-    fresh=[i for i,item in enumerate(items) if key(src["id"]+"\\x00"+item["url"]) not in pubs]
+    fresh=[i for i,item in enumerate(items) if key(src["id"]+"\x00"+item["url"]) not in pubs]
     selection=fresh[:limit]
     for offset in range(len(items)):
      if len(selection)>=limit:break
@@ -158,11 +170,15 @@ def scan():
     if not exists:
      pubs[identifier]={"id":identifier,"fonte":src["id"],"titulo":item["title"],"url":item["url"],"categoria":item["kind"],"primeira_detecao":stamp,"base_inicial":first,"revisao":"Pendente","resumo":"Publicacao localizada; conferir original."}
     else:pubs[identifier]["titulo"]=item["title"]
+    pubs[identifier]["ultima_localizacao"]=stamp
+    if not pubs[identifier].get("data_no_arquivo"):
+     pubs[identifier]["data_no_arquivo"]=filename_date(item["url"])
     if i not in selected:continue
     try:
      body,ct,charset=fetch(item["url"],18_000_000)
      content=document_text(item["url"],body,ct,charset)
      st["documentos_lidos"]+=1
+     pubs[identifier]["ultima_leitura"]=stamp
      matches=matching_terms(content,terms)
      if matches:
       priority,note=priority_for(matches)
@@ -180,7 +196,10 @@ def scan():
     mentions[mid]={**previous,"id":mid,"publicacao_id":"","fonte":src["id"],"url":src["url"],"titulo":"Possivel mencao no indice: "+src["name"],"primeira_detecao":previous.get("primeira_detecao",stamp),"base_inicial":previous.get("base_inicial",first),"tipo":"possivel_mencao","mensagem":note+" Conferir anexos.","verificacao":"Nao confirmado","prioridade":priority,"termos_encontrados":index_matches[:10]}
   except Exception as exc:st["detalhe"]=(type(exc).__name__+": "+str(exc))[:200]
   statuses.append(st)
- report={"schema":2,"generated_at":stamp,"observacao":"Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.","fontes":statuses,"rotacao":rotations,"publicacoes":sorted(pubs.values(),key=lambda x:x.get("primeira_detecao",""),reverse=True)[:160],"mencoes":sort_mentions(mentions.values())[:90]}
+ for p in pubs.values():
+  if not p.get("data_no_arquivo"):
+   p["data_no_arquivo"]=filename_date(p.get("url",""))
+ report={"schema":2,"generated_at":stamp,"observacao":"Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.","fontes":statuses,"rotacao":rotations,"publicacoes":sorted(pubs.values(),key=lambda x:(x.get("data_no_arquivo") or x.get("primeira_detecao","")[:10],x.get("primeira_detecao","")),reverse=True)[:160],"mencoes":sort_mentions(mentions.values())[:90]}
  OUT.parent.mkdir(parents=True,exist_ok=True)
  OUT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  print("[radar]",stamp,[(x["id"],x["situacao"],x["documentos_localizados"],x["documentos_lidos"]) for x in statuses])
