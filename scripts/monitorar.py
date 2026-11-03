@@ -36,6 +36,23 @@ def now():return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
 def clean(x):return re.sub(r"\s+"," ",str(x)).strip()
 def normal(x):return "".join(c for c in unicodedata.normalize("NFKD",str(x).casefold()) if not unicodedata.combining(c))
 def key(x):return hashlib.sha256(x.encode("utf-8")).hexdigest()[:20]
+def compact(x):return re.sub(r"[^a-z0-9]+"," ",normal(x)).strip()
+def matching_terms(content,terms):
+ hay=compact(content)
+ flat=hay.replace(" ","")
+ return [term for term in terms if compact(term) in hay or compact(term).replace(" ","") in flat]
+def priority_for(matches):
+ hits=[compact(x) for x in matches]
+ person=any("giovanna barbosa" in x or "giovana barbosa" in x for x in hits)
+ fest=any("oitava fest" in x or "oitavafest" in x for x in hits)
+ if person and fest:return "maxima","Giovanna Barbosa e OitavaFest citados; confirmar vinculo, edital e decisao."
+ if person:return "alta","Giovanna Barbosa citada; conferir se e proponente e qual foi a decisao."
+ if fest:return "alta","OitavaFest citado; conferir a proponente e a decisao."
+ return "normal","Outra mencao ao coletivo; verificar documento original."
+def sort_mentions(collection):
+ ranks={"maxima":3,"alta":2,"normal":1}
+ return sorted(collection,key=lambda m:(ranks.get(m.get("prioridade","normal"),1),m.get("primeira_detecao","")),reverse=True)
+
 def valid(url):
  u=urlparse(url)
  host=(u.hostname or "").lower()
@@ -114,13 +131,26 @@ def scan():
  old=load();stamp=now();first=not old.get("generated_at")
  pubs={p["id"]:p for p in old.get("publicacoes",[]) if isinstance(p,dict) and "id" in p}
  mentions={m["id"]:m for m in old.get("mencoes",[]) if isinstance(m,dict) and "id" in m}
- terms=load_terms(); statuses=[]
+ terms=load_terms(); statuses=[]; rotations=old.get("rotacao",{})
  for src in SOURCES:
   st={"id":src["id"],"nome":src["name"],"url":src["url"],"situacao":"erro","verificado_em":stamp,"documentos_localizados":0,"documentos_lidos":0,"detalhe":""}
   try:
    raw,ctype,enc=fetch(src["url"])
    soup=BeautifulSoup(raw.decode(enc,"replace"),"html.parser")
    items=discover(src,soup);st["documentos_localizados"]=len(items);st["situacao"]="ok" if items else "parcial"
+   # Rodizio para cobrir anexos diferentes ao longo das verificacoes.
+   if items:
+    limit=7 if src["mode"]=="diario" else 12
+    start=int(rotations.get(src["id"],0)) % len(items)
+    fresh=[i for i,item in enumerate(items) if key(src["id"]+"\\x00"+item["url"]) not in pubs]
+    selection=fresh[:limit]
+    for offset in range(len(items)):
+     if len(selection)>=limit:break
+     i=(start+offset)%len(items)
+     if i not in selection:selection.append(i)
+    selected=set(selection)
+    rotations[src["id"]]=(start+limit)%len(items)
+   else:selected=set()
    if not items:st["detalhe"]="Pagina acessivel, mas sem links reconhecidos."
    for i,item in enumerate(items):
     identifier=key(src["id"]+"\x00"+item["url"])
@@ -128,24 +158,29 @@ def scan():
     if not exists:
      pubs[identifier]={"id":identifier,"fonte":src["id"],"titulo":item["title"],"url":item["url"],"categoria":item["kind"],"primeira_detecao":stamp,"base_inicial":first,"revisao":"Pendente","resumo":"Publicacao localizada; conferir original."}
     else:pubs[identifier]["titulo"]=item["title"]
-    if i>=12 or (exists and i>=4):continue
+    if i not in selected:continue
     try:
      body,ct,charset=fetch(item["url"],18_000_000)
      content=document_text(item["url"],body,ct,charset)
      st["documentos_lidos"]+=1
-     matches=[t for t in terms if normal(t) in normal(content)]
+     matches=matching_terms(content,terms)
      if matches:
-      mid=key("mention\x00"+identifier)
-      if mid not in mentions:mentions[mid]={"id":mid,"publicacao_id":identifier,"fonte":src["id"],"url":item["url"],"titulo":item["title"],"primeira_detecao":stamp,"base_inicial":first,"tipo":"possivel_mencao","mensagem":"Nome ou termo localizado. Conferir pessoa, projeto e decisao no original.","verificacao":"Nao confirmado"}
+      priority,note=priority_for(matches)
+      mid=key("mention\\x00"+identifier)
+      previous=mentions.get(mid,{})
+      mentions[mid]={**previous,"id":mid,"publicacao_id":identifier,"fonte":src["id"],"url":item["url"],"titulo":item["title"],"primeira_detecao":previous.get("primeira_detecao",stamp),"base_inicial":previous.get("base_inicial",first),"tipo":"possivel_mencao","mensagem":note,"verificacao":"Nao confirmado","prioridade":priority,"termos_encontrados":matches[:10]}
     except Exception as exc:
      st["situacao"]="parcial";st["detalhe"]=("Alguns anexos nao puderam ser lidos: "+type(exc).__name__)[:170]
    main=soup.get_text(" ",strip=True)
-   if any(normal(t) in normal(main) for t in terms):
-    mid=key("mention_index\x00"+src["id"])
-    if mid not in mentions:mentions[mid]={"id":mid,"publicacao_id":"","fonte":src["id"],"url":src["url"],"titulo":"Possivel mencao no indice: "+src["name"],"primeira_detecao":stamp,"base_inicial":first,"tipo":"possivel_mencao","mensagem":"Conferir pagina original.","verificacao":"Nao confirmado"}
+   index_matches=matching_terms(main,terms)
+   if index_matches:
+    priority,note=priority_for(index_matches)
+    mid=key("mention_index\\x00"+src["id"])
+    previous=mentions.get(mid,{})
+    mentions[mid]={**previous,"id":mid,"publicacao_id":"","fonte":src["id"],"url":src["url"],"titulo":"Possivel mencao no indice: "+src["name"],"primeira_detecao":previous.get("primeira_detecao",stamp),"base_inicial":previous.get("base_inicial",first),"tipo":"possivel_mencao","mensagem":note+" Conferir anexos.","verificacao":"Nao confirmado","prioridade":priority,"termos_encontrados":index_matches[:10]}
   except Exception as exc:st["detalhe"]=(type(exc).__name__+": "+str(exc))[:200]
   statuses.append(st)
- report={"schema":2,"generated_at":stamp,"observacao":"Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.","fontes":statuses,"publicacoes":sorted(pubs.values(),key=lambda x:x.get("primeira_detecao",""),reverse=True)[:160],"mencoes":sorted(mentions.values(),key=lambda x:x.get("primeira_detecao",""),reverse=True)[:90]}
+ report={"schema":2,"generated_at":stamp,"observacao":"Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.","fontes":statuses,"rotacao":rotations,"publicacoes":sorted(pubs.values(),key=lambda x:x.get("primeira_detecao",""),reverse=True)[:160],"mencoes":sort_mentions(mentions.values())[:90]}
  OUT.parent.mkdir(parents=True,exist_ok=True)
  OUT.write_text(json.dumps(report,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
  print("[radar]",stamp,[(x["id"],x["situacao"],x["documentos_localizados"],x["documentos_lidos"]) for x in statuses])
