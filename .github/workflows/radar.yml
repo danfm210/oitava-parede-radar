@@ -40,6 +40,8 @@ jobs:
           node --test tests/test_agenda.cjs
           node --check docs/assets/editorial.js
           node --test tests/test_editorial.cjs
+          node --check docs/assets/assistente-revisoes.js
+          node --test tests/test_ajuda_revisoes.cjs
       - name: Ler publicacoes oficiais
         env:
           OITAVA_TERMS: ${{ secrets.OITAVA_TERMS }}

@@ -105,6 +105,7 @@ body{font:16px/1.68 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Robot
 </style>
 <link rel="stylesheet" href="./assets/radar-organizado.css"/>
 <link rel="stylesheet" href="./assets/editorial.css"/>
+<link rel="stylesheet" href="./assets/assistente-revisoes.css"/>
 </head>
 <body>
 <div class="noticebar"><div class="wrap"><span aria-hidden="true">✦</span> Central interna de pesquisa para os membros da Oitava Parede. O radar automático continua dependente das fontes oficiais e de conferência humana.</div></div>
@@ -152,7 +153,7 @@ body{font:16px/1.68 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Robot
  </div>
  <p class="radar-filter-note">Selecione um programa nos cartões acima. Mostramos os primeiros documentos de cada grupo; os demais ficam disponíveis em “Ver mais”.</p>
 </div>
-<div class="radar-organized-list" id="monitorPublications"><p class="monitor-empty">O radar apresentará documentos após a primeira coleta.</p></div><p class="feed-note">Os agrupamentos são visuais e não representam aprovação, vigência ou abertura de inscrições. Consulte data, prazo, público-alvo, documentos exigidos e eventuais revogações na fonte original.</p></div><div class="panel"><div class="panel-head"><h3>Fontes e possíveis menções</h3><p>Status por portal e ocorrências que exigem conferência.</p></div><ul class="monitor-status-list" id="monitorSourceStatuses"><li><span>Verificações ainda não registradas.</span></li></ul><div class="monitor-list" id="monitorMentions" style="padding-top:0"></div><p class="feed-note">Uma correspondência por nome não prova aprovação ou reprovação. Arquivos escaneados ou formatos não suportados podem passar sem detecção.</p></div></div>
+<div class="radar-organized-list" id="monitorPublications"><p class="monitor-empty">O radar apresentará documentos após a primeira coleta.</p></div><p class="feed-note">Os agrupamentos são visuais e não representam aprovação, vigência ou abertura de inscrições. Consulte data, prazo, público-alvo, documentos exigidos e eventuais revogações na fonte original.</p></div><div class="panel"><div class="panel-head"><h3>Menções e conferência de documentos</h3><p>Marque com ✓ após consultar o original. O check é individual e pode ser desfeito.</p></div><ul class="monitor-status-list" id="monitorSourceStatuses"><li><span>Verificações ainda não registradas.</span></li></ul><div class="monitor-list" id="monitorMentions" style="padding-top:0"></div><p class="feed-note">Uma correspondência por nome não prova aprovação ou reprovação. Arquivos escaneados ou formatos não suportados podem passar sem detecção.</p></div></div>
 </section>
 <section class="wrap" id="visao"><div class="heading-bar"><div><div class="section-eyebrow">Visão interna</div><h2 class="section-title">Resumo rápido do acompanhamento</h2><p class="section-desc">Fontes verificadas, organização das inscrições e leitura objetiva das publicações para o uso interno dos membros.</p></div><div class="title-side">Ponto de partida: 02 de novembro de 2026<br/>Atualizações ao vivo devem ser conferidas nos órgãos oficiais.</div></div>
 <div class="metrics"><div class="metric"><div class="number" id="projectCount">0</div><strong>Projetos cadastrados</strong><small>Salvos apenas neste navegador</small></div><div class="metric"><div class="number" id="sourceCount">12</div><strong>Portais e referências</strong><small>Links oficiais para consultas</small></div><div class="metric"><div class="number">08h30</div><strong>Radar diário no ChatGPT</strong><small>Automação já agendada nesta conversa</small></div></div>
@@ -184,6 +185,7 @@ body{font:16px/1.68 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Robot
 <div class="modal-back" id="projectModal" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-header"><h3 id="modalTitle">Cadastrar projeto</h3><button class="modal-close" id="closeModal" type="button" aria-label="Fechar formulário">×</button></div><form id="projectForm"><input type="hidden" id="projectId"/><div class="form-grid"><label class="full">Título oficial do projeto *<input class="input" id="pTitle" maxlength="180" required placeholder="Título exatamente como inscrito no edital"/></label><label>Responsável / proponente<input class="input" id="pProponent" maxlength="150" placeholder="Nome completo ou coletivo"/></label><label>Programa / edital<input class="input" id="pProgram" maxlength="130" placeholder="Ex.: PNAB PG · Edital 18/2026"/></label><label>Número de protocolo<input class="input" id="pProtocol" maxlength="90" placeholder="Se houver"/></label><label>Situação registrada por vocês<select id="pStatus" class="select"><option value="aguardando">Aguardando resultado</option><option value="inscrito">Inscrito</option><option value="habilitado">Habilitado</option><option value="classificado">Classificado</option><option value="contemplado">Contemplado</option><option value="nao-contemplado">Não contemplado</option><option value="indeferido">Indeferido</option><option value="recurso">Em recurso</option><option value="revogado">Afetado por revogação</option></select></label><label class="full">Link da publicação oficial (opcional)<input class="input" id="pUrl" type="url" placeholder="https://…"/></label><label class="full">Observações<textarea class="textarea" id="pNotes" rows="3" maxlength="1500" placeholder="Ex.: consultar resultado final, apresentar recurso até a data publicada…"></textarea></label></div><div class="modal-actions"><button type="button" class="button outline" id="cancelModal">Cancelar</button><button type="submit" class="button blue">Salvar projeto</button></div></form></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="./assets/radar-organizado.js"></script>
+<script src="./assets/assistente-revisoes.js"></script>
 <script>
 (()=>{'use strict';
 const storageKey='oitavaparede_web_projects_v1';
@@ -255,7 +257,11 @@ async function loadRadar(){
    $('monitorPublications').textContent='Não foi possível carregar a organização do radar. Consulte os links das fontes oficiais.';
   }
   $('monitorSourceStatuses').innerHTML=sources.map(s=>'<li><strong>'+esc(s.nome)+'</strong><span class="signal '+(s.situacao==='ok'?'good':'error')+'">'+esc(s.situacao)+'</span> <span>'+esc(s.documentos_localizados)+' links • '+esc(s.documentos_lidos)+' documentos analisados</span>'+(s.detalhe?'<div style="font-size:11px;color:#8d6740">'+esc(s.detalhe)+'</div>':'')+'</li>').join('');
-  $('monitorMentions').innerHTML=mentions.length?'<div class="section-eyebrow">Correspondências para verificar</div>'+mentions.slice(0,8).map(m=>'<article class="monitor-item"><div><span class="signal">Menção não confirmada</span><strong>'+esc(m.titulo)+'</strong><small>Confira o trecho e a decisão no órgão.</small></div>'+(allowed(m.url)?'<a target="_blank" rel="noopener noreferrer" href="'+esc(m.url)+'">Conferir ↗</a>':'')+'</article>').join(''):'<p class="monitor-empty">Nenhuma correspondência registrada nos documentos que foram analisados.</p>';
+  if(typeof window.renderMencoesRevisaveis==='function'){
+    window.renderMencoesRevisaveis(mentions,allowed,esc);
+  }else{
+    $('monitorMentions').textContent='As menções estão disponíveis no arquivo de dados do radar.';
+  }
  }catch(e){
   badge.textContent='Radar indisponível';
   message.textContent='Não foi possível carregar o relatório. Confira a publicação do GitHub Pages e o último resultado de Actions. O cadastro local continua funcionando.';

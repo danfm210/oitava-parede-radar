@@ -2,7 +2,7 @@
   "schema": 1,
   "curated_at": "2026-11-03",
   "scope": "Baixada Santista e capital; agenda selecionada com fontes e datas de publicacao",
-  "notice": "Confira sempre programação, preços, disponibilidade e local com o organizador. Fotos dos estabelecimentos pertencem às fontes creditadas.",
+  "notice": "As fotos dos eventos identificadas como 'Foto do local' retratam o espaço em que ocorrem, não necessariamente a edição atual. Créditos por fonte; links externos podem expirar. Confirme horários e ingressos.",
   "events": [
     {
       "id": "curta-santos-2026",
@@ -17,7 +17,11 @@
       "description": "Mostras competitivas, debates e oficinas com realizadores; destaque para o audiovisual da Baixada.",
       "url": "https://www.juicysantos.com.br/noticias-da-regiao/curta-santos-chega-a-sua-24a-edicao-mais-atual-do-que-nunca/",
       "source": "Juicy Santos",
-      "featured": true
+      "featured": true,
+      "image": "https://mirada2022.sescsp.org.br/wp-content/uploads/2022/08/09223431/SescSantos_Sesc-Santos_20220715_Espacos-Mirada_FT-Matheus-Jose-Maria65.jpg",
+      "imageCredit": "Foto do Sesc Santos · Festival Mirada / Sesc",
+      "imageSource": "https://mirada2022.sescsp.org.br/espacos/",
+      "imageType": "local"
     },
     {
       "id": "cine-frances-2026",
@@ -32,7 +36,11 @@
       "description": "Filmes franceses recentes, exibições de curtas e longas em programação especial.",
       "url": "https://festivalcinefrances.com.br/cidade/santos-sp/",
       "source": "Organização do festival",
-      "featured": true
+      "featured": true,
+      "image": "https://costanorte.com.br/media/_versions/2026/04/documentario-sobre-100-anos-do-radio-santista-estreia-no-cine-roxy_v2144134996_widexl.jpg",
+      "imageCredit": "Foto do Cine Roxy 5 · Costa Norte",
+      "imageSource": "https://costanorte.com.br/cidades/santos/documentario-sobre-100-anos-do-radio-santista-estreia-no-cine-roxy.html",
+      "imageType": "local"
     },
     {
       "id": "cidade-essencial-2026",
@@ -89,7 +97,11 @@
       "description": "Experiência gastronômica com assadores, pratos variados e música.",
       "url": "https://www.juicysantos.com.br/eventos-na-regiao/festival-a-trinca-em-santos/",
       "source": "Juicy Santos",
-      "featured": true
+      "featured": true,
+      "image": "https://www.clubedosingleses.com.br/img/fotoslocacao/2498539A4/foto13.jpg",
+      "imageCredit": "Foto do Clube dos Ingleses · site oficial",
+      "imageSource": "https://www.clubedosingleses.com.br/fotos_locacoes",
+      "imageType": "local"
     },
     {
       "id": "violao-pg-2026",
@@ -103,7 +115,11 @@
       "price": "Gratuito",
       "description": "Edição em homenagem a Antônio Manzione; consulte orientações de entrada.",
       "url": "https://viverpraiagrande.com.br/eventos/",
-      "source": "Viver Praia Grande"
+      "source": "Viver Praia Grande",
+      "image": "https://www2.praiagrande.sp.gov.br/files/noticiaFoto/np5nnqgb.3oh.jpg",
+      "imageCredit": "Foto do Palácio das Artes · Prefeitura de Praia Grande",
+      "imageSource": "https://www2.praiagrande.sp.gov.br/noticia/praia-grande-lanca-novo-edital-da-politica-nacional-aldir-blanc-",
+      "imageType": "local"
     },
     {
       "id": "da-pele-pg-2026",
@@ -200,7 +216,7 @@
       "best": "Brainstorm leve, referências visuais e encontro de duplas",
       "watch": "Evite horários cheios se precisar de silêncio.",
       "url": "https://www.google.com/maps/search/?api=1&query=Verso+Caf%C3%A9+Santos",
-      "photo": "https://cdn.diariodolitoral.com.br/upload/dn_arquivo/2025/08/novo-cafe-com-livros-no-litoral-de-sp-impressiona-visitantes-conheca-6.jpg",
+      "photo": "https://cdn.diariodolitoral.com.br/upload/dn_arquivo/2025/08/novo-cafe-com-livros-no-litoral-de-sp-impressiona-visitantes-conheca.jpg",
       "credit": "Foto: Diário do Litoral",
       "credit_url": "https://www.diariodolitoral.com.br/diario-mais/novo-cafe-com-livros-no-litoral-de-sp-impressiona-visitantes-conheca/200999/"
     },
@@ -394,5 +410,6 @@
       "url": "https://mis-sp.org.br/",
       "kind": "Cinema e exposições"
     }
-  ]
+  ],
+  "photos_reviewed_at": "2026-11-03"
 }

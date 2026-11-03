@@ -50,7 +50,9 @@ function eventCard(e){
  const saved=savedEvents.has(e.id);
  const label=esc(calendarLabel(e));
  const item='<article class="op-event-card" data-category="'+esc(t.color)+'">'+
-  '<div class="op-event-cover op-tone-'+esc(t.color)+'">'+
+  '<div class="op-event-cover op-tone-'+esc(t.color)+(e.image?' has-photo':'')+'">'+
+   (e.image?'<img class="op-event-photo" loading="lazy" decoding="async" src="'+esc(e.image)+'" alt="'+esc(e.imageType==='local'?'Foto do local do evento: '+e.venue:'Divulgação do evento '+e.title)+'" referrerpolicy="no-referrer" onerror="this.hidden=true;this.parentElement.classList.remove(\'has-photo\')"/>':'')+
+   (e.image?'<span class="op-photo-kind">'+(e.imageType==='local'?'Foto do local':'Divulgação')+'</span>':'')+
    '<div class="op-cover-shape" aria-hidden="true"><i></i><i></i><i></i></div>'+
    '<span class="op-event-tag">'+esc(t.glyph)+' &nbsp;'+esc(t.label)+'</span>'+
    (e.featured?'<span class="op-feature-label">Em destaque</span>':'')+
@@ -64,7 +66,8 @@ function eventCard(e){
    '<div class="op-card-actions">'+
     '<a class="op-primary-link" target="_blank" rel="noopener noreferrer" href="'+esc(e.url)+'">Programação <span aria-hidden="true">↗</span></a>'+
     '<button type="button" class="op-icon-button '+(saved?'is-saved':'')+'" data-favevent="'+esc(e.id)+'" aria-pressed="'+saved+'" title="'+(saved?'Remover dos salvos':'Salvar evento')+'" aria-label="'+(saved?'Remover evento salvo':'Salvar evento')+'">'+(saved?'♥':'♡')+'</button>'+
-   '</div>'+sourceFooter(e)+'</div></article>';
+   '</div>'+sourceFooter(e)+
+   (e.image&&e.imageSource?'<a class="op-image-credit" target="_blank" rel="noopener noreferrer" href="'+esc(e.imageSource)+'">'+esc(e.imageCredit||'Imagem da fonte')+' ↗</a>':'')+'</div></article>';
  return item;
 }
 function mapUrl(p){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.name+', '+p.address);}

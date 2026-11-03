@@ -104,3 +104,11 @@ O layout foi repensado para uma experiência de revista cultural e pesquisa inte
 
 Arquivos principais: `docs/assets/editorial.css`, `docs/assets/editorial.js` (com cópias em `assets/` para a publicação pela raiz).
 
+
+## Melhorias para os membros — fotos, revisão e ajuda (03/11/2026)
+
+- **Agenda cultural e Reuniões:** fotografias externas identificadas, com créditos de sites dos estabelecimentos ou locais de evento. Onde o material disponível é apenas uma **foto do local**, isso é explicitado; não se atribui a imagem à edição atual do evento. Imagens externas podem deixar de funcionar e devem cair no layout ilustrativo. A lista curada está em `docs/dados/agenda.json`, com cópia em `dados/agenda.json`.
+- **Marcas oficiais:** o logo original enviado pelos membros permanece centralizado em fundo azul-marinho no cabeçalho, capa e acervo.
+- **Conferência individual:** o painel “Menções e conferência de documentos” tem guias Pendentes/Conferidas/Todas e checkbox de conferência, reversível. A marcação é persistida somente em `localStorage` no navegador corrente, **não compartilhada** entre os membros; não altera o resultado oficial e não deve ser interpretada como validação de aprovação.
+- **Ajuda Oitava:** assistente de ajuda **guiado, sem IA generativa no GitHub Pages**. Responde a dúvidas comuns com orientações contextualizadas; questões abertas oferecem copiar a pergunta e abrir o ChatGPT, sem enviar chaves ou dados do navegador. Para incorporar uma IA generativa diretamente na página seria necessário um serviço de backend autenticado, com orçamento e proteção de credenciais.
+- **Fotos da produtora:** a pasta do Google Drive enviada pelo usuário não estava acessível via conector na data da atualização. Até que o Google Drive seja conectado/autorizado, não foram baixados nem republicados arquivos privados na hospedagem pública. O acervo oficial continua com o link do Instagram.
