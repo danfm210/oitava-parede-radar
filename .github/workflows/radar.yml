@@ -32,6 +32,10 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq antiword
       - name: Executar testes do monitor
         run: python -m unittest discover -s tests -v
+      - name: Testar interface de categorizacao
+        run: |
+          node --check docs/assets/radar-organizado.js
+          node --test tests/test_radar_ui.cjs
       - name: Ler publicacoes oficiais
         env:
           OITAVA_TERMS: ${{ secrets.OITAVA_TERMS }}
