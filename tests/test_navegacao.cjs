@@ -40,7 +40,7 @@ test('menus acessíveis por botão, teclado, foco e estado expandido',()=>{
   assert.ok(header.includes('aria-expanded="false"'));
  }
  const script=fs.readFileSync(path.join(__dirname,'../docs/assets/navegacao.js'),'utf8');
- for(const part of ["event.key==='Escape'","event.key==='ArrowDown'","aria-current","document.addEventListener('click'","requestAnimationFrame"]){
+ for(const part of ["event.key!=='Escape'","event.key==='ArrowDown'","aria-current","document.addEventListener('click'","requestAnimationFrame"]){
   assert.ok(script.includes(part),part);
  }
 });
