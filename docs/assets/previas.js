@@ -10,6 +10,17 @@ function text(node){
 }
 function titles(root,selector){return [...root.querySelectorAll(selector)].map(text).filter(Boolean);}
 function unique(items){return [...new Set(items.filter(Boolean))];}
+function inlineShortContent(details,summary){
+ const evidence=details.matches('.op-catalog-card > details'),event=details.matches('.op-event-details'),faq=Boolean(details.closest('.faq'));
+ if(!evidence&&!event&&!faq)return false;
+ const nodes=[...details.childNodes].filter(node=>node!==summary);
+ const length=nodes.reduce((count,node)=>count+tidy(node.textContent).length,0);
+ if(length>900||(evidence&&details.querySelectorAll('.op-catalog-evidence').length!==1)||(event&&details.querySelectorAll('li').length>3))return false;
+ const container=document.createElement('div');container.className=details.className+' op-inline-info';if(details.id)container.id=details.id;
+ const title=document.createElement(evidence?'h5':'h4');title.className='op-inline-info-title';
+ const label=summary.cloneNode(true);label.querySelectorAll('.op-fold-preview').forEach(node=>node.remove());
+ title.textContent=text(label).replace(/^Ver inscrição e fonte$/,'Inscrição e fonte');container.append(title,...nodes);details.replaceWith(container);return true;
+}
 function specification(details,summary){
  const result=(label,items,slot=summary,prose=false)=>({label,items:unique(items).slice(0,prose?1:2),slot,prose});
  if(details.matches('.op-section-menu')){
@@ -57,6 +68,7 @@ function specification(details,summary){
 }
 function decorate(details){
  const summary=details.querySelector(':scope > summary');if(!summary)return;
+ if(inlineShortContent(details,summary))return;
  const spec=specification(details,summary);
  let preview=summary.querySelector('.op-fold-preview');
  if(!spec?.slot||!spec.items.length){if(preview)preview.remove();return;}

@@ -195,6 +195,9 @@
     })).sort((a,b)=>(PROGRAMS[a.program]?.order||99)-(PROGRAMS[b.program]?.order||99));
   }
   const accordionOverrides=new Map();
+  function shouldCollapse(count,branches=2){
+    return Number.isFinite(Number(count))&&Number(count)>3&&Number(branches)>1;
+  }
   function detailsAttrs(key,defaultOpen) {
     const open=accordionOverrides.has(key)?accordionOverrides.get(key):defaultOpen;
     return ' data-accordion-key="'+escapeHTML(key)+'"'+(open?' open':'');
@@ -205,28 +208,30 @@
   function card(group,defaultOpen) {
     const types=TYPES[group.type]||TYPES.documento;
     const key='type:'+group.program+':'+group.theme+':'+group.type;
-    const latest=group.items.slice(0,3),extra=group.items.slice(3);
-    return '<details class="radar-topic-card radar-accordion-level-3" data-kind="'+escapeHTML(group.type)+'"'+detailsAttrs(key,defaultOpen)+'>'+
-      '<summary class="radar-topic-header"><div><span class="radar-topic-kicker">TIPO DE PUBLICAÇÃO</span><h4>'+escapeHTML(types.name)+'</h4>'+newBadge(newCount(group.items))+'</div>'+
+    const collapsible=shouldCollapse(group.items.length),tag=collapsible?'details':'section',heading=collapsible?'summary':'div';
+    const latest=group.items.length<=6?group.items:group.items.slice(0,3),extra=group.items.slice(latest.length);
+    return '<'+tag+' class="radar-topic-card radar-accordion-level-3'+(collapsible?'':' op-inline-group')+'" data-kind="'+escapeHTML(group.type)+'"'+(collapsible?detailsAttrs(key,defaultOpen):'')+'>'+
+      '<'+heading+' class="radar-topic-header"><div><span class="radar-topic-kicker">TIPO DE PUBLICAÇÃO</span><h4>'+escapeHTML(types.name)+'</h4>'+newBadge(newCount(group.items))+'</div>'+
       '<div class="radar-topic-count">'+group.items.length+' <span>documento'+(group.items.length===1?'':'s')+'</span></div>'+
-      '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
+      (collapsible?'<span class="radar-accordion-chevron" aria-hidden="true"></span>':'')+'</'+heading+'>'+
       '<div class="radar-topic-contents"><div class="radar-topic-list">'+latest.map(showItem).join('')+'</div>'+
       (extra.length?'<details class="radar-more"><summary><span>Mostrar outros '+extra.length+' documento'+(extra.length===1?'':'s')+' deste tipo</span><span aria-hidden="true" class="radar-more-chevron">⌄</span></summary><div class="radar-topic-list extra">'+extra.map(showItem).join('')+'</div></details>':'')+
-      '</div></details>';
+      '</div></'+tag+'>';
   }
   function categorySection(category,program,isFirstCategory,defaultOpen,forceOpen) {
     const theme=THEMES[category.theme]||THEMES.geral;
     const key='theme:'+program+':'+category.theme;
     const open=forceOpen||(defaultOpen&&isFirstCategory);
-    return '<details class="radar-category-section radar-accordion-level-2"'+detailsAttrs(key,open)+'>'+
-      '<summary class="radar-category-title"><span class="radar-category-index">'+escapeHTML(String(theme.order||7).padStart(2,'0'))+'</span>'+
-      '<span class="radar-category-label"><strong>'+escapeHTML(theme.name)+'</strong>'+
+    const collapsible=shouldCollapse(category.count,category.types.length),tag=collapsible?'details':'section',heading=collapsible?'summary':'div';
+    return '<'+tag+' class="radar-category-section radar-accordion-level-2'+(collapsible?'':' op-inline-group')+'"'+(collapsible?detailsAttrs(key,open):'')+'>'+
+      '<'+heading+' class="radar-category-title"><span class="radar-category-index">'+escapeHTML(String(theme.order||7).padStart(2,'0'))+'</span>'+
+      '<span class="radar-category-label"><strong'+(collapsible?'':' role="heading" aria-level="4"')+'>'+escapeHTML(theme.name)+'</strong>'+
       '<small>'+category.count+' documento'+(category.count===1?'':'s')+' em '+category.types.length+' tipo'+(category.types.length===1?'':'s')+
       latestLabel(category.latest)+'</small>'+newBadge(newCount(category.types.flatMap(group=>group.items)))+'</span>'+
-      '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
+      (collapsible?'<span class="radar-accordion-chevron" aria-hidden="true"></span>':'')+'</'+heading+'>'+
       '<div class="radar-category-contents"><div class="radar-topic-grid">'+
       category.types.map((group,i)=>card(group,forceOpen||(open&&i===0))).join('')+
-      '</div></div></details>';
+      '</div></div></'+tag+'>';
   }
   function programSection(section,isFirst,forceOpen) {
     const program=section.program;
@@ -236,14 +241,15 @@
     const key='program:'+program;
     const isOpen=forceOpen||(filterProgram!=='todos'&&filterProgram===program);
     const logo=OFFICIAL_LOGOS[program]?officialLogo(program):svgMark(program);
-    return '<details class="radar-source-section radar-accordion-level-1 program-'+source.tone+(added?' has-new-files':'')+'"'+detailsAttrs(key,isOpen)+'>'+
-      '<summary class="radar-source-title"><span class="radar-source-emblem">'+logo+'</span>'+
-      '<span class="radar-source-name"><small>PROGRAMA / FONTE</small><strong>'+escapeHTML(source.name)+'</strong>'+
+    const collapsible=shouldCollapse(count,section.categories.length),tag=collapsible?'details':'section',heading=collapsible?'summary':'div';
+    return '<'+tag+' class="radar-source-section radar-accordion-level-1 program-'+source.tone+(added?' has-new-files':'')+(collapsible?'':' op-inline-group')+'"'+(collapsible?detailsAttrs(key,isOpen):'')+'>'+
+      '<'+heading+' class="radar-source-title"><span class="radar-source-emblem">'+logo+'</span>'+
+      '<span class="radar-source-name"><small>PROGRAMA / FONTE</small><strong'+(collapsible?'':' role="heading" aria-level="3"')+'>'+escapeHTML(source.name)+'</strong>'+
       '<span>'+section.categories.length+' categoria'+(section.categories.length===1?'':'s')+' · '+count+' documento'+(count===1?'':'s')+'</span>'+newBadge(added)+'</span>'+
-      '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
+      (collapsible?'<span class="radar-accordion-chevron" aria-hidden="true"></span>':'')+'</'+heading+'>'+
       '<div class="radar-source-contents"><div class="radar-category-grid">'+
       section.categories.map((c,i)=>categorySection(c,program,i===0,isOpen,forceOpen)).join('')+
-      '</div></div></details>';
+      '</div></div></'+tag+'>';
   }
   function renderCurrent() {
     const sum=document.getElementById('radarProgramSummary');
@@ -288,11 +294,13 @@
     if(counter)counter.textContent=total+' arquivo'+(total===1?'':'s')+' · '+filtered.length+' grupo'+(filtered.length===1?'':'s')+' visualizado'+(filtered.length===1?'':'s');
     if(!filtered.length){
       target.innerHTML='<div class="radar-empty"><strong>Nenhuma publicação para estes filtros</strong><p>Experimente outro programa, modalidade ou tipo de documento.</p></div>';
+      const actions=document.getElementById('radarAccordionActions');if(actions)actions.hidden=true;
       return;
     }
     const hierarchy=buildHierarchy(filtered);
     const forceOpen=Boolean(newOnly || query || filterType!=='todos' || filterTheme!=='todos');
     target.innerHTML=hierarchy.map((section,i)=>programSection(section,i===0,forceOpen)).join('');
+    const actions=document.getElementById('radarAccordionActions');if(actions)actions.hidden=!target.querySelector('details[data-accordion-key]');
   }
   function resetFilters(){
     filterProgram='todos';filterType='todos';filterTheme='todos';query='';sortMode='recent';period='all';newOnly=false;accordionOverrides.clear();
@@ -356,7 +364,7 @@
       const actions=document.createElement('div');
       actions.id='radarAccordionActions';
       actions.className='radar-accordion-actions';
-      actions.innerHTML='<span><strong>Explorar por etapas</strong><small>Abra o programa, a modalidade e o tipo de publicação para ver os arquivos.</small></span>'+
+      actions.innerHTML='<span><strong>Organizar as listas longas</strong><small>Grupos pequenos ficam à vista. Expanda ou recolha os grupos com mais documentos.</small></span>'+
         '<div class="radar-accordion-buttons"><button type="button" id="radarExpandAll">Expandir tudo</button><button type="button" id="radarCollapseAll">Recolher tudo</button></div>';
       controls.append(actions);
       for(const [id,open] of [['radarExpandAll',true],['radarCollapseAll',false]]) {
@@ -385,7 +393,7 @@
     });}
     renderCurrent();
   }
-  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,editalReference,inferredDate,sortDocs,withinPeriod,newlyDetected};
+  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,editalReference,inferredDate,sortDocs,withinPeriod,newlyDetected,shouldCollapse};
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root&&typeof document!=='undefined')root.renderRadarOrganizado=renderRadarOrganizado;
 })(typeof window!=='undefined'?window:null);

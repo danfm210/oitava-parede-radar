@@ -1,0 +1,17 @@
+/* Conteúdo curto fica visível; só listas extensas pedem uma expansão. */
+:root .radar-accordion-actions[hidden]{display:none}
+.op-inline-group>.radar-source-title,.op-inline-group>.radar-category-title,.op-inline-group>.radar-topic-header{cursor:default;border-bottom:1px solid #dce5ec}
+.op-inline-group>.radar-source-title:hover{background:linear-gradient(90deg,var(--radar-soft),#fff 78%)}
+.op-inline-group>.radar-category-title:hover{background:#f8f8f4}
+.op-inline-group>.radar-topic-header:hover{background:linear-gradient(90deg,var(--kind-soft),#fff 80%)}
+:root .op-inline-info-title{margin:0 0 8px;padding:12px 0 4px;font:750 12px/1.5 "DM Sans",system-ui,sans-serif;color:#294977;letter-spacing:0}
+.op-inline-info{min-width:0}
+.faq>.op-inline-info{padding:15px 0;border-top:1px solid #dce2e8}
+.faq>.op-inline-info>.op-inline-info-title{font-size:14px;padding-top:0}
+.faq>.op-inline-info>p{margin:0;color:#5e7087;font-size:12px;line-height:1.8}
+.op-workspace-guide>.op-inline-info-title{padding-top:15px}
+:root .op-brand-inline{padding-top:30px;padding-bottom:30px}
+:root .op-brand-inline .ed-program-header{margin-bottom:22px}
+:root .op-brand-inline .ed-program-header h2{font-size:30px;line-height:1.2}
+:root .op-brand-inline .ed-ig-copy h2{font-size:30px;line-height:1.2}
+@media(max-width:640px){:root .op-brand-inline{padding-top:24px;padding-bottom:24px}.op-inline-group>.radar-category-contents{padding:9px}.faq>.op-inline-info>.op-inline-info-title{font-size:13px}}

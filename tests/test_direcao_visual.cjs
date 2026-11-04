@@ -10,12 +10,12 @@ test('prévia mantém a ordem e todos os registros da agenda, sem alterar a cura
 });
 test('listas pequenas ficam inteiras e a lista expandida mantém todas as ações',()=>{
  const card=x=>'<article><button data-invite="'+x.id+'">Convite '+x.id+'</button></article>';
- const rows=Array.from({length:5},(_,i)=>({id:'e'+i}));
- assert.ok(!collectionMarkup(rows.slice(0,3),card).includes('<details'));
+ const rows=Array.from({length:8},(_,i)=>({id:'e'+i}));
+ assert.ok(!collectionMarkup(rows.slice(0,6),card).includes('<details'));
  const html=collectionMarkup(rows,card,{kind:'events',unit:'eventos'});
- assert.equal((html.match(/<article>/g)||[]).length,5);
- assert.equal((html.match(/data-invite=/g)||[]).length,5);
- assert.ok(html.includes('Ver mais 2 eventos'));
+ assert.equal((html.match(/<article>/g)||[]).length,8);
+ assert.equal((html.match(/data-invite=/g)||[]).length,8);
+ assert.ok(html.includes('Ver mais 5 eventos'));
  assert.ok(!html.includes('data-collection="events" open'));
  assert.ok(collectionMarkup(rows,card,{expanded:true}).includes('data-collection="events" open'));
 });

@@ -1,6 +1,13 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const ui = require('../docs/assets/radar-organizado.js');
+test('colapsáveis ficam nas listas extensas e não criam uma etapa para subcategoria única',()=>{
+ for(const count of [0,1,2,3])assert.equal(ui.shouldCollapse(count),false);
+ assert.equal(ui.shouldCollapse(4),true);
+ assert.equal(ui.shouldCollapse(40,1),false);
+ assert.equal(ui.shouldCollapse(40,2),true);
+ for(const count of [null,undefined,NaN,-1])assert.equal(ui.shouldCollapse(count),false);
+});
 test('novidades usam detecção nas últimas 48 horas e excluem a carga inicial',()=>{
  const now=Date.parse('2026-11-04T15:00:00Z');
  const doc=(id,seen,extra={})=>({id,titulo:'Edital '+id,url:'https://oficial.test/'+id,fonte:'pnab_pg',primeira_detecao:seen,base_inicial:false,...extra});

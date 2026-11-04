@@ -10,7 +10,7 @@ function collectionMarkup(rows,card,{kind='events',unit='eventos',expanded=false
  const {preview,remaining,total}=partition(rows,limit);
  if(typeof card!=='function')return '';
  const first=preview.map(card).join('');
- if(!remaining.length)return first;
+ if(remaining.length<=3)return first+remaining.map(card).join('');
  const key=String(kind).replace(/[^a-z0-9_-]/gi,'');
  return first+'<details class="op-collection-more" id="opMore-'+key+'" data-collection="'+key+'"'+(expanded?' open':'')+'><summary><span><strong><span class="op-more-closed">Ver mais '+remaining.length+' '+esc(unit)+'</span><span class="op-more-open">Recolher lista de '+esc(unit)+'</span></strong><small>'+preview.length+' de '+total+' à vista na prévia</small></span><span class="op-fold-plus" aria-hidden="true">+</span></summary><div class="op-collection-grid">'+remaining.map(card).join('')+'</div><div class="op-collection-end"><button type="button" data-collection-close>Recolher '+esc(unit)+' adicionais <span aria-hidden="true">↑</span></button></div></details>';
 }

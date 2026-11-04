@@ -303,3 +303,16 @@ Arquivos detectados nas últimas 48 horas, fora da carga inicial, recebem a tag 
 Os três testes adicionais cobrem o limite de 48 horas, datas futuras ou inválidas, exclusão da carga inicial, distinção entre publicação e detecção, ordenação e documentos duplicados. Todos os 89 testes JavaScript passaram.
 
 A conferência no navegador validou a filtragem dos dois arquivos novos reais, contagens nos programas, navegação até o documento com busca sem resultados e foco no cartão. Um cenário temporário com arquivo novo fora dos três primeiros registros confirmou a abertura dos quatro níveis, inclusive “Mostrar outros”. As prévias fechadas priorizam títulos novos quando houver novidades. A revisão final também conferiu 320, 375 e 768 px sem rolagem lateral. Nenhum registro de teste foi publicado.
+
+
+## Colapsáveis conforme o volume de conteúdo — 04/11/2026
+
+O radar exibe diretamente grupos com até três documentos. Programas ou modalidades com apenas um subgrupo também usam cabeçalhos comuns, sem repetir controles de abrir/fechar para o mesmo conteúdo. Grupos maiores mantêm os menus nativos, prévias e destaques de novidade. A regra acompanha os resultados de busca e filtros: uma seleção curta aparece inteira. Os comandos de expandir/recolher ficam ocultos quando não há listas extensas na seleção. O atalho “Localizar” continua abrindo apenas os menus necessários e focando o arquivo.
+
+Na agenda, nos locais e no catálogo, até três registros adicionais aparecem diretamente: listas de até seis cartões não ganham “Ver mais” para esconder só um, dois ou três itens. Listas extensas preservam a prévia inicial e todas as ações dos cartões. O mesmo critério remove o menu “Mostrar outros” em grupos de quatro a seis documentos do radar.
+
+Dicas de uso, programas e acervo com textos breves ficam visíveis. Respostas curtas do FAQ, inscrições com uma única evidência e destaques breves de programação passam a usar títulos comuns, sem controles de expansão. A transformação move os mesmos nós de conteúdo; não clona links, formulários ou botões. Seções com muito conteúdo e consultas com várias evidências continuam recolhíveis.
+
+Os 90 testes JavaScript passaram, incluindo os limites de listas curtas e a eliminação de uma etapa para subgrupo único.
+
+A revisão no navegador preservou os 130 arquivos reais do radar. A seleção com um documento mostrou o arquivo diretamente; a seleção dos dois arquivos novos ficou sem controles intermediários. “Localizar” passou a abrir só um menu no Diário Oficial, em vez de três. Os cinco projetos do ano atual apareceram sem “Ver mais 2 projetos”, e as duas inscrições com fonte única ficaram visíveis. Expandir/recolher atuou nos 17 grupos extensos e preservou 24 grupos com cabeçalhos comuns. Grupos de seis documentos não exibiram um segundo menu para os três restantes. As larguras de 320, 375 e 768 px foram verificadas sem rolagem horizontal.
