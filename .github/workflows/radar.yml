@@ -57,6 +57,10 @@ jobs:
           node --test tests/test_experiencia.cjs
           node --check docs/assets/mobile.js
           node --test tests/test_mobile.cjs
+          node --check docs/assets/central.js
+          node --test tests/test_central.cjs
+          node --check docs/assets/calendario.js
+          node --test tests/test_calendario.cjs
       - name: Ler publicacoes oficiais
         env:
           OITAVA_TERMS: ${{ secrets.OITAVA_TERMS }}

@@ -21,8 +21,8 @@ const norm=(s)=>clean(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLower
 const dateAtNoon=(s)=>new Date(s+'T12:00:00');
 const fmtDate=(s,short=false)=>dateAtNoon(s).toLocaleDateString('pt-BR',{day:'2-digit',month:short?'short':'long'});
 const storage={
- get(key){try{const x=JSON.parse(localStorage.getItem(key)||'[]');return new Set(Array.isArray(x)?x:[])}catch{return new Set()}},
- set(key,vals){try{localStorage.setItem(key,JSON.stringify([...vals]))}catch{}}
+ get(key){try{const x=JSON.parse(localStorage.getItem(key)||'[]');return new Set(Array.isArray(x)?x.filter(v=>typeof v==='string'&&v.length<180).slice(0,500):[])}catch{return new Set()}},
+ set(key,vals){try{localStorage.setItem(key,JSON.stringify([...vals]));return true;}catch{return false;}}
 };
 let data={events:[],places:[],sources:[],festivals:[],curated_at:null};
 let customPlaces=[],editingPlaceId=null,placeTrigger=null;
@@ -44,6 +44,16 @@ function readCustomPlaces(raw){
  }catch{return [];}
 }
 function allPlaces(){return [...customPlaces,...data.places];}
+function notifySaved(){window.dispatchEvent(new CustomEvent('op:savedchange',{detail:{events:[...savedEvents],places:[...savedPlaces]}}));}
+function updateSaved(kind,id,removeOnly=false){
+ if(!['events','places'].includes(kind)||typeof id!=='string'||id.length>=180)return false;
+ const current=kind==='events'?savedEvents:savedPlaces,next=new Set(current);
+ if(removeOnly)next.delete(id);else next.has(id)?next.delete(id):next.add(id);
+ if(!storage.set(kind==='events'?STORAGE_EVENTS:STORAGE_PLACES,next)){toast('Não foi possível salvar neste navegador. Verifique as permissões e o espaço disponível.');return false;}
+ if(kind==='events')savedEvents=next;else savedPlaces=next;
+ notifySaved();if(kind==='events')renderEvents();else renderPlaces();return true;
+}
+
 function persistCustom(rows){try{localStorage.setItem(STORAGE_CUSTOM,JSON.stringify(rows));customPlaces=rows;return true;}catch{toast('Não foi possível salvar neste navegador. Verifique o espaço e as permissões de armazenamento.');return false;}}
 function festivalState(f,today){
  const day=today||new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});
@@ -173,6 +183,8 @@ function renderEvents(){
  const summary=document.getElementById('opEventSelection');if(summary)summary.textContent=[eventCity==='Todas'?'Todas as cidades':eventCity,catInfo[eventCat]?.label||'Todas as categorias',{'all':'Toda a agenda','today':'Hoje','week':'Próximos 7 dias','weekend':'Fim de semana'}[eventPeriod],eventSavedOnly?'Apenas salvos':'',eventSearch?'Busca: “'+eventSearch+'”':''].filter(Boolean).join(' · ');
 }
 function renderPlaces(){
+ window.OitavaCentralData=window.OitavaCentralData||{};window.OitavaCentralData.places=allPlaces();
+ window.dispatchEvent(new CustomEvent('op:places-ready',{detail:{places:allPlaces()}}));
  const places=allPlaces(),cities=[...new Set(['Santos','São Vicente','Praia Grande',...places.map(p=>p.city)])];
  const cityRoot=document.getElementById('opMeetCities');
  if(cityRoot&&cityRoot.dataset.cities!==JSON.stringify(cities)){
@@ -240,7 +252,7 @@ function refreshEventInvite(){
  if(!currentInviteEvent)return '';
  const text=eventInvitation(currentInviteEvent,{date:document.getElementById('opInviteDay').value,time:document.getElementById('opInviteTime').value,meeting:document.getElementById('opInviteMeeting').value,note:document.getElementById('opInviteNote').value});
  document.getElementById('opInvitePreview').value=text;
- document.getElementById('opInviteCopy').disabled=!text;document.getElementById('opInviteShare').disabled=!text;
+ document.getElementById('opInviteCopy').disabled=!text;document.getElementById('opInviteShare').disabled=!text;document.getElementById('opInviteCalendar').disabled=!text;
  document.getElementById('opInviteStatus').textContent=text?'':'Escolha uma data com atividade no evento e um horário válido.';
  return text;
 }
@@ -265,6 +277,15 @@ function hookEventInvites(){
   try{await copyText(text);document.getElementById('opInviteStatus').textContent='Convite copiado. Agora é só colar no grupo!';}
   catch{const preview=document.getElementById('opInvitePreview');preview.focus();preview.select();document.getElementById('opInviteStatus').textContent='A cópia automática não funcionou. O texto está selecionado para copiar manualmente.';}
  });
+ document.getElementById('opInviteCalendar').addEventListener('click',()=>{
+  const text=refreshEventInvite();if(!text||!form.reportValidity())return;
+  const date=document.getElementById('opInviteDay').value,time=document.getElementById('opInviteTime').value;
+  const content=window.OitavaCalendar?.buildCalendar({id:currentInviteEvent.id,title:currentInviteEvent.title,date,time,location:document.getElementById('opInviteMeeting').value+' · '+currentInviteEvent.city,description:text+'\n\n'+(time?'Horário combinado pelo grupo em Brasília. Não é confirmação da sessão.':'Lembrete de dia inteiro; horário a combinar.'),url:currentInviteEvent.url});
+  if(!content){document.getElementById('opInviteStatus').textContent='Não foi possível criar o arquivo. Confira data e horário.';return;}
+  const objectURL=URL.createObjectURL(new Blob([content],{type:'text/calendar;charset=utf-8'})),a=document.createElement('a');
+  a.href=objectURL;a.download='oitava-encontro-'+date+'.ics';dialog.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(objectURL),30000);
+  document.getElementById('opInviteStatus').textContent='Arquivo preparado para abrir no seu calendário.';
+ });
  document.getElementById('opInviteShare').addEventListener('click',async()=>{
   const text=refreshEventInvite();if(!text||!form.reportValidity()||typeof navigator.share!=='function')return;
   try{await navigator.share({title:'Convite · '+currentInviteEvent.title,text});document.getElementById('opInviteStatus').textContent='Compartilhamento concluído pelo aparelho.';}
@@ -281,7 +302,7 @@ function hook(){
  document.getElementById('opEventGrid')?.addEventListener('click',e=>{
   const invite=e.target.closest('[data-invite-event]');if(invite){const event=data.events.find(row=>row.id===invite.dataset.inviteEvent);if(event)openEventInvite(event,invite);return;}
   if(e.target.closest('[data-reset-events]')){resetEventFilters();document.getElementById('opEventSearch').focus();return;}
-  const b=e.target.closest('[data-favevent]');if(!b)return;const id=b.dataset.favevent;savedEvents.has(id)?savedEvents.delete(id):savedEvents.add(id);storage.set(STORAGE_EVENTS,savedEvents);renderEvents();
+  const b=e.target.closest('[data-favevent]');if(b)updateSaved('events',b.dataset.favevent);
  });
  document.getElementById('opMeetCities')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;meetCity=b.dataset.value;renderPlaces();});
  document.getElementById('opMeetKinds')?.addEventListener('click',e=>{const b=e.target.closest('[data-value]');if(!b)return;meetKind=b.dataset.value;renderPlaces();});
@@ -291,7 +312,7 @@ function hook(){
  document.getElementById('opPlaceGrid')?.addEventListener('click',e=>{
   const edit=e.target.closest('[data-edit-place]');if(edit){const p=customPlaces.find(p=>p.id===edit.dataset.editPlace);if(p)openPlace(p,edit);return;}
   const del=e.target.closest('[data-delete-place]');if(del){const p=customPlaces.find(p=>p.id===del.dataset.deletePlace);if(!p||!confirm('Excluir o ponto personalizado “'+p.name+'” deste navegador?'))return;if(persistCustom(customPlaces.filter(row=>row.id!==p.id))){savedPlaces.delete(p.id);storage.set(STORAGE_PLACES,savedPlaces);renderPlaces();document.getElementById('opAddPlace').focus();toast('Ponto personalizado excluído.');}return;}
-  const f=e.target.closest('[data-favplace]');if(f){const id=f.dataset.favplace;savedPlaces.has(id)?savedPlaces.delete(id):savedPlaces.add(id);storage.set(STORAGE_PLACES,savedPlaces);renderPlaces();return;}
+  const f=e.target.closest('[data-favplace]');if(f){updateSaved('places',f.dataset.favplace);return;}
   const invite=e.target.closest('[data-invite]');if(!invite)return;
   const p=allPlaces().find(p=>p.id===invite.dataset.invite);if(!p)return;
   const txt='Oitava Parede · Ideia de encontro\\n📍 '+p.name+' ('+p.city+')\\n'+p.address+'\\nMapa: '+mapUrl(p)+'\\nVamos combinar dia e horário?';
@@ -310,7 +331,7 @@ function eventInviteMarkup(){return `<dialog id="opEventInviteDialog" class="op-
 <label class="op-form-wide">Mensagem para o grupo (opcional)<textarea id="opInviteNote" maxlength="300" rows="2" placeholder="Ex.: vamos chegar 15 minutos antes?"></textarea></label>
 <label class="op-form-wide op-invite-preview-label">Prévia do convite<textarea id="opInvitePreview" readonly rows="7" spellcheck="false"></textarea></label>
 </div><p id="opInviteStatus" class="op-invite-status" role="status" aria-live="polite"></p>
-<div class="op-place-form-actions op-invite-actions"><button type="button" data-close-invite>Fechar</button><button type="button" id="opInviteShare" hidden>Compartilhar</button><button type="submit" id="opInviteCopy" class="op-add-place">Copiar convite</button></div></form></dialog>`;}
+<div class="op-calendar-export"><button type="button" id="opInviteCalendar">Adicionar ao meu calendário <span aria-hidden="true">↗</span></button><small>Usa o dia e o horário combinados acima, no horário de Brasília. Sem horário, cria um lembrete de dia inteiro.</small></div><div class="op-place-form-actions op-invite-actions"><button type="button" data-close-invite>Fechar</button><button type="button" id="opInviteShare" hidden>Compartilhar</button><button type="submit" id="opInviteCopy" class="op-add-place">Copiar convite</button></div></form></dialog>`;}
 
 function placeDialogMarkup(){return `<dialog id="opPlaceDialog" class="op-place-dialog" aria-labelledby="opPlaceDialogTitle">
 <div class="op-place-dialog-head"><h2 id="opPlaceDialogTitle">Cadastrar ponto de encontro</h2><button type="button" data-close-place aria-label="Fechar cadastro">×</button></div>
@@ -399,13 +420,18 @@ async function init(){
  const src=document.getElementById('opEventGrid');if(!src)return;
  savedEvents=storage.get(STORAGE_EVENTS);savedPlaces=storage.get(STORAGE_PLACES);
  try{customPlaces=readCustomPlaces(localStorage.getItem(STORAGE_CUSTOM));}catch{customPlaces=[];}
- hook();hookCustomPlaces();hookEventInvites();if(customPlaces.length)renderPlaces();
+ hook();hookCustomPlaces();hookEventInvites();notifySaved();if(customPlaces.length)renderPlaces();
+ window.addEventListener('op:saved-remove',e=>{const {kind,id}=e.detail||{};if(['events','places'].includes(kind)&&(kind==='events'?savedEvents:savedPlaces).has(id))updateSaved(kind,id,true);});
+ window.addEventListener('op:open-event',e=>{const event=data.events.find(row=>row.id===e.detail?.id);if(event&&event.end>=todayBR())openEventInvite(event,e.detail.trigger||document.getElementById('opEventSearch'));});
+ window.addEventListener('storage',e=>{if(e.key===STORAGE_EVENTS||e.key===STORAGE_PLACES){savedEvents=storage.get(STORAGE_EVENTS);savedPlaces=storage.get(STORAGE_PLACES);notifySaved();renderEvents();renderPlaces();}});
  try{
   const resp=await fetch('./dados/agenda.json?t='+Date.now(),{cache:'no-store'});
   if(!resp.ok)throw new Error('Agenda indisponível');
   const json=await resp.json();
   if(json.schema!==1||!Array.isArray(json.events)||!Array.isArray(json.places))throw new Error('Formato inválido');
   data=json;
+  window.OitavaCentralData=window.OitavaCentralData||{};window.OitavaCentralData.agenda=data;
+  window.dispatchEvent(new CustomEvent('op:agenda-ready',{detail:data}));
   renderEvents();renderPlaces();renderSources();renderFestivals();
  }catch(e){
   src.innerHTML='<div class="op-noresults"><strong>Não foi possível carregar a agenda.</strong><p>Utilize os portais de programação indicados na seção.</p></div>';

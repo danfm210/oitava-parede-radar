@@ -5,6 +5,7 @@
 (function(root){
 'use strict';
 const DESTINATIONS=[
+ {id:'meu-painel',label:'Meu painel e salvos',group:'Navegação',description:'Documentos, eventos e lugares salvos neste navegador',keywords:'favoritos salvos documentos acompanhar organização painel'},
  {id:'inicio-editorial',label:'Início da Central',group:'Navegação',description:'Visão editorial da Oitava Parede',keywords:'home página inicial voltar'},
  {id:'monitor',label:'Radar de editais',group:'Editais',description:'Documentos e atualizações oficiais',keywords:'pnab lei paulo gustavo resultado edital diário'},
  {id:'monitorMentions',label:'Menções a conferir',group:'Editais',description:'Giovanna Barbosa, OitavaFest e termos de projetos',keywords:'check marcar conferida menções proponente Oscar Stefanno Fornari Matheus de Castro Santos Soares Daniel Fernandes Melquiades dos Santos Julia Xavier de Freitas Enzo Santana Borges Julia Xavier Enzo Borges'},

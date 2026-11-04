@@ -8,7 +8,7 @@ const style=fs.readFileSync(path.join(__dirname,'../docs/assets/navegacao.css'),
 
 test('todas as áreas de conteúdo possuem acesso na barra de navegação',()=>{
  const expected=[
-  'inicio-editorial','edPulse','marcas','acervo','monitor','monitorMentions','visao',
+  'inicio-editorial','meu-painel','edPulse','marcas','acervo','monitor','monitorMentions','visao',
   'catalogo-projetos','projetos','fontes','oportunidades','agenda','reunioes','notificacoes','publicacao'
  ];
  assert.deepEqual(navigation.SECTIONS,expected);

@@ -137,9 +137,14 @@
   }
   let allowLink=()=>false,htmlEscape=escapeHTML;
 
+  function editalReference(title) {
+    const number=editalNumber(title);if(!number)return '';
+    const year=String(title||'').match(/\bedital\b[^0-9]{0,20}\d{1,4}\s*(?:\/|[-–—])\s*(20\d{2})\b/i);
+    return number+(year?'/'+year[1]:'');
+  }
   function showItem(item) {
     const kind=classifyDocument(item);
-    const number=editalNumber(item.titulo);
+    const number=editalReference(item.titulo);
     const reference=inferredDate(item),first=firstSeen(item),read=safeText(item.ultima_leitura).slice(0,10);
     const fmt=d=>d?d.split('-').reverse().join('/'):'—';
     const docLabel=reference?'Data identificada no arquivo: '+fmt(reference):'Data do documento não informada';
@@ -150,9 +155,9 @@
     return '<article class="radar-entry">'+
       '<div class="radar-entry-main">'+
       '<div class="radar-entry-labels"><span class="radar-type-pill type-'+kind.type+'">'+htmlEscape(TYPES[kind.type]?.short||'Documento')+'</span>'+
-      (number?'<span class="radar-edital-pill">Edital '+htmlEscape(number)+'/2026</span>':'')+'</div>'+
+      (number?'<span class="radar-edital-pill">Edital '+htmlEscape(number)+'</span>':'')+'</div>'+
       '<strong class="radar-entry-title">'+htmlEscape(item.titulo)+'</strong>'+
-      '<small>'+htmlEscape(docLabel)+'</small><small class="ed-date-meta">'+htmlEscape(secondary)+'</small></div>'+meta+href+'</article>';
+      '<small>'+htmlEscape(docLabel)+'</small><small class="ed-date-meta">'+htmlEscape(secondary)+'</small></div>'+meta+(href?'<div class="op-doc-actions">'+href+'<button type="button" class="op-doc-save" data-doc-save="'+htmlEscape(item.url)+'" aria-pressed="false" aria-label="Salvar documento: '+htmlEscape(item.titulo)+'">☆ Salvar</button></div>':'')+'</article>';
   }
 
   // Nível 1: programa; nível 2: modalidade; nível 3: tipo de documento.
@@ -326,7 +331,7 @@
     });}
     renderCurrent();
   }
-  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,inferredDate,sortDocs,withinPeriod};
+  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,editalReference,inferredDate,sortDocs,withinPeriod};
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root&&typeof document!=='undefined')root.renderRadarOrganizado=renderRadarOrganizado;
 })(typeof window!=='undefined'?window:null);

@@ -5,11 +5,11 @@
 (function(root){
 'use strict';
 const SECTIONS=[
-  'inicio-editorial','edPulse','marcas','acervo','monitor','monitorMentions','visao',
+  'inicio-editorial','meu-painel','edPulse','marcas','acervo','monitor','monitorMentions','visao',
   'catalogo-projetos','projetos','fontes','oportunidades','agenda','reunioes','notificacoes','publicacao'
 ];
 const MENUS={
-  inicio:['inicio-editorial','edPulse','marcas','acervo'],
+  inicio:['inicio-editorial','meu-painel','edPulse','marcas','acervo'],
   editais:['monitor','monitorMentions','visao'],
   projetos:['catalogo-projetos','projetos'],
   fontes:['fontes','oportunidades'],
