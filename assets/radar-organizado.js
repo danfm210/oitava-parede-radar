@@ -100,7 +100,7 @@
     const theme=THEMES[item.theme]?.short || 'Geral';
     return '<span class="radar-theme-label">'+escapeHTML(theme)+'</span>';
   }
-  let currentDocs=[];
+  let currentDocs=[],recentDocs=[],recentKeys=new Set(),newOnly=false;
   let filterProgram='todos', filterType='todos', filterTheme='todos', query='', sortMode='recent', period='all';
   function inferredDate(doc){
     const own=safeText(doc.data_no_arquivo).slice(0,10);
@@ -110,6 +110,20 @@
     return '';
   }
   function firstSeen(doc){return safeText(doc.primeira_detecao).slice(0,10)}
+  const documentKey=doc=>String(doc.id||doc.url);
+  const documentAnchor=doc=>'radar-file-'+encodeURIComponent(documentKey(doc));
+  function newlyDetected(rows,now=Date.now()){
+    const end=Number(now),start=end-48*60*60*1000;
+    if(!Number.isFinite(end))return [];
+    return groupPublications(rows).flatMap(group=>group.items).filter(doc=>{
+      const seen=String(doc.primeira_detecao||'');
+      const time=/^\d{4}-\d{2}-\d{2}T/.test(seen)?Date.parse(seen):NaN;
+      return doc.base_inicial===false&&Number.isFinite(time)&&time>=start&&time<=end;
+    }).sort((a,b)=>Date.parse(b.primeira_detecao)-Date.parse(a.primeira_detecao));
+  }
+  const isNew=doc=>recentKeys.has(documentKey(doc));
+  const newCount=items=>items.filter(isNew).length;
+  const newBadge=count=>count?'<span class="radar-new-badge">'+count+' novo'+(count===1?'':'s')+' no radar</span>':'';
   function viewDate(doc){return inferredDate(doc)||firstSeen(doc)}
   function relativePriority(doc){
     const theme=documentTheme(doc),type=documentType(doc);
@@ -152,10 +166,10 @@
     const secondary='Adicionado ao radar: '+fmt(first)+(read?' · Lido em '+fmt(read):' · Leitura não registrada');
     const href=allowLink(item.url) ?
       '<a class="radar-entry-link" href="'+htmlEscape(item.url)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir documento oficial: '+htmlEscape(item.titulo)+'">Documento oficial <span aria-hidden="true">↗</span></a>':'';
-    return '<article class="radar-entry">'+
+    return '<article class="radar-entry'+(isNew(item)?' is-new-file':'')+'" id="'+escapeHTML(documentAnchor(item))+'" tabindex="-1">'+
       '<div class="radar-entry-main">'+
       '<div class="radar-entry-labels"><span class="radar-type-pill type-'+kind.type+'">'+htmlEscape(TYPES[kind.type]?.short||'Documento')+'</span>'+
-      (number?'<span class="radar-edital-pill">Edital '+htmlEscape(number)+'</span>':'')+'</div>'+
+      (number?'<span class="radar-edital-pill">Edital '+htmlEscape(number)+'</span>':'')+(isNew(item)?'<span class="radar-new-badge">Novo no radar</span>':'')+'</div>'+
       '<strong class="radar-entry-title">'+htmlEscape(item.titulo)+'</strong>'+
       '<small>'+htmlEscape(docLabel)+'</small><small class="ed-date-meta">'+htmlEscape(secondary)+'</small></div>'+meta+(href?'<div class="op-doc-actions">'+href+'<button type="button" class="op-doc-save" data-doc-save="'+htmlEscape(item.url)+'" aria-pressed="false" aria-label="Salvar documento: '+htmlEscape(item.titulo)+'">☆ Salvar</button></div>':'')+'</article>';
   }
@@ -193,7 +207,7 @@
     const key='type:'+group.program+':'+group.theme+':'+group.type;
     const latest=group.items.slice(0,3),extra=group.items.slice(3);
     return '<details class="radar-topic-card radar-accordion-level-3" data-kind="'+escapeHTML(group.type)+'"'+detailsAttrs(key,defaultOpen)+'>'+
-      '<summary class="radar-topic-header"><div><span class="radar-topic-kicker">TIPO DE PUBLICAÇÃO</span><h4>'+escapeHTML(types.name)+'</h4></div>'+
+      '<summary class="radar-topic-header"><div><span class="radar-topic-kicker">TIPO DE PUBLICAÇÃO</span><h4>'+escapeHTML(types.name)+'</h4>'+newBadge(newCount(group.items))+'</div>'+
       '<div class="radar-topic-count">'+group.items.length+' <span>documento'+(group.items.length===1?'':'s')+'</span></div>'+
       '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
       '<div class="radar-topic-contents"><div class="radar-topic-list">'+latest.map(showItem).join('')+'</div>'+
@@ -208,7 +222,7 @@
       '<summary class="radar-category-title"><span class="radar-category-index">'+escapeHTML(String(theme.order||7).padStart(2,'0'))+'</span>'+
       '<span class="radar-category-label"><strong>'+escapeHTML(theme.name)+'</strong>'+
       '<small>'+category.count+' documento'+(category.count===1?'':'s')+' em '+category.types.length+' tipo'+(category.types.length===1?'':'s')+
-      latestLabel(category.latest)+'</small></span>'+
+      latestLabel(category.latest)+'</small>'+newBadge(newCount(category.types.flatMap(group=>group.items)))+'</span>'+
       '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
       '<div class="radar-category-contents"><div class="radar-topic-grid">'+
       category.types.map((group,i)=>card(group,forceOpen||(open&&i===0))).join('')+
@@ -218,13 +232,14 @@
     const program=section.program;
     const source=PROGRAMS[program]||{short:'Outras fontes',name:'Outras fontes',tone:'other'};
     const count=section.categories.reduce((t,g)=>t+g.count,0);
+    const added=newCount(section.categories.flatMap(category=>category.types.flatMap(group=>group.items)));
     const key='program:'+program;
     const isOpen=forceOpen||(filterProgram!=='todos'&&filterProgram===program);
     const logo=OFFICIAL_LOGOS[program]?officialLogo(program):svgMark(program);
-    return '<details class="radar-source-section radar-accordion-level-1 program-'+source.tone+'"'+detailsAttrs(key,isOpen)+'>'+
+    return '<details class="radar-source-section radar-accordion-level-1 program-'+source.tone+(added?' has-new-files':'')+'"'+detailsAttrs(key,isOpen)+'>'+
       '<summary class="radar-source-title"><span class="radar-source-emblem">'+logo+'</span>'+
       '<span class="radar-source-name"><small>PROGRAMA / FONTE</small><strong>'+escapeHTML(source.name)+'</strong>'+
-      '<span>'+section.categories.length+' categoria'+(section.categories.length===1?'':'s')+' · '+count+' documento'+(count===1?'':'s')+'</span></span>'+
+      '<span>'+section.categories.length+' categoria'+(section.categories.length===1?'':'s')+' · '+count+' documento'+(count===1?'':'s')+'</span>'+newBadge(added)+'</span>'+
       '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
       '<div class="radar-source-contents"><div class="radar-category-grid">'+
       section.categories.map((c,i)=>categorySection(c,program,i===0,isOpen,forceOpen)).join('')+
@@ -235,6 +250,10 @@
     const target=document.getElementById('monitorPublications');
     const counter=document.getElementById('radarVisibleCounter');
     if(!target || !sum)return;
+    recentDocs=newlyDetected(currentDocs);
+    recentKeys=new Set(recentDocs.map(documentKey));
+    if(!recentDocs.length)newOnly=false;
+    renderNewFiles();
     const allGroups=groupPublications(sortDocs(currentDocs.filter(p=>withinPeriod(p,period))));
     const programIDs=['pnab_pg','lpg_pg','diario_pg'];
     sum.innerHTML=programIDs.map(id=>{
@@ -243,7 +262,7 @@
       return '<button type="button" class="radar-program-card program-'+data.tone+(active?' is-active':'')+
         '" data-program="'+id+'" aria-pressed="'+active+'">'+
         '<span class="radar-program-icon">'+(OFFICIAL_LOGOS[id]?officialLogo(id):logo)+'<b>'+data.short+'</b></span>'+
-        '<span class="radar-program-content"><strong>'+data.short+'</strong><small>'+escapeHTML(data.name)+'</small><span>'+amount+' documentos · '+escapeHTML(data.detail)+'</span></span>'+
+        '<span class="radar-program-content"><strong>'+data.short+'</strong><small>'+escapeHTML(data.name)+'</small><span>'+amount+' documentos · '+escapeHTML(data.detail)+'</span>'+newBadge(recentDocs.filter(doc=>doc.fonte===id).length)+'</span>'+
         '<span class="radar-program-arrow" aria-hidden="true">→</span></button>';
     }).join('');
     sum.querySelectorAll('[data-program]').forEach(btn=>btn.addEventListener('click',()=>{
@@ -254,6 +273,7 @@
     let filtered=allGroups.filter(g=>(filterProgram==='todos'||g.program===filterProgram)
       &&(filterType==='todos'||g.type===filterType)
       &&(filterTheme==='todos'||g.theme===filterTheme));
+    if(newOnly)filtered=filtered.map(group=>({...group,items:group.items.filter(isNew)})).filter(group=>group.items.length);
     if(query){
       const terms=norm(query);
       filtered=filtered.map(g=>({...g,items:g.items.filter(p=>norm(p.titulo+' '+(p.url||'')+' '+(PROGRAMS[g.program]?.name||'')).includes(terms))})).filter(g=>g.items.length);
@@ -271,8 +291,45 @@
       return;
     }
     const hierarchy=buildHierarchy(filtered);
-    const forceOpen=Boolean(query || filterType!=='todos' || filterTheme!=='todos');
+    const forceOpen=Boolean(newOnly || query || filterType!=='todos' || filterTheme!=='todos');
     target.innerHTML=hierarchy.map((section,i)=>programSection(section,i===0,forceOpen)).join('');
+  }
+  function resetFilters(){
+    filterProgram='todos';filterType='todos';filterTheme='todos';query='';sortMode='recent';period='all';newOnly=false;accordionOverrides.clear();
+    for(const [id,value] of [['edSortMode','recent'],['edPeriod','all'],['radarTypeFilter','todos'],['radarThemeFilter','todos'],['radarDocQuery','']]){
+      const control=document.getElementById(id);if(control)control.value=value;
+    }
+  }
+  function locateDocument(doc){
+    resetFilters();renderCurrent();
+    const item=document.getElementById(documentAnchor(doc));if(!item)return;
+    for(let ancestor=item.parentElement;ancestor;ancestor=ancestor.parentElement){
+      if(ancestor.tagName==='DETAILS'){ancestor.open=true;if(ancestor.dataset.accordionKey)accordionOverrides.set(ancestor.dataset.accordionKey,true);}
+    }
+    document.querySelectorAll('.is-new-target').forEach(node=>node.classList.remove('is-new-target'));
+    item.classList.add('is-new-target');item.focus({preventScroll:true});
+    item.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
+    const status=document.getElementById('radarNewLocation');
+    if(status)status.textContent='Arquivo localizado: '+doc.titulo+'.';
+  }
+  function renderNewFiles(){
+    const banner=document.getElementById('radarNewFiles');if(!banner)return;
+    banner.hidden=!recentDocs.length;
+    if(!recentDocs.length){banner.replaceChildren();return;}
+    const count=recentDocs.length;
+    banner.innerHTML='<div class="radar-new-heading"><div><h3>'+count+' arquivo'+(count===1?' novo':'s novos')+' no radar</h3><p>Adicionados nas últimas 48 horas. A data de publicação pode ser anterior.</p></div>'+
+      '<button type="button" id="radarNewOnly" aria-pressed="'+newOnly+'">'+(newOnly?'Mostrar todos os arquivos':'Ver só os novos')+'</button></div>'+
+      '<ul class="radar-new-list">'+recentDocs.slice(0,2).map(doc=>{
+        const kind=classifyDocument(doc),path=[PROGRAMS[kind.program]?.name||'Outras fontes',THEMES[kind.theme]?.name||'Diversos e gerais',TYPES[kind.type]?.name||'Outros documentos'].join(' › ');
+        return '<li><button type="button" data-radar-locate="'+escapeHTML(documentKey(doc))+'" aria-label="Localizar arquivo: '+escapeHTML(doc.titulo)+'"><span><strong>'+escapeHTML(doc.titulo)+'</strong><small>'+escapeHTML(path)+'</small></span><span class="radar-new-jump" aria-hidden="true">Localizar ↓</span></button></li>';
+      }).join('')+'</ul>'+(count>2?'<p class="radar-new-more">Mostrando 2 de '+count+' novidades. Use “Ver só os novos” para ver todas.</p>':'')+'<p id="radarNewLocation" class="radar-new-location" role="status" aria-live="polite"></p>';
+    banner.querySelector('#radarNewOnly').addEventListener('click',()=>{
+      const next=!newOnly;resetFilters();newOnly=next;if(next){sortMode='indexed';const sort=document.getElementById('edSortMode');if(sort)sort.value='indexed';}
+      renderCurrent();document.getElementById('radarNewOnly')?.focus({preventScroll:true});
+    });
+    banner.querySelectorAll('[data-radar-locate]').forEach(button=>button.addEventListener('click',()=>{
+      const doc=recentDocs.find(item=>documentKey(item)===button.dataset.radarLocate);if(doc)locateDocument(doc);
+    }));
   }
   function renderRadarOrganizado(docs,allowed,esc){
     currentDocs=Array.isArray(docs)?docs:[];
@@ -323,15 +380,12 @@
     if(theme&&!theme.dataset.bound){theme.dataset.bound='1';theme.addEventListener('change',()=>{filterTheme=theme.value;accordionOverrides.clear();renderCurrent();});}
     if(input&&!input.dataset.bound){input.dataset.bound='1';input.addEventListener('input',()=>{query=input.value.trim();accordionOverrides.clear();renderCurrent();});}
     if(reset&&!reset.dataset.bound){reset.dataset.bound='1';reset.addEventListener('click',()=>{
-      filterProgram='todos';filterType='todos';filterTheme='todos';query='';sortMode='recent';period='all';accordionOverrides.clear();
-      const sort=document.getElementById('edSortMode'),p=document.getElementById('edPeriod');
-      if(sort)sort.value='recent';if(p)p.value='all';
-      if(selector)selector.value='todos';if(theme)theme.value='todos';if(input)input.value='';
+      resetFilters();
       renderCurrent();
     });}
     renderCurrent();
   }
-  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,editalReference,inferredDate,sortDocs,withinPeriod};
+  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,editalReference,inferredDate,sortDocs,withinPeriod,newlyDetected};
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root&&typeof document!=='undefined')root.renderRadarOrganizado=renderRadarOrganizado;
 })(typeof window!=='undefined'?window:null);

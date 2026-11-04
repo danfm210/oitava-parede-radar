@@ -1,0 +1,15 @@
+/* O título continua sendo um único controle nativo, com uma amostra abaixo. */
+.op-fold-preview{display:block;min-width:0;max-width:100%;margin-top:12px;padding-top:10px;border-top:1px solid #ccd7e3;text-align:left;white-space:normal;letter-spacing:normal;text-transform:none}
+.op-preview-label{display:block;margin-bottom:4px;color:#526982;font:600 10px/1.5 "DM Sans",system-ui,sans-serif;letter-spacing:.035em}
+.op-preview-items{display:block;min-width:0}
+.op-preview-item{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#26466b;font:500 12px/1.65 "DM Sans",system-ui,sans-serif;letter-spacing:normal;text-transform:none}
+.op-preview-item+.op-preview-item{margin-top:2px}
+.monitor-columns>.panel,.radar-source-section,.radar-category-section,.radar-topic-card{min-width:0}
+.op-fold-preview.is-prose .op-preview-item{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;white-space:normal;overflow-wrap:anywhere}
+details[open]>summary .op-fold-preview{display:none}
+.radar-source-name,.radar-category-label,.radar-topic-card>summary>div:first-child,.radar-more>summary>span:first-child,.op-collection-more>summary>span:first-child,.op-brand-disclosure>summary>span:first-child{min-width:0}
+.radar-source-name .op-fold-preview,.radar-category-label .op-fold-preview,.radar-topic-card>summary .op-fold-preview,.radar-more>summary .op-fold-preview{margin-top:7px;padding-top:7px}
+.op-mobile-filter-label{flex:1;min-width:0}
+.op-mobile-filter .op-fold-preview{margin-top:7px;padding-top:7px}
+.op-catalog-card details>summary .op-fold-preview,.op-event-details>summary .op-fold-preview,.faq details>summary .op-fold-preview,.op-workspace-guide>summary .op-fold-preview{margin-top:8px;padding-top:7px}
+@media(max-width:760px){.op-fold-preview{margin-top:10px;padding-top:8px}.op-preview-item{font-size:12px;line-height:1.65}.op-preview-label{font-size:10px}.op-mobile-filter-count{flex-shrink:0}.radar-topic-card>summary>div:first-child{flex:1}}

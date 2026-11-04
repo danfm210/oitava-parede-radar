@@ -1,0 +1,24 @@
+/* Novidade significa detecção recente, não resultado nem aprovação. */
+:root .radar-new-badge{display:inline-flex;align-self:flex-start;align-items:center;width:fit-content;max-width:100%;gap:4px;margin-top:5px;padding:4px 8px;border:1px solid #a5d4c6;border-radius:5px;background:#e4f5ee;color:#145c4c;font:750 10px/1.5 "DM Sans",system-ui,sans-serif;letter-spacing:.02em;white-space:normal;text-transform:none}
+.radar-new-files{margin:20px 0;padding:20px 22px;border:1px solid #bedcd0;border-left:4px solid #21856d;border-radius:12px;background:#f2faf6;color:#17483f;min-width:0}
+.radar-new-files[hidden]{display:none}
+.radar-new-heading{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.radar-new-heading h3{margin:0;color:#174c3f;font:750 19px/1.3 "Space Grotesk",system-ui,sans-serif;letter-spacing:-.3px}
+.radar-new-heading p,.radar-new-more,.radar-new-location{margin:7px 0 0;color:#4d6b61;font:400 12px/1.7 "DM Sans",system-ui,sans-serif}
+.radar-new-heading>button{flex-shrink:0;min-height:44px;border:1px solid #8abbab;background:#fff;border-radius:7px;padding:10px 14px;color:#185d4c;font:750 12px/1.4 "DM Sans",system-ui,sans-serif;cursor:pointer}
+.radar-new-heading>button[aria-pressed=true]{background:#185d4c;color:#fff}
+.radar-new-list{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+.radar-new-list li{min-width:0}
+.radar-new-list button{appearance:none;display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-height:65px;padding:13px 15px;text-align:left;border:1px solid #cce1d8;border-radius:8px;background:#fff;color:#214e44;cursor:pointer}
+.radar-new-list button>span:first-child{flex:1;min-width:0}
+.radar-new-list strong{display:block;font:700 13px/1.55 "DM Sans",system-ui,sans-serif;overflow-wrap:anywhere}
+.radar-new-list small{display:block;margin-top:4px;color:#526d65;font:400 11px/1.6 "DM Sans",system-ui,sans-serif;overflow-wrap:anywhere}
+.radar-new-jump{flex-shrink:0;font:750 11px/1.4 "DM Sans",system-ui,sans-serif}
+.radar-new-files button:hover{border-color:#21856d;background:#eaf7f0}
+.radar-new-files button[aria-pressed=true]:hover{background:#124d3f}
+.radar-new-files button:focus-visible{outline:3px solid #ae8128;outline-offset:3px}
+.radar-new-location:empty{display:none}
+:root .radar-source-section.has-new-files{border-left:4px solid #21856d}
+:root .radar-entry.is-new-file{background:#f1faf5;border-left:3px solid #21856d}
+:root .radar-entry.is-new-target{outline:3px solid #21856d;outline-offset:3px;scroll-margin-top:150px}
+@media(max-width:640px){.radar-new-files{padding:17px 14px}.radar-new-heading{align-items:flex-start;flex-direction:column;gap:13px}.radar-new-list button{align-items:flex-start;flex-direction:column;gap:8px;padding:12px}.radar-new-heading h3{font-size:18px}.radar-new-list strong{font-size:12px}.radar-new-jump{align-self:flex-end}}

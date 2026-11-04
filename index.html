@@ -126,8 +126,10 @@ body{font:16px/1.68 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Robot
 <link rel="stylesheet" href="./assets/experiencia.css"/>
 <link rel="stylesheet" href="./assets/mobile.css?v=20261104-central"/>
 <link rel="stylesheet" href="./assets/central.css?v=20261104-central"/>
-<link rel="preload" as="image" href="./assets/tentaculos-cinema-editorial.webp" fetchpriority="high"/>
+<link rel="preload" as="image" href="./assets/tentaculos-cinema-marca.webp" fetchpriority="high"/>
 <link rel="stylesheet" href="./assets/direcao-visual.css?v=20261104-ilustracoes"/>
+<link rel="stylesheet" href="./assets/previas.css?v=20261104-previas"/>
+<link rel="stylesheet" href="./assets/radar-novos.css?v=20261104-novos"/>
 </head>
 <body>
 <div class="noticebar"><div class="wrap"><span class="op-notice-full"><span aria-hidden="true">✦</span> Central interna de pesquisa para os membros da Oitava Parede. O radar automático continua dependente das fontes oficiais e de conferência humana.</span><span class="op-notice-mobile">Central do coletivo · Confira sempre as fontes oficiais.</span></div></div>
@@ -157,6 +159,7 @@ body{font:16px/1.68 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Robot
  <div class="monitor-header"><div><div class="section-eyebrow">Verificação programada · Fontes oficiais</div><h2 class="section-title">Radar automático de editais</h2><p class="section-desc">Publicações e possíveis menções detectadas pela rotina diária. Cada registro abre a fonte oficial para análise e confirmação.</p></div><div class="live-indicator" id="monitorBadge">Aguardando dados automáticos</div></div>
  <p class="monitor-info" id="monitorMessage" role="status" aria-live="polite">O painel está preparado para consultar o relatório publicado pelo GitHub. Até a primeira execução, não há resultados verificados automaticamente.</p>
  <div class="monitor-numbers"><div class="monitor-stat"><strong id="monitorDocs">—</strong><span>Publicações localizadas</span></div><div class="monitor-stat"><strong id="monitorMatches">—</strong><span>Possíveis menções a conferir</span></div><div class="monitor-stat gold-stat"><strong id="monitorSources">—</strong><span>Fontes verificadas com sucesso</span></div></div>
+ <div class="radar-new-files" id="radarNewFiles" role="region" aria-label="Arquivos novos no radar" hidden></div>
  <div class="radar-program-summary" id="radarProgramSummary" aria-label="Acesso rápido por programa">
   <p class="monitor-empty">Os programas monitorados aparecerão após o carregamento dos dados.</p>
  </div>
@@ -233,7 +236,7 @@ body{font:16px/1.68 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Robot
 <footer class="site-footer"><div class="wrap"><div class="footer-grid"><div><div class="brand"><img class="brand-logo" src="./assets/oitava-logo-original.png" alt="Logo oficial Oitava Parede Filmes"/><span class="brand-copy"><span class="brand-name">Central de Pesquisa</span><span class="brand-sub">Oitava Parede · uso interno</span></span></div><p>Ambiente interno da Oitava Parede para pesquisa, acompanhamento e registro dos projetos do coletivo. Os links apontam para páginas oficiais e não substituem a conferência dos documentos publicados.</p></div><div class="footer-links"><a href="#projetos">Projetos</a><a href="#fontes">Fontes</a><a href="#oportunidades">Fomento</a><a href="#notificacoes">Alertas</a></div></div><div class="legal">Identidade visual adaptada a partir da referência enviada da Oitava Parede · Estrutura voltada à pesquisa interna · Referências verificadas em 02/11/2026</div></div></footer>
 <div class="modal-back" id="projectModal" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-header"><h3 id="modalTitle">Cadastrar projeto</h3><button class="modal-close" id="closeModal" type="button" aria-label="Fechar formulário">×</button></div><form id="projectForm"><input type="hidden" id="projectId"/><div class="form-grid"><label class="full">Título oficial do projeto *<input class="input" id="pTitle" maxlength="180" required placeholder="Título exatamente como inscrito no edital"/></label><label>Responsável / proponente<input class="input" id="pProponent" maxlength="150" placeholder="Nome completo ou coletivo"/></label><label>Programa / edital<input class="input" id="pProgram" maxlength="130" placeholder="Ex.: PNAB PG · Edital 18/2026"/></label><label>Ano do edital<input class="input" id="pYear" type="number" min="1900" max="2100" step="1" inputmode="numeric" placeholder="Ex.: 2026"/></label><label>Número de protocolo<input class="input" id="pProtocol" maxlength="90" placeholder="Se houver"/></label><label>Situação registrada por vocês<select id="pStatus" class="select"><option value="aguardando">Aguardando resultado</option><option value="inscrito">Inscrito</option><option value="habilitado">Habilitado</option><option value="classificado">Classificado</option><option value="contemplado">Contemplado</option><option value="nao-contemplado">Não contemplado</option><option value="indeferido">Indeferido</option><option value="recurso">Em recurso</option><option value="revogado">Afetado por revogação</option></select></label><label class="full">Link da publicação oficial (opcional)<input class="input" id="pUrl" type="url" placeholder="https://…"/></label><label class="full">Observações<textarea class="textarea" id="pNotes" rows="3" maxlength="1500" placeholder="Ex.: consultar resultado final, apresentar recurso até a data publicada…"></textarea></label></div><div class="modal-actions"><button type="button" class="button outline" id="cancelModal">Cancelar</button><button type="submit" class="button blue">Salvar projeto</button></div></form></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite" role="status" aria-live="polite"></div>
-<script src="./assets/radar-organizado.js?v=20261104-tentaculos"></script>
+<script src="./assets/radar-organizado.js?v=20261104-novos"></script>
 <script src="./assets/assistente-revisoes.js?v=20261104-tentaculos"></script>
 <script>
 (()=>{'use strict';
@@ -363,5 +366,6 @@ renderProjects();renderSources();updateSearch();
 <script src="./assets/mobile.js?v=20261103-mobile1" defer></script>
 <script src="./assets/calendario.js?v=20261104-central" defer></script>
 <script src="./assets/central.js?v=20261104-central" defer></script>
-<script src="./assets/direcao-visual.js?v=20261104-ilustracoes" defer></script>
+<script src="./assets/direcao-visual.js?v=20261104-marca" defer></script>
+<script src="./assets/previas.js?v=20261104-previas" defer></script>
 </body></html>

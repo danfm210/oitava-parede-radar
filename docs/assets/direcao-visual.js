@@ -61,7 +61,7 @@ function mountIllustrations(){
  const hero=document.querySelector('.op-cinema-hero'),stage=document.getElementById('opSceneStage');
  if(hero&&stage){
   const artwork=document.createElement('figure');artwork.className='op-hero-illustration';artwork.setAttribute('aria-hidden','true');
-  ornament(artwork,'tentaculos-cinema-editorial.webp','op-hero-art',{width:1312,height:1199,eager:true});
+  ornament(artwork,'tentaculos-cinema-marca.webp','op-hero-art',{width:1312,height:1199,eager:true});
   hero.appendChild(artwork);hero.after(stage);stage.classList.add('op-stage-compact');
  }
  const signature=document.querySelector('.op-cinema-signature');

@@ -1,6 +1,27 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const ui = require('../docs/assets/radar-organizado.js');
+test('novidades usam detecção nas últimas 48 horas e excluem a carga inicial',()=>{
+ const now=Date.parse('2026-11-04T15:00:00Z');
+ const doc=(id,seen,extra={})=>({id,titulo:'Edital '+id,url:'https://oficial.test/'+id,fonte:'pnab_pg',primeira_detecao:seen,base_inicial:false,...extra});
+ const rows=[doc('antigo','2026-11-02T14:59:59Z'),doc('limite','2026-11-02T15:00:00Z'),doc('novo','2026-11-04T14:00:00Z'),doc('futuro','2026-11-04T15:00:01Z'),doc('carga','2026-11-04T14:00:00Z',{base_inicial:true}),doc('sem-indicador','2026-11-04T14:00:00Z',{base_inicial:undefined})];
+ assert.deepEqual(ui.newlyDetected(rows,now).map(d=>d.id),['novo','limite']);
+});
+test('arquivo antigo recém-localizado é novo no radar, data de publicação não cria novidade',()=>{
+ const now=Date.parse('2026-11-04T15:00:00Z');
+ const base={fonte:'pnab_pg',base_inicial:false,titulo:'Resultado',url:'https://oficial.test/a',id:'a'};
+ assert.equal(ui.newlyDetected([{...base,primeira_detecao:'2026-11-04T14:00:00Z',data_no_arquivo:'2024-01-01'}],now).length,1);
+ for(const seen of ['',null,'inválida','2026-11-04','2026-10-01T14:00:00Z'])assert.equal(ui.newlyDetected([{...base,primeira_detecao:seen,data_no_arquivo:'2026-11-04'}],now).length,0);
+ assert.deepEqual(ui.newlyDetected(null,now),[]);
+ assert.deepEqual(ui.newlyDetected([null,{}],now),[]);
+ assert.deepEqual(ui.newlyDetected([base],NaN),[]);
+});
+test('contagem das novidades preserva arquivos distintos e elimina repetição do mesmo documento',()=>{
+ const now=Date.parse('2026-11-04T15:00:00Z');
+ const a={id:'a',fonte:'diario_pg',titulo:'Edição A',url:'https://oficial.test/a',primeira_detecao:'2026-11-04T13:00:00Z',base_inicial:false};
+ const b={...a,id:'b',titulo:'Edição B',url:'https://oficial.test/b',primeira_detecao:'2026-11-04T14:00:00Z'};
+ assert.deepEqual(ui.newlyDetected([a,{...a},b],now).map(d=>d.id),['b','a']);
+});
 test('separar resultados, editais, anexos e retificações',()=>{
  assert.equal(ui.documentType({fonte:'pnab_pg',titulo:'Resultado Inscricoes Edital 16 - 2026'}),'resultado');
  assert.equal(ui.documentType({fonte:'pnab_pg',titulo:'ANEXO 08 - Formulário de recurso'}),'anexo');
