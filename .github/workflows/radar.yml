@@ -59,6 +59,8 @@ jobs:
           node --test tests/test_mobile.cjs
           node --check docs/assets/central.js
           node --test tests/test_central.cjs
+          node --check docs/assets/direcao-visual.js
+          node --test tests/test_direcao_visual.cjs
           node --check docs/assets/calendario.js
           node --test tests/test_calendario.cjs
       - name: Ler publicacoes oficiais

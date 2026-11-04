@@ -61,7 +61,6 @@ function init(){
    if(label)label.textContent=open?'Fechar':'Menu';
  }
  function closeMobile(){
-   if(!mobileOpen())return;
    nav.classList.remove('open');
    setMobileLabel();
  }

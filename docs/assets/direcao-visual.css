@@ -1,0 +1,79 @@
+/* Tentáculos azuis, película e enquadramentos em áreas livres; conteúdo sempre opaco. */
+.op-art-direction .op-cinema-signature{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:72px;max-width:510px;margin-top:19px;border-top:1px solid #cfd8df;padding-top:12px;letter-spacing:1.5px}
+.op-cinema-signature>span{max-width:280px;line-height:1.9}
+.op-signature-tentacles{display:block;object-fit:contain;width:112px;height:86px;flex-shrink:0;pointer-events:none;user-select:none}
+.op-scene-film{width:34px;height:29px;object-fit:contain;margin-left:auto;filter:brightness(0) invert(1);opacity:.65;pointer-events:none;user-select:none}
+.op-art-direction .ed-feature-zone:before{inset:auto -50px -95px auto;background:url("./tentaculos-azuis.svg") center/contain no-repeat;width:270px;height:290px;border:0;border-radius:0;transform:rotate(-12deg);opacity:.38;pointer-events:none}
+.op-art-direction .ed-feature-zone>.wrap{position:relative;z-index:1}
+.op-art-direction .ed-pulse-card,.op-art-direction .ed-pulse-main{isolation:isolate}
+.op-art-direction #visao:before,.op-art-direction #fontes:before,.op-art-direction #oportunidades:before,.op-art-direction #notificacoes:before,.op-art-direction #projetos:before,.op-art-direction #agenda:before,.op-art-direction #reunioes:before{content:none}
+.op-header-visual{display:flex;align-items:center;justify-content:flex-end;gap:22px;flex-shrink:0;align-self:center;max-width:310px}
+.op-header-ornament{display:block;width:140px;height:128px;object-fit:contain;pointer-events:none;user-select:none}
+.op-header-visual .op-header-badge{flex-shrink:0}
+.op-art-direction #monitor .monitor-columns{grid-template-columns:1fr}
+.op-art-direction .op-mentions-compact{overflow:visible;border:0;background:transparent;box-shadow:none}
+.op-art-direction .op-fold-section{padding-top:12px!important;padding-bottom:12px!important;background:#f6f2e9}
+.op-art-direction #visao.op-fold-section{margin-top:12px}
+.op-art-direction #oportunidades.op-fold-section{padding-bottom:30px!important}
+.op-art-direction #notificacoes.op-fold-section{padding-top:30px!important}
+.op-section-menu{border:1px solid #ccd7df;border-radius:8px;background:#fffdf8;min-width:0;overflow:clip}
+.op-section-menu>summary{position:relative;display:flex;align-items:center;gap:18px;min-height:104px;padding:22px 25px;cursor:pointer;list-style:none;background:#fffdf8;isolation:isolate}
+.op-section-menu>summary::-webkit-details-marker,.op-collection-more>summary::-webkit-details-marker{display:none}
+.op-section-menu>summary:hover{background:#f8fafb}
+.op-section-menu>summary .op-fold-label{flex:1;min-width:0}
+:root .op-section-menu>summary .op-fold-title{font:700 21px/1.25 "Space Grotesk",system-ui;letter-spacing:-.55px;color:#1c3d6a;margin:0}
+.op-fold-label>small{display:block;font:400 12px/1.75 "DM Sans",system-ui;color:#65788d;margin-top:7px}
+.op-fold-icon{display:grid;place-items:center;flex:0 0 45px;width:45px;height:45px;background:#eef3fa;border:1px solid #d7e2ef;color:#315c9d;border-radius:50%}
+.op-fold-icon svg{display:block;width:24px;height:24px}
+.op-fold-plus{display:grid;place-items:center;flex:0 0 35px;width:35px;height:35px;border:1px solid #d0d9df;border-radius:50%;font:400 22px/1 "DM Sans",system-ui;color:#365f91;background:#fffdf8}
+.op-section-menu[open]>summary .op-fold-plus,.op-collection-more[open]>summary .op-fold-plus{font-size:0;background:#183765;border-color:#183765;color:#fff}
+.op-section-menu[open]>summary .op-fold-plus:after,.op-collection-more[open]>summary .op-fold-plus:after{content:"−";font:400 22px/1 "DM Sans",system-ui}
+.op-section-menu[open]>summary{border-bottom:1px solid #d9e1e4}
+.op-fold-body{padding:24px 25px;min-width:0}
+.op-fold-body>.section-eyebrow,.op-fold-body>.op-circuit-heading .op-eyebrow,.op-fold-body>.heading-bar .section-eyebrow,.op-fold-body>.section-headline .section-eyebrow,.op-fold-body>div:first-child>.section-eyebrow{display:none}
+.op-fold-body>.heading-bar,.op-fold-body>.section-headline{display:block;margin:0 0 20px;min-height:0}
+.op-fold-body>.heading-bar .title-side{margin-top:10px;max-width:none;text-align:left;font-size:11px}
+.op-fold-body .section-desc{font-size:13px;max-width:900px;margin-top:0}
+.op-fold-body>.op-circuit-heading{display:block;margin-bottom:20px}
+.op-fold-body>.op-circuit-heading p{max-width:850px;font-size:13px}
+.op-fold-body>.op-agenda-bottom-head{margin:0 0 20px}
+.op-art-direction .op-fold-body>.panel-head{padding:0 0 18px;background:transparent;border:0}
+.op-fold-close{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin:20px 0 0;padding:9px 15px;border:1px solid #c5d2df;border-radius:5px;background:#f3f6f9;color:#31567e;font:750 12px "DM Sans",system-ui;cursor:pointer}
+.op-art-direction .op-agenda-related{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;margin-top:22px}
+.op-art-direction .op-agenda-related:has(.op-section-menu[open]){grid-template-columns:1fr}
+.op-art-direction .op-agenda-related>#opCinemaCircuit,.op-art-direction .op-agenda-related>.op-agenda-bottom{border:0;background:transparent;padding:0!important;margin:0!important;min-width:0}
+.op-art-direction .op-agenda-related .op-section-menu>summary{padding:20px 18px;gap:13px;min-height:125px}
+:root .op-agenda-related .op-section-menu>summary .op-fold-title{font-size:19px}
+.op-art-direction .op-agenda-related .op-fold-icon{flex-basis:36px;width:36px;height:36px}
+.op-art-direction .op-agenda-related .op-fold-icon svg{width:21px;height:21px}
+.op-art-direction #opEventGrid,.op-art-direction #opPlaceGrid,.op-art-direction .op-catalog-year-grid,.op-collection-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.op-collection-more{grid-column:1/-1;min-width:0;margin-top:1px;border:1px solid #c7d4df;border-radius:7px;background:#fffdf8}
+.op-collection-more>summary{display:flex;align-items:center;justify-content:space-between;gap:22px;min-height:82px;list-style:none;padding:17px 23px;cursor:pointer}
+.op-collection-more>summary:hover{background:#f5f8fb}
+.op-collection-more>summary strong{font:700 16px/1.4 "Space Grotesk",system-ui;color:#244b7b}
+.op-collection-more>summary small{display:block;margin-top:5px;color:#6b7e90;font:400 11px/1.6 "DM Sans",system-ui}
+.op-more-open{display:none}.op-collection-more[open]>summary .op-more-closed{display:none}.op-collection-more[open]>summary .op-more-open{display:inline}
+.op-collection-grid{padding:18px;border-top:1px solid #dce4e8}
+.op-collection-end{display:flex;justify-content:center;padding:0 18px 18px}
+.op-collection-end>button{display:flex;align-items:center;gap:22px;min-height:46px;border:1px solid #bfcfdf;border-radius:5px;background:#eff4fa;padding:12px 20px;color:#31577f;font:750 12px "DM Sans",system-ui;cursor:pointer}
+.op-section-menu>summary:focus-visible,.op-collection-more>summary:focus-visible,.op-fold-close:focus-visible,.op-collection-end>button:focus-visible{outline:3px solid #ad8229;outline-offset:3px}
+.op-section-menu>summary:focus-visible{outline-offset:-4px}
+.op-art-direction .site-footer{position:relative;isolation:isolate;overflow:hidden}
+.op-art-direction .site-footer:before{content:"";position:absolute;right:-45px;bottom:-90px;background:url("./tentaculos-azuis.svg") center/contain no-repeat;width:260px;height:280px;opacity:.34;pointer-events:none;z-index:-1}
+.op-art-direction #publicacao{padding-top:40px;padding-bottom:40px}
+.op-art-direction #publicacao .op-share-central{background:#edf2f1}
+@media(min-width:1101px){.op-art-direction .op-fold-section> .op-section-menu>summary .op-fold-label,.op-art-direction .op-fold-section> .wrap> .op-section-menu>summary .op-fold-label{padding-right:95px}.op-art-direction .op-fold-section .op-section-menu>summary:after{content:"";position:absolute;right:85px;top:12px;bottom:12px;width:90px;background:url("./tentaculos-azuis.svg") center/contain no-repeat;opacity:.16;pointer-events:none;z-index:-1}}
+@media(max-width:1100px){.op-art-direction #opEventGrid,.op-art-direction #opPlaceGrid,.op-art-direction .op-catalog-year-grid,.op-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.op-header-visual{gap:8px;max-width:205px}.op-header-ornament{width:100px;height:95px}.op-art-direction .op-agenda-related{grid-template-columns:1fr}}
+@media(max-width:760px){
+ .op-art-direction .op-cinema-signature{min-height:65px;gap:10px;margin-top:16px;font-size:9px;letter-spacing:1.1px}.op-cinema-signature>span{max-width:220px}.op-signature-tentacles{width:80px;height:70px}
+ .op-header-visual{display:none}.op-art-direction .ed-feature-zone:before{width:170px;height:190px;right:-40px;bottom:-60px;opacity:.28}
+ .op-art-direction .op-fold-section{padding-top:9px!important;padding-bottom:9px!important}.op-art-direction #oportunidades.op-fold-section{padding-bottom:23px!important}.op-art-direction #notificacoes.op-fold-section{padding-top:23px!important}
+ .op-section-menu>summary{gap:12px;padding:18px 15px;min-height:110px}:root .op-section-menu>summary .op-fold-title{font-size:19px;line-height:1.35;letter-spacing:-.45px}.op-fold-label>small{font-size:12px;line-height:1.65;margin-top:6px}
+ .op-fold-icon{flex-basis:32px;width:32px;height:32px}.op-fold-icon svg{width:19px;height:19px}.op-fold-plus{flex-basis:30px;width:30px;height:30px;font-size:21px}
+ .op-fold-body{padding:20px 14px}.op-fold-body .section-desc,.op-fold-body>.op-circuit-heading p{font-size:14px}.op-fold-close{font-size:13px;min-height:46px}.op-art-direction .op-agenda-related{margin-top:18px;gap:12px}.op-art-direction .op-agenda-related .op-section-menu>summary{min-height:120px;padding:18px 14px;gap:11px}
+ .op-art-direction #opEventGrid,.op-art-direction #opPlaceGrid,.op-art-direction .op-catalog-year-grid,.op-collection-grid{grid-template-columns:1fr!important;gap:14px}
+ .op-collection-more>summary{padding:17px 16px;min-height:86px;gap:13px}.op-collection-more>summary strong{font-size:16px}.op-collection-more>summary small{font-size:12px}.op-collection-grid{padding:13px}.op-collection-end{padding:0 13px 14px}.op-collection-end>button{width:100%;justify-content:space-between;font-size:13px;min-height:48px}
+ .op-art-direction #publicacao{padding-top:30px;padding-bottom:30px}.op-art-direction .site-footer:before{width:165px;height:180px;right:-35px;bottom:-60px}
+}
+@media(max-width:340px){.op-section-menu>summary>.op-fold-icon{display:none}.op-fold-label{overflow-wrap:anywhere}}
+@media(prefers-reduced-motion:reduce){.op-section-menu,.op-collection-more,.op-fold-plus{scroll-behavior:auto;transition:none}}

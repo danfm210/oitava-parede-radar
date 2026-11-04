@@ -219,7 +219,7 @@
     const source=PROGRAMS[program]||{short:'Outras fontes',name:'Outras fontes',tone:'other'};
     const count=section.categories.reduce((t,g)=>t+g.count,0);
     const key='program:'+program;
-    const isOpen=forceOpen||(filterProgram!=='todos'&&filterProgram===program)||(isFirst&&filterProgram==='todos');
+    const isOpen=forceOpen||(filterProgram!=='todos'&&filterProgram===program);
     const logo=OFFICIAL_LOGOS[program]?officialLogo(program):svgMark(program);
     return '<details class="radar-source-section radar-accordion-level-1 program-'+source.tone+'"'+detailsAttrs(key,isOpen)+'>'+
       '<summary class="radar-source-title"><span class="radar-source-emblem">'+logo+'</span>'+
@@ -227,7 +227,7 @@
       '<span>'+section.categories.length+' categoria'+(section.categories.length===1?'':'s')+' · '+count+' documento'+(count===1?'':'s')+'</span></span>'+
       '<span class="radar-accordion-chevron" aria-hidden="true"></span></summary>'+
       '<div class="radar-source-contents"><div class="radar-category-grid">'+
-      section.categories.map((c,i)=>categorySection(c,program,i,isOpen,forceOpen)).join('')+
+      section.categories.map((c,i)=>categorySection(c,program,i===0,isOpen,forceOpen)).join('')+
       '</div></div></details>';
   }
   function renderCurrent() {

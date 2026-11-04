@@ -149,6 +149,7 @@ function init(){
    close();
    const dest=document.getElementById(item.target||item.id);
    if(!dest)return;
+   window.OitavaCompacto?.revealTarget(dest);
    if(!dest.hasAttribute('tabindex'))dest.setAttribute('tabindex','-1');
    dest.focus({preventScroll:true});
    if(window.location.hash!=='#'+dest.id)history.replaceState(null,'','#'+dest.id);

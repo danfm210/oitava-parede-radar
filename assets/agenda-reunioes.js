@@ -175,8 +175,10 @@ function renderEvents(){
  const filtered=filterEvents(all,eventCity,eventCat,eventSearch,eventSavedOnly,savedEvents).filter(e=>eventInPeriod(e,eventPeriod));
  const count=document.getElementById('opEventCount');if(count)count.textContent=filtered.length+' evento'+(filtered.length===1?'':'s')+' na seleção';
  const target=document.getElementById('opEventGrid');if(!target)return;
- target.innerHTML=filtered.length?filtered.map(eventCard).join(''):
- '<div class="op-noresults"><strong>Nenhum evento nesta seleção</strong><p>Experimente outro período, cidade ou categoria.</p><button type="button" class="op-saved" data-reset-events>Limpar filtros da agenda</button></div>';
+ if(filtered.length){
+  if(root.OitavaCompacto)root.OitavaCompacto.renderCollection(target,filtered,eventCard,{kind:'events',unit:'eventos',key:JSON.stringify([eventCity,eventCat,eventSearch,eventSavedOnly,eventPeriod]),expanded:Boolean(eventSearch)});
+  else target.innerHTML=filtered.map(eventCard).join('');
+ }else target.innerHTML='<div class="op-noresults"><strong>Nenhum evento nesta seleção</strong><p>Experimente outro período, cidade ou categoria.</p><button type="button" class="op-saved" data-reset-events>Limpar filtros da agenda</button></div>';
  const tabs=document.getElementById('opEventCities');syncToggles(tabs,'[data-value]',eventCity);
  const categories=document.getElementById('opEventCategories');syncToggles(categories,'[data-value]',eventCat);
  const savedButton=document.getElementById('opEventSaved');if(savedButton){savedButton.classList.toggle('active',eventSavedOnly);savedButton.setAttribute('aria-pressed',String(eventSavedOnly));savedButton.textContent='♡ Salvos ('+savedEvents.size+')'}
@@ -194,8 +196,10 @@ function renderPlaces(){
  const badge=document.getElementById('opMeetCityCount');if(badge)badge.textContent=String(cities.length).padStart(2,'0');
  const filtered=filterPlaces(places,meetCity,meetKind,meetSearch,meetSavedOnly,savedPlaces);
  const target=document.getElementById('opPlaceGrid');if(!target)return;
- target.innerHTML=filtered.length?filtered.map(placeCard).join(''):
- '<div class="op-noresults"><strong>Sem locais para estes filtros</strong><p>Experimente outro estilo de encontro ou cidade.</p></div>';
+ if(filtered.length){
+  if(root.OitavaCompacto)root.OitavaCompacto.renderCollection(target,filtered,placeCard,{kind:'places',unit:'lugares',key:JSON.stringify([meetCity,meetKind,meetSearch,meetSavedOnly]),expanded:Boolean(meetSearch)});
+  else target.innerHTML=filtered.map(placeCard).join('');
+ }else target.innerHTML='<div class="op-noresults"><strong>Sem locais para estes filtros</strong><p>Experimente outro estilo de encontro ou cidade.</p></div>';
  const count=document.getElementById('opPlaceCount');if(count)count.textContent=filtered.length+' '+(filtered.length===1?'sugestão':'sugestões')+' · '+customPlaces.length+' '+(customPlaces.length===1?'ponto personalizado':'pontos personalizados');
  syncToggles(document.getElementById('opMeetCities'),'[data-value]',meetCity);
  syncToggles(document.getElementById('opMeetKinds'),'[data-value]',meetKind);
