@@ -54,8 +54,24 @@ function fold(host,{description,icon='frame',id=''}={}){
  const close=document.createElement('button');close.type='button';close.className='op-fold-close';close.setAttribute('data-section-close','');close.textContent='Recolher esta seção ↑';body.appendChild(close);
  return details;
 }
-function ornament(parent,file,cls){
- if(!parent)return;const image=document.createElement('img');image.className=cls;image.src='./assets/'+file;image.alt='';image.setAttribute('aria-hidden','true');image.setAttribute('draggable','false');image.loading='lazy';image.width=144;image.height=120;parent.appendChild(image);return image;
+function ornament(parent,file,cls,{width=144,height=120,eager=false}={}){
+ if(!parent)return;const image=document.createElement('img');image.className=cls;image.src='./assets/'+file;image.alt='';image.setAttribute('aria-hidden','true');image.setAttribute('draggable','false');image.loading=eager?'eager':'lazy';image.decoding='async';if(eager)image.fetchPriority='high';image.width=width;image.height=height;parent.appendChild(image);return image;
+}
+function mountIllustrations(){
+ const hero=document.querySelector('.op-cinema-hero'),stage=document.getElementById('opSceneStage');
+ if(hero&&stage){
+  const artwork=document.createElement('figure');artwork.className='op-hero-illustration';artwork.setAttribute('aria-hidden','true');
+  ornament(artwork,'tentaculos-cinema-editorial.webp','op-hero-art',{width:1312,height:1199,eager:true});
+  hero.appendChild(artwork);hero.after(stage);stage.classList.add('op-stage-compact');
+ }
+ const signature=document.querySelector('.op-cinema-signature');
+ if(signature){const label=document.createElement('span');label.textContent=signature.textContent;signature.textContent='';signature.appendChild(label);}
+ const sceneFoot=document.querySelector('.op-scene-foot');
+ if(sceneFoot){const position=sceneFoot.lastElementChild,film=document.createElement('span');film.className='op-scene-film';film.setAttribute('aria-hidden','true');film.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">'+ICONS.reel+'</svg>';sceneFoot.insertBefore(film,position);}
+ for(const [id,file,width,height] of [['agenda','cinema-editorial.webp',1536,1024],['reunioes','tentaculos-cinema-editorial.webp',1312,1199]]){
+  const badge=document.querySelector('#'+id+' .op-header-badge');if(!badge)continue;
+  const visual=document.createElement('div');visual.className='op-header-visual';badge.before(visual);ornament(visual,file,'op-header-ornament',{width,height});visual.appendChild(badge);
+ }
 }
 function init(){
  if(!document.querySelector('main')||document.documentElement.classList.contains('op-art-direction'))return;
@@ -78,14 +94,7 @@ function init(){
  if(circuit&&portals){
   const related=document.createElement('div');related.className='op-agenda-related';circuit.before(related);related.append(circuit,portals);
  }
- const signature=document.querySelector('.op-cinema-signature');
- if(signature){const label=document.createElement('span');label.textContent=signature.textContent;signature.textContent='';signature.appendChild(label);ornament(signature,'tentaculos-azuis.svg','op-signature-tentacles');}
- const sceneFoot=document.querySelector('.op-scene-foot');
- if(sceneFoot){const position=sceneFoot.lastElementChild,film=ornament(sceneFoot,'cinema-grafismos.svg','op-scene-film');sceneFoot.insertBefore(film,position);}
- for(const [id,file] of [['agenda','cinema-grafismos.svg'],['reunioes','tentaculos-azuis.svg']]){
-  const badge=document.querySelector('#'+id+' .op-header-badge');if(!badge)continue;
-  const visual=document.createElement('div');visual.className='op-header-visual';badge.before(visual);ornament(visual,file,'op-header-ornament');visual.appendChild(badge);
- }
+ mountIllustrations();
  const compactTargets=()=>document.querySelectorAll('.op-fold-section > .op-section-menu, .op-fold-section > .wrap > .op-section-menu, .op-mentions-compact > .op-section-menu');
  const revealHash=()=>{let id;try{id=decodeURIComponent(location.hash.slice(1));}catch{return;}const target=document.getElementById(id);if(revealTarget(target))requestAnimationFrame(()=>target.scrollIntoView({behavior:'instant',block:'start'}));};
  document.addEventListener('click',event=>{
