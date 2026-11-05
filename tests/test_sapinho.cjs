@@ -1,25 +1,18 @@
 const test=require('node:test'),assert=require('node:assert/strict');
-const {CHANCE,COOLDOWN,shouldVisit,chooseMessage}=require('../docs/assets/sapinho.js');
-const now=Date.UTC(2026,10,3);
-test('visita é rara e respeita o limite de probabilidade',()=>{
- assert.equal(CHANCE,.03);
- assert.equal(shouldVisit(now,null,0,false),true);
- assert.equal(shouldVisit(now,null,.029,false),true);
- assert.equal(shouldVisit(now,null,.03,false),false);
- assert.equal(shouldVisit(now,null,.99,false),false);
+const {CHANCE,shouldVisit,chooseMessage}=require('../docs/assets/sapinho.js');
+test('sapinho tem 20% de chance em cada entrada',()=>{
+ assert.equal(CHANCE,.2);
+ assert.equal(shouldVisit(0),true);
+ assert.equal(shouldVisit(.199999),true);
+ assert.equal(shouldVisit(.2),false);
+ assert.equal(shouldVisit(.99),false);
 });
-test('não reaparece na mesma sessão nem antes de 14 dias',()=>{
- assert.equal(COOLDOWN,14*86400000);
- assert.equal(shouldVisit(now,null,0,true),false);
- assert.equal(shouldVisit(now,now-COOLDOWN+1,0,false),false);
- assert.equal(shouldVisit(now,now-COOLDOWN,0,false),true);
+test('uma em cinco possibilidades elegíveis em distribuição uniforme',()=>{
+ const visits=Array.from({length:1000},(_,i)=>shouldVisit(i/1000)).filter(Boolean);
+ assert.equal(visits.length,200);
 });
-test('datas futuras ou corrompidas não provocam repetição',()=>{
- assert.equal(shouldVisit(now,now+1000,0,false),false);
- assert.equal(shouldVisit(now,NaN,0,false),false);
- assert.equal(shouldVisit(NaN,null,0,false),false);
- assert.equal(shouldVisit(now,null,NaN,false),false);
- assert.equal(shouldVisit(now,null,-1,false),false);
+test('sorteios inválidos não exibem a visita',()=>{
+ for(const roll of [NaN,Infinity,-Infinity,-1,1,null,undefined,'0.1'])assert.equal(shouldVisit(roll),false);
 });
 test('mensagens variam e permanecem válidas nos extremos',()=>{
  assert.notEqual(chooseMessage(0),chooseMessage(.99));

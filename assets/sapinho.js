@@ -1,8 +1,7 @@
-/* Uma visita rara: 3% das sessões, com intervalo mínimo de 14 dias por navegador. */
+/* Uma visita surpresa: 20% de chance em cada entrada, sem intervalo entre visitas. */
 (function(){
 'use strict';
-const CHANCE=.03,COOLDOWN=14*24*60*60*1000;
-const LAST='oitava_sapinho_ultima_visita_v1',SESSION='oitava_sapinho_sessao_v1';
+const CHANCE=.2;
 const MESSAGES=[
  'Passei só para desejar boas ideias. Croac!',
  'Uma pausa pequena para uma ideia grande. Croac!',
@@ -49,24 +48,12 @@ function playSound(context,sound){
  }
  return Math.ceil((Math.max(...sound.notes.map(n=>n[2]+n[3]))+.15)*1000);
 }
-function shouldVisit(now,last,roll,seen){
- if(seen||!Number.isFinite(now)||!Number.isFinite(roll)||roll<0||roll>=CHANCE)return false;
- if(last!==null&&(!Number.isFinite(last)||now-last<COOLDOWN))return false;
- return true;
-}
+function shouldVisit(roll){return Number.isFinite(roll)&&roll>=0&&roll<CHANCE;}
 function chooseMessage(roll){return MESSAGES[Math.max(0,Math.min(MESSAGES.length-1,Math.floor((Number.isFinite(roll)?roll:0)*MESSAGES.length)))];}
 function init(){
- let last;
- try{
-  const seen=sessionStorage.getItem(SESSION)==='1';
-  const raw=localStorage.getItem(LAST);last=raw===null?null:Number(raw);
-  sessionStorage.setItem(SESSION,'1');
-  if(!shouldVisit(Date.now(),last,Math.random(),seen))return;
- }catch{return;} // Sem armazenamento, evite repetir a visita em cada carregamento.
+ if(!shouldVisit(Math.random()))return;
  window.setTimeout(()=>{
   if(document.hidden||Array.from(document.querySelectorAll('[aria-modal="true"]:not([hidden])')).some(el=>el.getClientRects().length)||document.activeElement?.matches('input,textarea,select'))return;
-  // Só inicia o intervalo quando a visita realmente aparece.
-  try{localStorage.setItem(LAST,String(Date.now()));}catch{return;}
   const card=document.createElement('aside');
   card.className='op-frog-visit';card.setAttribute('aria-label','Uma visita do sapinho');
   card.innerHTML='<button type="button" class="op-frog-close" aria-label="Fechar visita do sapinho">×</button>'+
@@ -111,7 +98,7 @@ function init(){
   });
  },5000);
 }
-if(typeof module==='object'&&module.exports)module.exports={CHANCE,COOLDOWN,shouldVisit,chooseMessage,SOUNDS,chooseSound,playSound};
+if(typeof module==='object'&&module.exports)module.exports={CHANCE,shouldVisit,chooseMessage,SOUNDS,chooseSound,playSound};
 if(typeof document!=='undefined'){
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 }

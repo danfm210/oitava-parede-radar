@@ -157,7 +157,7 @@ A busca acontece inteiramente no navegador, sem enviar texto digitado a terceiro
 
 ## Visita rara do sapinho
 
-O sapinho ilustrado aparece em 3% das sessões elegíveis, cinco segundos após entrar, com intervalo mínimo de 14 dias neste navegador. Não aparece enquanto um formulário ou diálogo estiver em uso. O botão **Ouvir croac** sintetiza um som curto localmente, sem autoplay ou serviço externo; a caixa pode ser fechada e respeita a preferência por movimento reduzido. O teste `tests/test_sapinho.cjs` cobre probabilidade e intervalo, inclusive datas inválidas.
+O sapinho ilustrado tem 20% de chance de aparecer a cada entrada ou recarregamento da página, cinco segundos após entrar. Cada entrada faz um sorteio independente, sem bloqueio por sessão ou intervalo de dias. Não aparece enquanto um formulário ou diálogo estiver em uso. O botão **Ouvir croac** sintetiza um som curto localmente, sem autoplay ou serviço externo; a caixa pode ser fechada e respeita a preferência por movimento reduzido. O teste `tests/test_sapinho.cjs` cobre a probabilidade de uma em cinco possibilidades e sorteios inválidos.
 
 ## Aviso de aprovação confirmada
 
