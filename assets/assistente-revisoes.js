@@ -3,7 +3,7 @@
 (function(root){
 'use strict';
 const STORE='oitava_mencoes_conferidas_v1';
-let mentions=[], allowedUrl=()=>false, escapeFn=(x)=>String(x??''),filter='pendentes';
+let mentions=[], allowedUrl=()=>false, escapeFn=(x)=>String(x??''),filter='pendentes',locatedId='';
 const $=id=>document.getElementById(id);
 let checked={};
 try{checked=JSON.parse(localStorage.getItem(STORE)||'{}')||{};if(typeof checked!=='object'||Array.isArray(checked))checked={};}catch{checked={};}
@@ -20,6 +20,8 @@ function renderMentions(rows,allowed,esc){
  const total=mentions.length,count=mentions.filter(status).length,remaining=total-count;
  const summary=$('monitorMatches');if(summary)summary.textContent=String(remaining);
  const subset=mentions.filter(m=>filter==='todas'||(filter==='conferidas'?status(m):!status(m))).slice(0,24);
+ const located=mentions.find(m=>onlyCleanId(m.id)===locatedId);
+ if(filter==='todas'&&located&&!subset.includes(located))subset.push(located);
  const tabs='<div class="op-review-toolbar"><div class="op-review-stats"><strong>'+remaining+' pendente'+(remaining===1?'':'s')+'</strong><span>'+count+' conferida'+(count===1?'':'s')+' neste navegador</span></div>'+
   '<div class="op-review-tabs">'+
    [['pendentes','Pendentes'],['conferidas','Conferidas'],['todas','Todas']].map(([v,l])=>'<button type="button" class="op-review-tab '+(filter===v?'is-active':'')+'" data-review-filter="'+v+'" aria-pressed="'+(filter===v)+'">'+l+'</button>').join('')+
@@ -30,7 +32,7 @@ function renderMentions(rows,allowed,esc){
   const stamp=done?String(checked[id]?.at||''):'';
   const date=stamp?new Date(stamp).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'';
   const link=allowedUrl(m.url)?'<a class="op-mention-link" target="_blank" rel="noopener noreferrer" href="'+escapeFn(m.url)+'">Abrir original ↗</a>':'';
-  return '<article class="op-mention-card '+(done?'is-checked':'')+'">'+
+  return '<article class="op-mention-card '+(done?'is-checked':'')+'" id="op-mention-'+id+'" tabindex="-1">'+
    '<label class="op-mention-check"><input type="checkbox" data-review-id="'+id+'" '+(done?'checked':'')+' aria-label="Marcar documento como conferido: '+escapeHTML(m.titulo)+'"/><span>Conferida</span></label>'+
    '<div class="op-mention-main"><span class="op-mention-priority '+(priority==='maxima'?'is-max':priority==='alta'?'is-high':'')+'">'+(priority==='maxima'?'Prioridade máxima':priority==='alta'?'Prioridade alta':'Menção não confirmada')+'</span>'+
    '<strong>'+escapeFn(m.titulo)+'</strong><p>'+escapeFn(m.mensagem||'Termo localizado; confira o documento.')+'</p>'+
@@ -53,6 +55,7 @@ function initReview(){
   if(!mentions.some(m=>onlyCleanId(m.id)===id))return;
   if(input.checked)checked[id]={at:new Date().toISOString()};else delete checked[id];
   save();renderMentions();
+  window.dispatchEvent(new CustomEvent('op:reviews-updated'));
  });
 }
 function buildHelp(){
@@ -82,7 +85,7 @@ function knowledge(question){
  if(/projet|cadastr|inscri|proponente|protocolo|status/.test(q))return {text:'Na seção **Meus projetos**, escolha adicionar projeto, preencha título, proponente, edital e protocolo, se tiver, e salve. Os dados ficam neste navegador. Use Exportar para criar uma cópia de segurança.',anchor:'#projetos'};
  if(/agenda|evento|show|festival|cinema|ingresso|programa/.test(q))return {text:'Em **Agenda cultural**, filtre por cidade e tema, confira a data e selecione **Programação** para abrir a fonte. O coração salva o evento somente neste dispositivo. Novos eventos entram por curadoria, não por varredura automática.',anchor:'#agenda'};
  if(/reuni|cafe|bar|cerva|cerveja|encontro|mapa|convite|local/.test(q))return {text:'Na aba **Reuniões**, escolha a cidade e o estilo do encontro. Use **Ver no mapa** para localização ou **Copiar convite** para enviar ao grupo. Confirme horários e reservas diretamente com o estabelecimento.',anchor:'#reunioes'};
- if(/notific|email|alerta|mensagem/.test(q))return {text:'A configuração do envio automático de e-mails está pendente. Atualmente, o site atualiza o radar pelo GitHub, mas não envia e-mail por conta própria. As tarefas agendadas do ChatGPT são independentes do website.',anchor:'#notificacoes'};
+ if(/notific|email|alerta|mensagem/.test(q))return {text:'Use o sino **Novidades**, no cabeçalho, para consultar avisos e ir direto ao arquivo ou à menção. As bolhas na navegação mostram as novidades não lidas de cada área. Abrir um aviso marca somente a leitura; o check de uma menção continua sendo uma conferência separada. As leituras ficam neste navegador.',anchor:'#monitor'};
  if(/foto|imagem|drive|instagram|logo|oitava/.test(q))return {text:'O logo vem dos materiais fornecidos pela Oitava Parede. As fotos da Agenda e dos locais possuem créditos e links de origem. Para incluir fotos de projetos da produtora, a pasta de arquivos precisa estar acessível e os materiais devem ser publicados no repositório.',anchor:'#acervo'};
  return {text:'Não encontrei uma resposta específica nos tópicos de funcionamento. Você pode copiar sua pergunta e conversar com uma IA no ChatGPT para explorar a dúvida, ou navegar pelas áreas principais da Central.',external:true};
 }
@@ -106,4 +109,8 @@ const api={knowledge,onlyCleanId};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(typeof document!=='undefined'){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();}
 root.renderMencoesRevisaveis=renderMentions;
+root.OitavaReviews={locateMention(id){
+ const clean=onlyCleanId(id);if(!mentions.some(m=>onlyCleanId(m.id)===clean))return null;
+ locatedId=clean;filter='todas';renderMentions();return $('op-mention-'+clean);
+}};
 })(typeof window!=='undefined'?window:globalThis);

@@ -310,7 +310,7 @@
   }
   function locateDocument(doc){
     resetFilters();renderCurrent();
-    const item=document.getElementById(documentAnchor(doc));if(!item)return;
+    const item=document.getElementById(documentAnchor(doc));if(!item)return false;
     for(let ancestor=item.parentElement;ancestor;ancestor=ancestor.parentElement){
       if(ancestor.tagName==='DETAILS'){ancestor.open=true;if(ancestor.dataset.accordionKey)accordionOverrides.set(ancestor.dataset.accordionKey,true);}
     }
@@ -319,6 +319,11 @@
     item.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'});
     const status=document.getElementById('radarNewLocation');
     if(status)status.textContent='Arquivo localizado: '+doc.titulo+'.';
+    return true;
+  }
+  function locateDocumentByKey(key){
+    const doc=currentDocs.find(item=>documentKey(item)===String(key));
+    return doc?locateDocument(doc):false;
   }
   function renderNewFiles(){
     const banner=document.getElementById('radarNewFiles');if(!banner)return;
@@ -395,5 +400,8 @@
   }
   const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,editalReference,inferredDate,sortDocs,withinPeriod,newlyDetected,shouldCollapse};
   if(typeof module==='object'&&module.exports)module.exports=api;
-  if(root&&typeof document!=='undefined')root.renderRadarOrganizado=renderRadarOrganizado;
+  if(root&&typeof document!=='undefined'){
+    root.renderRadarOrganizado=renderRadarOrganizado;
+    root.OitavaRadar={...api,locateDocument:locateDocumentByKey};
+  }
 })(typeof window!=='undefined'?window:null);

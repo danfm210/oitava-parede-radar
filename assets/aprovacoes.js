@@ -46,9 +46,15 @@ async function init(){
  let rows;
  try{
   const response=await fetch('./dados/aprovacoes.json',{cache:'no-store'});
-  if(!response.ok)return;
+  if(!response.ok)throw Error('Avisos indisponíveis');
   rows=confirmedResults(await response.json(),new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'}));
- }catch{return;}
+ }catch{
+  window.OitavaCentralData=window.OitavaCentralData||{};window.OitavaCentralData.approvalsError=true;
+  window.dispatchEvent(new CustomEvent('op:approvals-error'));return;
+ }
+ window.OitavaCentralData=window.OitavaCentralData||{};
+ window.OitavaCentralData.approvals=rows;window.OitavaCentralData.approvalsError=false;
+ window.dispatchEvent(new CustomEvent('op:approvals-ready',{detail:rows}));
  if(!rows.length)return;
  const note=document.querySelector('#visao .guide-note');
  if(note)note.textContent='Há resultados positivos confirmados no cadastro. Use “Ver resultados confirmados” no Radar para consultar a etapa e o documento oficial de cada projeto.';
@@ -58,13 +64,19 @@ async function init(){
  dialog.innerHTML='<div class="op-approval-top"><span>OITAVA PAREDE · RESULTADO OFICIAL</span><button type="button" class="op-approval-close" aria-label="Fechar aviso de aprovação">×</button></div>'+
  '<div class="op-approval-content"><div class="op-approval-seal" aria-hidden="true">✓</div><h2 id="opApprovalTitle">Tem notícia boa para a Oitava!</h2>'+
  '<p id="opApprovalIntro">'+(rows.length===1?'Um projeto teve resultado positivo confirmado em fonte oficial.':'Projetos tiveram resultados positivos confirmados em fontes oficiais.')+'</p>'+
- '<div class="op-approval-list">'+rows.map(r=>'<article class="op-approval-item"><span class="op-approval-status">'+esc(RESULTS[r.resultado])+'</span><h3>'+esc(r.projeto)+'</h3><p class="op-approval-person">'+esc(r.proponente)+'</p><dl><div><dt>Programa / edital</dt><dd>'+esc(r.programa)+'</dd></div><div><dt>Etapa confirmada</dt><dd>'+esc(STAGES[r.etapa])+'</dd></div><div><dt>Publicação oficial</dt><dd>'+formatDate(r.publicado_em)+'</dd></div></dl><p class="op-approval-explanation">'+esc(r.explicacao)+'</p><blockquote>'+esc(r.trecho_fonte)+'</blockquote><a class="op-approval-source" target="_blank" rel="noopener noreferrer" href="'+esc(r.fonte_url)+'">Consultar a fonte oficial ↗</a></article>').join('')+
+ '<div class="op-approval-list">'+rows.map(r=>'<article class="op-approval-item" id="op-approval-item-'+esc(r.id)+'" tabindex="-1"><span class="op-approval-status">'+esc(RESULTS[r.resultado])+'</span><h3>'+esc(r.projeto)+'</h3><p class="op-approval-person">'+esc(r.proponente)+'</p><dl><div><dt>Programa / edital</dt><dd>'+esc(r.programa)+'</dd></div><div><dt>Etapa confirmada</dt><dd>'+esc(STAGES[r.etapa])+'</dd></div><div><dt>Publicação oficial</dt><dd>'+formatDate(r.publicado_em)+'</dd></div></dl><p class="op-approval-explanation">'+esc(r.explicacao)+'</p><blockquote>'+esc(r.trecho_fonte)+'</blockquote><a class="op-approval-source" target="_blank" rel="noopener noreferrer" href="'+esc(r.fonte_url)+'">Consultar a fonte oficial ↗</a></article>').join('')+
  '</div><div class="op-approval-footer"><span>Conferência documental registrada. O aviso descreve a etapa publicada.</span><button type="button" class="op-approval-understood" autofocus>Entendi, continuar no site</button></div></div>';
  document.body.appendChild(dialog);
  const button=document.createElement('button');button.type='button';button.className='op-approval-reopen';button.textContent='Ver resultados confirmados ('+rows.length+')';
  document.querySelector('#monitor .monitor-header')?.appendChild(button);
  let previousOverflow='';
  function open(){if(!dialog.open&&typeof dialog.showModal==='function'){previousOverflow=document.body.style.overflow;dialog.showModal();document.body.style.overflow='hidden';}}
+ window.OitavaApprovals.openResult=id=>{
+  if(!rows.some(r=>r.id===id))return false;
+  document.getElementById('opNewsBell')?.focus({preventScroll:true});
+  open();const target=document.getElementById('op-approval-item-'+id);
+  target?.focus({preventScroll:true});target?.scrollIntoView({block:'nearest'});return dialog.open;
+ };
  button.addEventListener('click',open);
  dialog.querySelector('.op-approval-close').addEventListener('click',()=>dialog.close());
  dialog.querySelector('.op-approval-understood').addEventListener('click',()=>dialog.close());
@@ -84,6 +96,7 @@ async function init(){
  window.setTimeout(present,1500);
 }
 const api={PEOPLE,RESULTS,STAGES,officialURL,validDate,eligible,confirmedResults,revisionKey};
+if(typeof window!=='undefined')window.OitavaApprovals=api;
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(typeof document!=='undefined'){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();}
 })();

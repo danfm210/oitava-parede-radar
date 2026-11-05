@@ -53,7 +53,15 @@ config/termos_publicos.txt    → nomes públicos procurados
 requirements.txt              → dependências do monitor
 ```
 
-## Agenda cultural e pontos de encontro (novo)
+## Novidades na navegação
+
+O sino **Novidades** reúne arquivos e menções detectados nas últimas 48 horas, fora do inventário inicial, e aprovações que passaram pela conferência documental. As bolhas no menu e nos atalhos do celular contam apenas avisos não lidos de cada área. O botão **Localizar no site** abre os menus necessários e remove filtros que impediriam chegar ao arquivo. Uma menção continua identificada como **a conferir**; seu aviso não comprova aprovação.
+
+Abrir um aviso ou usar **Marcar todas como lidas** registra a leitura em `oitava_novidades_lidas_v1`, apenas neste navegador. Os avisos lidos continuam em **Todas** enquanto estiverem no período de detecção. O check de conferência de menções é independente. Revisões novas de aprovações recebem uma nova chave, e resultados revogados deixam a lista. Não há pedido de permissão para notificações do sistema.
+
+Teste da interface: `node --test tests/*.cjs`.
+
+## Agenda cultural e pontos de encontro
 
 O site tem as abas **Agenda cultural** e **Reuniões**, com filtros por cidade, categoria e tipo de encontro, fotos externas com crédito quando disponíveis, links para as fontes e para o mapa, favoritos locais e botão para copiar convites.
 
