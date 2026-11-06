@@ -8,7 +8,9 @@ on:
         default: false
         type: boolean
   schedule:
+    # 08:37 e 19:37 no horário de Brasília (UTC-3)
     - cron: '37 11 * * *'
+    - cron: '37 22 * * *'
   push:
     branches: [main]
 permissions:
