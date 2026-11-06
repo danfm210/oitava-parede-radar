@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2026-11-05T18:56:55+00:00",
+  "generated_at": "2026-11-06T00:53:40+00:00",
   "observacao": "Correspondencias nao confirmam aprovacao, reprovacao, elegibilidade nem prazo.",
   "fontes": [
     {
@@ -8,7 +8,7 @@
       "nome": "PNAB Praia Grande",
       "url": "https://www2.praiagrande.sp.gov.br/secretarias/cultura-turismo/lei-aldir-blanc",
       "situacao": "ok",
-      "verificado_em": "2026-11-05T18:56:55+00:00",
+      "verificado_em": "2026-11-06T00:53:40+00:00",
       "documentos_localizados": 85,
       "documentos_lidos": 12,
       "detalhe": ""
@@ -18,7 +18,7 @@
       "nome": "Lei Paulo Gustavo Praia Grande",
       "url": "https://www2.praiagrande.sp.gov.br/secretarias/cultura-turismo/lei-paulo-gustavo",
       "situacao": "ok",
-      "verificado_em": "2026-11-05T18:56:55+00:00",
+      "verificado_em": "2026-11-06T00:53:40+00:00",
       "documentos_localizados": 36,
       "documentos_lidos": 12,
       "detalhe": ""
@@ -28,18 +28,102 @@
       "nome": "Diário Oficial Praia Grande",
       "url": "https://plenussistemas.dioenet.com.br/list/praia-grande",
       "situacao": "ok",
-      "verificado_em": "2026-11-05T18:56:55+00:00",
+      "verificado_em": "2026-11-06T00:53:40+00:00",
       "documentos_localizados": 7,
       "documentos_lidos": 7,
       "detalhe": ""
     }
   ],
   "rotacao": {
-    "pnab_pg": 43,
-    "lpg_pg": 0,
+    "pnab_pg": 55,
+    "lpg_pg": 12,
     "diario_pg": 0
   },
   "publicacoes": [
+    {
+      "id": "599f7f56fdf603417159",
+      "fonte": "pnab_pg",
+      "titulo": "Resultado Recursos Edital-16 - 2026",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261105_171706_Resultado-da-Etapa-R_vtac1ldb.sik.pdf",
+      "categoria": "resultado",
+      "primeira_detecao": "2026-11-06T00:53:40+00:00",
+      "base_inicial": false,
+      "revisao": "Pendente",
+      "resumo": "Publicacao localizada; conferir original.",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
+      "data_no_arquivo": "2026-11-05",
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
+    },
+    {
+      "id": "bc69b46237bbfba7d45c",
+      "fonte": "pnab_pg",
+      "titulo": "Resultado Recursos Edital-17 - 2026",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261105_171706_Resultado-da-Etapa-R_f0hdodjz.wly.pdf",
+      "categoria": "resultado",
+      "primeira_detecao": "2026-11-06T00:53:40+00:00",
+      "base_inicial": false,
+      "revisao": "Pendente",
+      "resumo": "Publicacao localizada; conferir original.",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
+      "data_no_arquivo": "2026-11-05",
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
+    },
+    {
+      "id": "6186f593e985e5dc92e3",
+      "fonte": "pnab_pg",
+      "titulo": "Resultado Recursos Edital-19 - 2026",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261105_171706_Resultado-da-Etapa-R_tpc4bggx.xuu.pdf",
+      "categoria": "resultado",
+      "primeira_detecao": "2026-11-06T00:53:40+00:00",
+      "base_inicial": false,
+      "revisao": "Pendente",
+      "resumo": "Publicacao localizada; conferir original.",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
+      "data_no_arquivo": "2026-11-05",
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
+    },
+    {
+      "id": "23acfc926f97d347768a",
+      "fonte": "pnab_pg",
+      "titulo": "Resultado Recursos Edital-20 - 2026",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261105_171706_Resultado-da-Etapa-R_hw15nlm1.ts2.pdf",
+      "categoria": "resultado",
+      "primeira_detecao": "2026-11-06T00:53:40+00:00",
+      "base_inicial": false,
+      "revisao": "Pendente",
+      "resumo": "Publicacao localizada; conferir original.",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
+      "data_no_arquivo": "2026-11-05",
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
+    },
+    {
+      "id": "5aa66442e5daa62e0a32",
+      "fonte": "pnab_pg",
+      "titulo": "Resultado Recursos Edital-21 - 2026",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261105_171706_Resultado-da-Etapa-R_3gerkk1b.0pp.pdf",
+      "categoria": "resultado",
+      "primeira_detecao": "2026-11-06T00:53:40+00:00",
+      "base_inicial": false,
+      "revisao": "Pendente",
+      "resumo": "Publicacao localizada; conferir original.",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
+      "data_no_arquivo": "2026-11-05",
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
+    },
+    {
+      "id": "aad31cfc8a1cc2fce33c",
+      "fonte": "pnab_pg",
+      "titulo": "Resultado Recursos Edital-22 - 2026",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261105_171706_Resultado-da-Etapa-R_idq24wsv.tr2.pdf",
+      "categoria": "resultado",
+      "primeira_detecao": "2026-11-06T00:53:40+00:00",
+      "base_inicial": false,
+      "revisao": "Pendente",
+      "resumo": "Publicacao localizada; conferir original.",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
+      "data_no_arquivo": "2026-11-05",
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
+    },
     {
       "id": "36e6ade55838b87bb5de",
       "fonte": "diario_pg",
@@ -50,9 +134,9 @@
       "base_inicial": false,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "6646ffcab297220d6834",
@@ -64,9 +148,9 @@
       "base_inicial": false,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "a7c829f11dc9005e2e63",
@@ -78,9 +162,9 @@
       "base_inicial": false,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "b806aa2e852525d3f979",
@@ -92,9 +176,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "956c6a380b6609d078cd",
@@ -106,9 +190,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "f0dbe2cc414c7b541875",
@@ -120,9 +204,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "27ea402359bc4968d1be",
@@ -134,9 +218,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "6cb2bc9a470241159ca9",
@@ -190,7 +274,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-29",
       "ultima_leitura": "2026-11-04T18:51:49+00:00"
     },
@@ -204,7 +288,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-24",
       "ultima_leitura": "2026-11-04T18:51:49+00:00"
     },
@@ -218,7 +302,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-24",
       "ultima_leitura": "2026-11-04T18:51:49+00:00"
     },
@@ -232,7 +316,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-24",
       "ultima_leitura": "2026-11-04T18:51:49+00:00"
     },
@@ -246,7 +330,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-24",
       "ultima_leitura": "2026-11-04T18:51:49+00:00"
     },
@@ -260,7 +344,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-24",
       "ultima_leitura": "2026-11-04T18:51:49+00:00"
     },
@@ -274,7 +358,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-24",
       "ultima_leitura": "2026-11-04T18:51:49+00:00"
     },
@@ -288,7 +372,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-24",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -302,7 +386,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-24",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -316,7 +400,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-22",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -330,7 +414,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -344,7 +428,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -358,7 +442,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -372,7 +456,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -386,7 +470,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -400,7 +484,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -414,7 +498,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -428,7 +512,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -442,7 +526,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T01:55:05+00:00"
     },
@@ -456,7 +540,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -470,7 +554,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -484,7 +568,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -498,7 +582,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -512,7 +596,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -526,7 +610,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -540,7 +624,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-20",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -554,7 +638,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-14",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -568,7 +652,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -582,7 +666,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -596,7 +680,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -610,7 +694,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -624,7 +708,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -638,7 +722,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -652,7 +736,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -666,7 +750,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -680,7 +764,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -694,7 +778,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -708,9 +792,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-10-09",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "9c4c355db816a5fe5b45",
@@ -722,9 +806,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-30",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "d6763907bc3350d4c4ea",
@@ -736,9 +820,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-30",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "c706345fcfcd9eb6e755",
@@ -750,9 +834,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-30",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "5089220f73298b38d352",
@@ -764,9 +848,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-30",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "7c0b74b3055cd215f13b",
@@ -778,9 +862,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-30",
-      "ultima_leitura": "2026-11-05T18:56:55+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "499159dfcf3efbc2cb1b",
@@ -792,7 +876,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-30",
       "ultima_leitura": "2026-11-04T11:16:01+00:00"
     },
@@ -806,7 +890,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-30",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -820,7 +904,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-25",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -834,7 +918,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-25",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -848,7 +932,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-25",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -862,7 +946,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-25",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -876,7 +960,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-25",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -890,7 +974,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -904,7 +988,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -918,7 +1002,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -932,7 +1016,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -946,7 +1030,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -960,7 +1044,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T14:06:02+00:00"
     },
@@ -974,7 +1058,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -988,7 +1072,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1002,7 +1086,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1016,7 +1100,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1030,7 +1114,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1044,7 +1128,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1058,7 +1142,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1072,7 +1156,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1086,7 +1170,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1100,7 +1184,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1114,7 +1198,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1128,7 +1212,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T15:39:51+00:00"
     },
@@ -1142,7 +1226,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2026-09-18",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1156,7 +1240,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-16",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1170,7 +1254,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-13",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1184,7 +1268,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-13",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1198,7 +1282,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-13",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1212,7 +1296,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-13",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1226,7 +1310,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-13",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1240,7 +1324,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-13",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1254,7 +1338,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-13",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1268,7 +1352,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-13",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1282,7 +1366,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2025-06-12",
       "ultima_leitura": "2026-11-04T16:20:01+00:00"
     },
@@ -1380,9 +1464,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-20",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "9f99c9ce50c943a81691",
@@ -1394,9 +1478,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-20",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "37dd2b7d7111dead780f",
@@ -1408,9 +1492,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-20",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "58dfabfe595141d7c5fc",
@@ -1422,9 +1506,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-20",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "688e0a12e24d35236885",
@@ -1436,9 +1520,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-20",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "e08681d81f0a99f7d550",
@@ -1450,9 +1534,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-20",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "b2c0faad94c6d90ee706",
@@ -1464,9 +1548,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-20",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "0c6517814e1d85b7b14f",
@@ -1478,9 +1562,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-20",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "47a236638df1a16dd3eb",
@@ -1492,9 +1576,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-17",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "a55b47304ec51ec19e10",
@@ -1506,9 +1590,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-17",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "334e5e4ec4b3732d75e2",
@@ -1520,9 +1604,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-17",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "5ac3506ce38bfeb426db",
@@ -1534,9 +1618,9 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-17",
-      "ultima_leitura": "2026-11-05T01:55:05+00:00"
+      "ultima_leitura": "2026-11-06T00:53:40+00:00"
     },
     {
       "id": "6f5ccb6881865bb2be7d",
@@ -1548,7 +1632,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-16",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1562,7 +1646,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-16",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1576,7 +1660,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-16",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1590,7 +1674,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-16",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1604,7 +1688,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-11",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1618,7 +1702,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-11",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1632,7 +1716,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-11",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1646,7 +1730,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-11",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1660,7 +1744,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-10",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1674,7 +1758,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-10",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1688,7 +1772,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-10",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1702,7 +1786,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-10",
       "ultima_leitura": "2026-11-05T02:05:30+00:00"
     },
@@ -1716,7 +1800,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-03",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1730,7 +1814,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-03",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1744,7 +1828,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-03",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1758,7 +1842,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-03",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1772,7 +1856,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-12-03",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1786,7 +1870,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-11-26",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1800,7 +1884,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-11-26",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1814,7 +1898,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-11-26",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1828,7 +1912,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-11-26",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1842,7 +1926,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-11-26",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1856,7 +1940,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-11-26",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     },
@@ -1870,7 +1954,7 @@
       "base_inicial": true,
       "revisao": "Pendente",
       "resumo": "Publicacao localizada; conferir original.",
-      "ultima_localizacao": "2026-11-05T18:56:55+00:00",
+      "ultima_localizacao": "2026-11-06T00:53:40+00:00",
       "data_no_arquivo": "2024-11-26",
       "ultima_leitura": "2026-11-05T18:56:55+00:00"
     }
@@ -1893,6 +1977,23 @@
         "Oitava Fest",
         "OitavaFest",
         "Projeto OitavaFest"
+      ]
+    },
+    {
+      "id": "fcdffecb1a8a6b9b6cd8",
+      "publicacao_id": "599f7f56fdf603417159",
+      "fonte": "pnab_pg",
+      "url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261105_171706_Resultado-da-Etapa-R_vtac1ldb.sik.pdf",
+      "titulo": "Resultado Recursos Edital-16 - 2026",
+      "primeira_detecao": "2026-11-06T00:53:40+00:00",
+      "base_inicial": false,
+      "tipo": "possivel_mencao",
+      "mensagem": "Nomes monitorados citados: Julia Xavier de Freitas. Conferir identidade, vinculo com o edital e decisao.",
+      "verificacao": "Nao confirmado",
+      "prioridade": "alta",
+      "termos_encontrados": [
+        "Julia Xavier de Freitas",
+        "Julia Xavier"
       ]
     },
     {
