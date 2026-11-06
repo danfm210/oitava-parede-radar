@@ -62,6 +62,7 @@ function init(){
  const message=text=>{live.textContent=text;};
  function readChecked(){try{const x=JSON.parse(get(REVIEW_STORE)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{};}catch{return {};}}
  function persist(){try{localStorage.setItem(STORE,JSON.stringify([...seen].slice(-1000)));persisted=true;}catch{persisted=false;}}
+ function announceSeen(id=null){window.dispatchEvent(new CustomEvent('op:news-seen',{detail:{id}}));}
  let badgeId=0;
  function badge(node,count){
   if(!node)return;
@@ -124,10 +125,10 @@ function init(){
   const button=event.target.closest('[data-news-id]');if(!button)return;
   const row=feed.find(r=>r.id===button.dataset.newsId);if(!row)return;
   // Registra a leitura só depois que o destino foi encontrado com sucesso.
-  close();if(locate(row)){seen.add(row.id);persist();render();message('Aviso localizado: '+row.title+'.');}
+  close();if(locate(row)){seen.add(row.id);persist();render();announceSeen(row.id);message('Aviso localizado: '+row.title+'.');}
   else{open();message('Não foi possível localizar este item. Tente recarregar a página.');}
  });
- panel.querySelector('#opNewsReadAll').addEventListener('click',()=>{feed.forEach(row=>seen.add(row.id));persist();render();message('Todos os avisos disponíveis foram marcados como lidos.');});
+ panel.querySelector('#opNewsReadAll').addEventListener('click',()=>{feed.forEach(row=>seen.add(row.id));persist();render();announceSeen();message('Todos os avisos disponíveis foram marcados como lidos.');});
  document.addEventListener('pointerdown',event=>{if(!panel.hidden&&!panel.contains(event.target)&&!bell.contains(event.target))close();});
  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!panel.hidden){event.preventDefault();event.stopImmediatePropagation();close(true);}},{capture:true});
  document.addEventListener('focusin',event=>{if(!panel.hidden&&!panel.contains(event.target)&&!bell.contains(event.target))close();});
@@ -138,6 +139,7 @@ function init(){
  window.addEventListener('op:approvals-ready',event=>{approvals=event.detail;approvalsError=false;refresh();});
  window.addEventListener('op:approvals-error',()=>{approvalsError=true;refresh();});
  window.addEventListener('op:reviews-updated',refresh);
+ window.addEventListener('op:news-seen',()=>{seen=readSeen(get(STORE));refresh();});
  window.addEventListener('storage',event=>{if(event.key===STORE||event.key===null){seen=readSeen(get(STORE));refresh();}else if(event.key===REVIEW_STORE)refresh();});
  document.addEventListener('visibilitychange',()=>{if(!document.hidden)refresh();});
  window.setInterval(()=>{if(!document.hidden)refresh();},60000);

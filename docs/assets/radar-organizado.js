@@ -1,6 +1,7 @@
 /* Radar organizado da Oitava Parede — agrupamento visual sem inferir decisões oficiais. */
 (function (root) {
   'use strict';
+  const NEWS_STORE='oitava_novidades_lidas_v1';
   const OFFICIAL_LOGOS={
     pnab_pg:'https://www.gov.br/cultura/pt-br/assuntos/politica-nacional-aldir-blanc/documentos/logos-e-reguas/rgb-horizontal.png',
     lpg_pg:'https://www.gov.br/cultura/pt-br/assuntos/lei-paulo-gustavo/imagens/horizontal_preferencial.png'
@@ -100,7 +101,7 @@
     const theme=THEMES[item.theme]?.short || 'Geral';
     return '<span class="radar-theme-label">'+escapeHTML(theme)+'</span>';
   }
-  let currentDocs=[],recentDocs=[],recentKeys=new Set(),newOnly=false;
+  let currentDocs=[],recentDocs=[],recentKeys=new Set(),newOnly=false,sessionSeenNotices=new Set();
   let filterProgram='todos', filterType='todos', filterTheme='todos', query='', sortMode='recent', period='all';
   function inferredDate(doc){
     const own=safeText(doc.data_no_arquivo).slice(0,10);
@@ -112,6 +113,10 @@
   function firstSeen(doc){return safeText(doc.primeira_detecao).slice(0,10)}
   const documentKey=doc=>String(doc.id||doc.url);
   const documentAnchor=doc=>'radar-file-'+encodeURIComponent(documentKey(doc));
+  function readNoticeIds(raw){
+    try{const values=JSON.parse(raw||'[]');return new Set(Array.isArray(values)?values.filter(value=>typeof value==='string'&&value.length<1200).slice(-1000):[]);}catch{return new Set();}
+  }
+  const documentNoticeId=doc=>'document:'+documentKey(doc)+':'+safeText(doc.primeira_detecao);
   function newlyDetected(rows,now=Date.now()){
     const end=Number(now),start=end-48*60*60*1000;
     if(!Number.isFinite(end))return [];
@@ -120,6 +125,22 @@
       const time=/^\d{4}-\d{2}-\d{2}T/.test(seen)?Date.parse(seen):NaN;
       return doc.base_inicial===false&&Number.isFinite(time)&&time>=start&&time<=end;
     }).sort((a,b)=>Date.parse(b.primeira_detecao)-Date.parse(a.primeira_detecao));
+  }
+  function unseenNewDocuments(rows,seen,now=Date.now()){
+    const ids=seen instanceof Set?seen:readNoticeIds(seen);
+    return newlyDetected(rows,now).filter(doc=>!ids.has(documentNoticeId(doc)));
+  }
+  function activeNoticeIds(){
+    let ids=new Set();
+    try{ids=readNoticeIds(localStorage.getItem(NEWS_STORE));}catch{}
+    sessionSeenNotices.forEach(id=>ids.add(id));
+    return ids;
+  }
+  function markDocumentViewed(doc,source='radar'){
+    const id=documentNoticeId(doc);sessionSeenNotices.add(id);let persisted=true;
+    try{const ids=readNoticeIds(localStorage.getItem(NEWS_STORE));ids.add(id);localStorage.setItem(NEWS_STORE,JSON.stringify([...ids].slice(-1000)));}catch{persisted=false;}
+    if(root&&typeof root.dispatchEvent==='function'&&typeof CustomEvent==='function')root.dispatchEvent(new CustomEvent('op:news-seen',{detail:{id,persisted,source}}));
+    return persisted;
   }
   const isNew=doc=>recentKeys.has(documentKey(doc));
   const newCount=items=>items.filter(isNew).length;
@@ -165,7 +186,7 @@
     const meta='<span class="ed-doc-date"><time datetime="'+escapeHTML(reference||first)+'">'+escapeHTML(reference?fmt(reference):'Sem data')+'</time><small>'+escapeHTML(reference?'NO ARQUIVO':'NÃO INFORMADA')+'</small></span>';
     const secondary='Adicionado ao radar: '+fmt(first)+(read?' · Lido em '+fmt(read):' · Leitura não registrada');
     const href=allowLink(item.url) ?
-      '<a class="radar-entry-link" href="'+htmlEscape(item.url)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir documento oficial: '+htmlEscape(item.titulo)+'">Documento oficial <span aria-hidden="true">↗</span></a>':'';
+      '<a class="radar-entry-link" data-radar-document-key="'+htmlEscape(documentKey(item))+'" href="'+htmlEscape(item.url)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir documento oficial: '+htmlEscape(item.titulo)+'">Documento oficial <span aria-hidden="true">↗</span></a>':'';
     return '<article class="radar-entry'+(isNew(item)?' is-new-file':'')+'" id="'+escapeHTML(documentAnchor(item))+'" tabindex="-1">'+
       '<div class="radar-entry-main">'+
       '<div class="radar-entry-labels"><span class="radar-type-pill type-'+kind.type+'">'+htmlEscape(TYPES[kind.type]?.short||'Documento')+'</span>'+
@@ -256,10 +277,7 @@
     const target=document.getElementById('monitorPublications');
     const counter=document.getElementById('radarVisibleCounter');
     if(!target || !sum)return;
-    recentDocs=newlyDetected(currentDocs);
-    recentKeys=new Set(recentDocs.map(documentKey));
-    if(!recentDocs.length)newOnly=false;
-    renderNewFiles();
+    refreshRecentDocuments();
     const allGroups=groupPublications(sortDocs(currentDocs.filter(p=>withinPeriod(p,period))));
     const programIDs=['pnab_pg','lpg_pg','diario_pg'];
     sum.innerHTML=programIDs.map(id=>{
@@ -308,8 +326,7 @@
       const control=document.getElementById(id);if(control)control.value=value;
     }
   }
-  function locateDocument(doc){
-    resetFilters();renderCurrent();
+  function revealDocument(doc){
     const item=document.getElementById(documentAnchor(doc));if(!item)return false;
     for(let ancestor=item.parentElement;ancestor;ancestor=ancestor.parentElement){
       if(ancestor.tagName==='DETAILS'){ancestor.open=true;if(ancestor.dataset.accordionKey)accordionOverrides.set(ancestor.dataset.accordionKey,true);}
@@ -321,6 +338,10 @@
     if(status)status.textContent='Arquivo localizado: '+doc.titulo+'.';
     return true;
   }
+  function locateDocument(doc){
+    resetFilters();renderCurrent();
+    return revealDocument(doc);
+  }
   function locateDocumentByKey(key){
     const doc=currentDocs.find(item=>documentKey(item)===String(key));
     return doc?locateDocument(doc):false;
@@ -330,7 +351,7 @@
     banner.hidden=!recentDocs.length;
     if(!recentDocs.length){banner.replaceChildren();return;}
     const count=recentDocs.length;
-    banner.innerHTML='<div class="radar-new-heading"><div><h3>'+count+' arquivo'+(count===1?' novo':'s novos')+' no radar</h3><p>Adicionados nas últimas 48 horas. A data de publicação pode ser anterior.</p></div>'+
+    banner.innerHTML='<div class="radar-new-heading"><div><h3>'+count+' arquivo'+(count===1?' novo':'s novos')+' ainda não visto'+(count===1?'':'s')+'</h3><p>Adicionados nas últimas 48 horas. Ao localizar ou abrir um arquivo, ele sai desta faixa e continua disponível no radar.</p></div>'+
       '<button type="button" id="radarNewOnly" aria-pressed="'+newOnly+'">'+(newOnly?'Mostrar todos os arquivos':'Ver só os novos')+'</button></div>'+
       '<ul class="radar-new-list">'+recentDocs.slice(0,2).map(doc=>{
         const kind=classifyDocument(doc),path=[PROGRAMS[kind.program]?.name||'Outras fontes',THEMES[kind.theme]?.name||'Diversos e gerais',TYPES[kind.type]?.name||'Outros documentos'].join(' › ');
@@ -341,8 +362,15 @@
       renderCurrent();document.getElementById('radarNewOnly')?.focus({preventScroll:true});
     });
     banner.querySelectorAll('[data-radar-locate]').forEach(button=>button.addEventListener('click',()=>{
-      const doc=recentDocs.find(item=>documentKey(item)===button.dataset.radarLocate);if(doc)locateDocument(doc);
+      const doc=recentDocs.find(item=>documentKey(item)===button.dataset.radarLocate);
+      if(doc&&locateDocument(doc))markDocumentViewed(doc,'locate');
     }));
+  }
+  function refreshRecentDocuments(){
+    recentDocs=unseenNewDocuments(currentDocs,activeNoticeIds());
+    recentKeys=new Set(recentDocs.map(documentKey));
+    if(!recentDocs.length)newOnly=false;
+    renderNewFiles();
   }
   function renderRadarOrganizado(docs,allowed,esc){
     currentDocs=Array.isArray(docs)?docs:[];
@@ -356,6 +384,11 @@
     if(target&&!target.dataset.accordionBound) {
       target.dataset.accordionBound='1';
       target.addEventListener('click',e=>{
+        const documentLink=e.target.closest('[data-radar-document-key]');
+        if(documentLink&&target.contains(documentLink)){
+          const doc=currentDocs.find(item=>documentKey(item)===documentLink.dataset.radarDocumentKey);
+          if(doc)markDocumentViewed(doc,'document-link');
+        }
         const summary=e.target.closest('summary');
         if(!summary || !target.contains(summary))return;
         const details=summary.parentElement;
@@ -398,10 +431,20 @@
     });}
     renderCurrent();
   }
-  const api={PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,editalReference,inferredDate,sortDocs,withinPeriod,newlyDetected,shouldCollapse};
+  const api={NEWS_STORE,PROGRAMS,TYPES,THEMES,documentType,documentTheme,classifyDocument,groupPublications,buildHierarchy,editalNumber,editalReference,inferredDate,sortDocs,withinPeriod,newlyDetected,readNoticeIds,documentNoticeId,unseenNewDocuments,shouldCollapse};
   if(typeof module==='object'&&module.exports)module.exports=api;
   if(root&&typeof document!=='undefined'){
     root.renderRadarOrganizado=renderRadarOrganizado;
     root.OitavaRadar={...api,locateDocument:locateDocumentByKey};
+    root.addEventListener('op:news-seen',event=>{
+      const sync=()=>{
+        const id=event.detail?.id;
+        const doc=id?currentDocs.find(item=>documentNoticeId(item)===id):null;
+        renderCurrent();
+        if(doc&&event.detail?.source!=='document-link')revealDocument(doc);
+      };
+      if(event.detail?.source==='document-link'&&typeof root.setTimeout==='function')root.setTimeout(sync,0);else sync();
+    });
+    root.addEventListener('storage',event=>{if(event.key===NEWS_STORE||event.key===null)renderCurrent();});
   }
 })(typeof window!=='undefined'?window:null);

@@ -20,7 +20,8 @@ test('mensagens variam e permanecem válidas nos extremos',()=>{
 });
 test('arte do sapinho usa a identidade audiovisual com alternativa acessível',()=>{
  const source=fs.readFileSync(path.join(__dirname,'../docs/assets/sapinho.js'),'utf8');
- assert.match(source,/sapinho-cinema\.webp/);
- assert.match(source,/tentáculos azuis, rolo e película de cinema/);
- assert.ok(fs.statSync(path.join(__dirname,'../docs/assets/sapinho-cinema.webp')).size>10000);
+ assert.match(source,/sapinho-cinema-pictorico\.webp/);
+ assert.match(source,/estilo pictórico tridimensional/);
+ assert.match(source,/tentáculos cobalto, rolo e película de cinema/);
+ assert.ok(fs.statSync(path.join(__dirname,'../docs/assets/sapinho-cinema-pictorico.webp')).size>10000);
 });

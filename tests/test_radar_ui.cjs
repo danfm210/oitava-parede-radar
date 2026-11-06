@@ -29,6 +29,21 @@ test('contagem das novidades preserva arquivos distintos e elimina repetição d
  const b={...a,id:'b',titulo:'Edição B',url:'https://oficial.test/b',primeira_detecao:'2026-11-04T14:00:00Z'};
  assert.deepEqual(ui.newlyDetected([a,{...a},b],now).map(d=>d.id),['b','a']);
 });
+test('arquivos vistos saem das novidades sem desaparecer do radar',()=>{
+ const now=Date.parse('2026-11-04T15:00:00Z');
+ const a={id:'a',fonte:'pnab_pg',titulo:'Arquivo A',url:'https://oficial.test/a',primeira_detecao:'2026-11-04T13:00:00Z',base_inicial:false};
+ const b={...a,id:'b',titulo:'Arquivo B',url:'https://oficial.test/b',primeira_detecao:'2026-11-04T14:00:00Z'};
+ const seen=new Set([ui.documentNoticeId(a)]);
+ assert.deepEqual(ui.unseenNewDocuments([a,b],seen,now).map(doc=>doc.id),['b']);
+ assert.equal(ui.groupPublications([a,b]).flatMap(group=>group.items).length,2);
+ assert.deepEqual(ui.unseenNewDocuments([a,b],JSON.stringify([...seen]),now).map(doc=>doc.id),['b']);
+ assert.equal(ui.unseenNewDocuments([{...a,primeira_detecao:'2026-11-04T14:30:00Z'}],seen,now).length,1);
+});
+test('armazenamento inválido de arquivos vistos é ignorado com segurança',()=>{
+ for(const raw of ['{','{}','null','42'])assert.equal(ui.readNoticeIds(raw).size,0);
+ assert.deepEqual([...ui.readNoticeIds('["a",null,42,"a"]')],['a']);
+ assert.equal(ui.NEWS_STORE,'oitava_novidades_lidas_v1');
+});
 test('separar resultados, editais, anexos e retificações',()=>{
  assert.equal(ui.documentType({fonte:'pnab_pg',titulo:'Resultado Inscricoes Edital 16 - 2026'}),'resultado');
  assert.equal(ui.documentType({fonte:'pnab_pg',titulo:'ANEXO 08 - Formulário de recurso'}),'anexo');

@@ -55,3 +55,11 @@ test('armazenamento inválido é ignorado e indicadores grandes ficam compactos'
  assert.deepEqual([...news.readSeen('["a",null,42,"a"]')],['a']);
  assert.equal(news.badgeText(100),'99+');assert.equal(news.badgeText(8),'8');
 });
+test('painel e faixa do radar sincronizam leituras no mesmo navegador',()=>{
+ const fs=require('node:fs'),path=require('node:path');
+ const panel=fs.readFileSync(path.join(__dirname,'../docs/assets/novidades.js'),'utf8');
+ const radar=fs.readFileSync(path.join(__dirname,'../docs/assets/radar-organizado.js'),'utf8');
+ assert.match(panel,/op:news-seen/);
+ assert.match(radar,/op:news-seen/);
+ assert.match(radar,/data-radar-document-key/);
+});
