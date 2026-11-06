@@ -57,7 +57,7 @@ function init(){
   const card=document.createElement('aside');
   card.className='op-frog-visit';card.setAttribute('aria-label','Uma visita do sapinho');
   card.innerHTML='<button type="button" class="op-frog-close" aria-label="Fechar visita do sapinho">×</button>'+
-   '<img src="./assets/sapinho-japones.webp" width="120" height="120" alt="Sapo viajante japonês com chapéu de palha kasa, faixa na cintura e traço de nanquim"/>'+
+   '<img src="./assets/sapinho-cinema.webp" width="120" height="120" alt="Sapo viajante japonês cercado por tentáculos azuis, rolo e película de cinema"/>'+
    '<div class="op-frog-copy"><small>UMA VISITA RARA</small><h2>Olha quem apareceu.</h2><p class="op-frog-message"></p>'+
    '<button type="button" class="op-frog-sound" title="Tocar um som surpresa, incluindo o coaxar de sapo">Ouvir croac</button><span class="op-frog-feedback" role="status" aria-live="polite"></span></div>';
   card.querySelector('.op-frog-message').textContent=chooseMessage(Math.random());
