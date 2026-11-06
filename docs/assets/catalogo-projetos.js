@@ -30,6 +30,11 @@ function groupOfficial(rows){
   const group=groups.get(key);
   if(!group.evidencias.some(e=>e.fonte_url===row.fonte_url&&e.pagina===row.pagina))group.evidencias.push(row);
  }
+ for(const group of groups.values()){
+  const rank=row=>{const text=norm([row.etapa,row.fonte_titulo].join(' '));return [/recurs/.test(text)?3:/retific/.test(text)?2:1,Date.parse(row.verificado_em||row.data_documento||'')||0];};
+  const evidencias=group.evidencias.sort((a,b)=>{const ra=rank(a),rb=rank(b);return rb[0]-ra[0]||rb[1]-ra[1];});
+  Object.assign(group,evidencias[0],{origin:'oficial',evidencias});
+ }
  return Array.from(groups.values());
 }
 function localRows(rows){return (Array.isArray(rows)?rows:[]).filter(r=>r&&typeof r.id==='string'&&typeof r.title==='string'&&r.title.trim()).map(r=>({id:r.id,titulo:r.title,proponente:r.proponent||'Não informado',programa:r.program||'Edital não informado',protocolo:r.protocol||'',situacao_na_fonte:r.status||'',notes:r.notes||'',url:r.url||'',ano_edital:r.year||r.ano_edital||null,origin:'local'}));}
@@ -59,9 +64,10 @@ function init(){
  function officialCard(r){
   const progress=r.acompanhamento;
   const completed=progress?.aprovacao==='aprovado'&&progress?.execucao==='concluido';
-  const currentState=completed?'<p class="op-catalog-completed">Aprovado e concluído</p><p class="op-catalog-local-note">Atualização informada pelo coletivo.</p>':'<p class="op-catalog-snapshot">'+esc(r.etapa)+' · '+esc(r.situacao_na_fonte)+'</p>';
+  const reason=r.motivo?'<p class="op-catalog-local-note"><strong>Motivo na publicação:</strong> '+esc(r.motivo)+'</p>':'';
+  const currentState=completed?'<p class="op-catalog-completed">Aprovado e concluído</p><p class="op-catalog-local-note">Atualização informada pelo coletivo.</p>':'<p class="op-catalog-snapshot">'+esc(r.etapa)+' · '+esc(r.situacao_na_fonte)+'</p>'+reason;
 
-  return '<article class="op-catalog-card"><span class="op-catalog-origin">Fonte oficial · nome na publicação</span><h4>'+esc(r.titulo)+'</h4><p class="op-catalog-person"><span>Proponente na publicação</span><strong>'+esc(r.proponente)+'</strong></p><p class="op-catalog-program">'+esc(r.programa)+'</p>'+currentState+'<details><summary>Ver inscrição e fonte'+(r.evidencias.length>1?'s ('+r.evidencias.length+')':'')+'</summary>'+r.evidencias.map(e=>'<div class="op-catalog-evidence"><p><strong>Campo PROJETO:</strong> '+esc(e.titulo)+'</p><p><strong>Situação neste documento:</strong> '+esc(e.etapa)+' · '+esc(e.situacao_na_fonte)+'</p>'+(e.protocolo?'<p><strong>Protocolo:</strong> '+esc(e.protocolo)+'</p>':'')+'<p>'+esc(e.fonte_titulo)+' · página '+e.pagina+'</p><p>Nome conferido em '+esc(String(e.verificado_em).slice(0,10).split('-').reverse().join('/'))+'</p><a target="_blank" rel="noopener noreferrer" href="'+sourceLink(e)+'">Abrir documento oficial ↗</a></div>').join('')+'</details></article>';
+  return '<article class="op-catalog-card"><span class="op-catalog-origin">Fonte oficial · nome na publicação</span><h4>'+esc(r.titulo)+'</h4><p class="op-catalog-person"><span>Proponente na publicação</span><strong>'+esc(r.proponente)+'</strong></p><p class="op-catalog-program">'+esc(r.programa)+'</p>'+currentState+'<details><summary>Ver inscrição e fonte'+(r.evidencias.length>1?'s ('+r.evidencias.length+')':'')+'</summary>'+r.evidencias.map(e=>'<div class="op-catalog-evidence"><p><strong>Campo PROJETO:</strong> '+esc(e.titulo)+'</p><p><strong>Situação neste documento:</strong> '+esc(e.etapa)+' · '+esc(e.situacao_na_fonte)+'</p>'+(e.motivo?'<p><strong>Motivo:</strong> '+esc(e.motivo)+'</p>':'')+(e.protocolo?'<p><strong>Protocolo:</strong> '+esc(e.protocolo)+'</p>':'')+'<p>'+esc(e.fonte_titulo)+' · página '+e.pagina+'</p><p>Nome conferido em '+esc(String(e.verificado_em).slice(0,10).split('-').reverse().join('/'))+'</p><a target="_blank" rel="noopener noreferrer" href="'+sourceLink(e)+'">Abrir documento oficial ↗</a></div>').join('')+'</details></article>';
  }
  function localCard(r){
   const statuses={aguardando:'Aguardando resultado',inscrito:'Inscrito',habilitado:'Habilitado',classificado:'Classificado',contemplado:'Contemplado',indeferido:'Indeferido',recurso:'Em recurso',revogado:'Afetado por revogação','nao-contemplado':'Não contemplado'};

@@ -16,6 +16,14 @@ test('retificações acrescentam evidência sem duplicar um mesmo projeto no mes
  assert.equal(rows.length,1);assert.equal(rows[0].evidencias.length,2);
  assert.equal(api.groupOfficial([one,{...one,edital:'999/2026'}]).length,2);
 });
+test('decisão recursal de Julia substitui o estado pendente sem apagar o histórico',()=>{
+ const evidence=data.projetos.filter(row=>row.protocolo==='20261AFF24C9E82');
+ const row=api.groupOfficial([...evidence].reverse())[0];
+ assert.equal(evidence.length,3);assert.equal(row.evidencias.length,3);
+ assert.equal(row.etapa,'Resultado da etapa recursal');assert.equal(row.situacao_na_fonte,'INSCRIÇÃO INVÁLIDA');
+ assert.equal(row.motivo,'DOCUMENTAÇÃO NÃO APRESENTADA DENTRO DO PRAZO');
+ assert.equal(row.evidencias[0].situacao_na_fonte,'INSCRIÇÃO INVÁLIDA');
+});
 test('busca ignora caixa e acento, preserva título exibido e filtra origem e pessoa',()=>{
  const rows=api.groupOfficial(audited);
  assert.equal(api.filterRows(rows,{query:'pos producao'})[0].titulo,expected[3]);

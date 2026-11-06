@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "atualizado_em": "2026-11-06T00:54:24+00:00",
+  "atualizado_em": "2026-11-06T01:15:31+00:00",
   "projetos": [
     {
       "id": "bc2ec8694ce4d6667845",
@@ -156,6 +156,24 @@
       "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
       "pagina": 203
+    },
+    {
+      "id": "05372a7b0dcc222947c5",
+      "titulo": "ELE - UM VIDEOCLIPE ALIADOS",
+      "proponente": "JULIA XAVIER DE FREITAS",
+      "protocolo": "20261AFF24C9E82",
+      "programa": "PNAB Praia Grande · Edital 016/2026",
+      "edital": "016/2026",
+      "ano_edital": 2026,
+      "etapa": "Resultado da etapa recursal",
+      "situacao_na_fonte": "INSCRIÇÃO INVÁLIDA",
+      "motivo": "DOCUMENTAÇÃO NÃO APRESENTADA DENTRO DO PRAZO",
+      "data_documento": "2026-11-04",
+      "conferencia": "campos_rotulados",
+      "verificado_em": "2026-11-06T01:15:31+00:00",
+      "fonte_titulo": "Resultado Recursos Edital-16 - 2026",
+      "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261105_171706_Resultado-da-Etapa-R_vtac1ldb.sik.pdf",
+      "pagina": 6
     }
   ],
   "nota": "O título foi conferido no campo PROJETO. A situação é a do documento indicado, não confirmação de aprovação ou vigência atual.",
