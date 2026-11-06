@@ -1,0 +1,196 @@
+/* Oitava Parede — uma linguagem visual única entre cinema, radar e agenda. */
+:root.op-art-direction{
+ --op-art-navy:#0b205d;
+ --op-art-deep:#071849;
+ --op-art-cobalt:#234d96;
+ --op-art-gold:#c79a3b;
+ --op-art-gold-soft:#efd58c;
+ --op-art-paper:#fffaf0;
+ --op-art-canvas:#f6f2e9;
+ --op-art-line:#d9cfb8;
+ --op-art-shadow:0 12px 30px rgba(7,24,73,.075);
+ --op-cinema-art:url("./tentaculos-cinema-editorial.webp");
+}
+
+/* Superfícies e tipografia compartilham o mesmo papel, tinta e luz. */
+.op-art-direction body{background:var(--op-art-canvas);color:#14234b}
+.op-art-direction :is(#monitor,#agenda,#reunioes,.op-workspace,.op-fold-section){
+ background-image:radial-gradient(circle at 8% 5%,rgba(199,154,59,.065),transparent 27%),radial-gradient(circle at 94% 18%,rgba(35,77,150,.06),transparent 31%)!important;
+}
+.op-art-direction #monitor,.op-art-direction .op-workspace,.op-art-direction .op-fold-section{background-color:var(--op-art-canvas)!important}
+.op-art-direction #agenda{background-color:#f7f3eb!important}
+.op-art-direction #reunioes{background-color:#edf1ec!important}
+.op-art-direction :is(.section-title,.op-header h2,.op-circuit-heading h3,.op-agenda-bottom h3,.panel-title){
+ font-family:"Space Grotesk",system-ui,sans-serif;
+ color:var(--op-art-navy);
+}
+.op-art-direction :is(.section-eyebrow,.op-eyebrow,.op-workspace-kicker,.op-catalog-origin){color:#806124}
+.op-art-direction :is(.section-eyebrow,.op-eyebrow):before{background:var(--op-art-gold)}
+
+/* Molduras editoriais: a mesma construção para módulos de naturezas diferentes. */
+.op-art-direction :is(.op-section-menu,.op-brand-disclosure,.op-saved-panel,.op-event-controls,.op-meet-controls,.op-agenda-bottom,.op-catalog-toolbar){
+ border-color:var(--op-art-line);
+ background-color:var(--op-art-paper);
+ box-shadow:var(--op-art-shadow);
+}
+.op-art-direction :is(.op-event-card,.op-place-card,.op-festival-card,.op-catalog-card,.radar-program-card,.monitor-stat){
+ border-color:var(--op-art-line);
+ box-shadow:0 8px 24px rgba(7,24,73,.06);
+}
+.op-art-direction :is(.op-card-body,.op-place-body,.op-catalog-card,.op-festival-card){
+ background:linear-gradient(180deg,#fffdf8 0%,var(--op-art-paper) 100%);
+}
+.op-art-direction :is(.op-event-card,.op-place-card):hover{box-shadow:0 17px 38px rgba(7,24,73,.13)}
+
+/* Acordeões viram pequenas capas editoriais, com medalhões e marca d'água. */
+.op-art-direction .op-section-menu{border-top:3px solid var(--op-art-gold)}
+.op-art-direction .op-section-menu>summary{
+ background:linear-gradient(100deg,#fffdf8 0%,#fbf5e9 100%);
+ overflow:hidden;
+}
+.op-art-direction .op-section-menu>summary:hover{background:linear-gradient(100deg,#fffaf0 0%,#f6eedf 100%)}
+.op-art-direction .op-fold-section .op-section-menu>summary:after{
+ content:"";
+ position:absolute;
+ z-index:0;
+ top:-34px;
+ right:55px;
+ width:155px;
+ height:155px;
+ background:var(--op-cinema-art) center/contain no-repeat;
+ opacity:.075;
+ pointer-events:none;
+}
+.op-art-direction .op-section-menu>summary>:is(.op-fold-icon,.op-fold-label,.op-fold-plus){position:relative;z-index:1}
+.op-art-direction .op-fold-icon{
+ color:var(--op-art-gold-soft);
+ border:1px solid var(--op-art-gold);
+ background:radial-gradient(circle at 32% 24%,#315eaa 0%,var(--op-art-navy) 72%);
+ box-shadow:0 0 0 3px #fffdf8,0 0 0 4px rgba(199,154,59,.42),0 7px 18px rgba(7,24,73,.18);
+}
+.op-art-direction .op-fold-plus{
+ color:var(--op-art-navy);
+ border-color:#c9ab69;
+ background:#fffaf0;
+}
+.op-art-direction .op-section-menu[open]>summary .op-fold-plus,
+.op-art-direction .op-collection-more[open]>summary .op-fold-plus{
+ color:var(--op-art-gold-soft);
+ border-color:var(--op-art-gold);
+ background:var(--op-art-navy);
+}
+.op-art-direction .op-section-menu[open]>summary{border-bottom-color:#d9cfb8}
+.op-art-direction .op-fold-body{background:linear-gradient(180deg,#fffdf8,#fffaf1)}
+.op-art-direction :is(.op-collection-more,.op-brand-disclosure){border-top:2px solid rgba(199,154,59,.72)}
+.op-art-direction .op-collection-more>summary{background:linear-gradient(90deg,#fffdf8,#faf2e4)}
+.op-art-direction .op-collection-more>summary:hover{background:#f8efde}
+.op-art-direction :is(.op-fold-close,.op-collection-end>button){border-color:#c9b37f;background:#f8f0df;color:#264b78}
+
+/* Capas sem fotografia usam a mesma arte pictórica do início do site. */
+.op-art-direction .op-event-cover:not(.has-photo){background:linear-gradient(135deg,var(--op-art-deep),var(--op-art-cobalt))}
+.op-art-direction .op-event-cover.op-tone-violet:not(.has-photo){background:linear-gradient(135deg,#0b194a,#43558d)}
+.op-art-direction .op-event-cover.op-tone-indigo:not(.has-photo){background:linear-gradient(135deg,#071849,#2553a0)}
+.op-art-direction .op-event-cover.op-tone-orange:not(.has-photo){background:linear-gradient(135deg,#151d45,#8f682b)}
+.op-art-direction .op-event-cover.op-tone-teal:not(.has-photo){background:linear-gradient(135deg,#092348,#245d6d)}
+.op-art-direction .op-event-cover:not(.has-photo):after{
+ content:"";
+ position:absolute;
+ z-index:0;
+ top:-46px;
+ right:-18px;
+ width:225px;
+ height:225px;
+ background:var(--op-cinema-art) center/contain no-repeat;
+ opacity:.5;
+ pointer-events:none;
+}
+.op-art-direction .op-event-cover:not(.has-photo)>.op-cover-shape{display:none}
+.op-art-direction .op-event-cover:not(.has-photo)>:is(.op-event-tag,.op-feature-label,.op-cover-bottom){position:relative;z-index:1}
+.op-art-direction .op-event-cover:not(.has-photo)>.op-feature-label{position:absolute}
+.op-art-direction :is(.op-event-tag,.op-photo-kind){border-color:rgba(239,213,140,.58);border-radius:4px;background:rgba(7,24,73,.76);color:#fff7df}
+.op-art-direction .op-feature-label{border-radius:4px;background:var(--op-art-gold-soft);border-color:var(--op-art-gold);color:var(--op-art-navy)}
+.op-art-direction .op-photo-fallback{
+ align-content:end;
+ justify-items:start;
+ padding:18px;
+ background-color:var(--op-art-deep);
+ background-image:linear-gradient(135deg,rgba(7,24,73,.18),rgba(7,24,73,.8)),var(--op-cinema-art);
+ background-position:center,right 42%;
+ background-size:cover,72% auto;
+ background-repeat:no-repeat;
+ color:var(--op-art-gold-soft);
+}
+.op-art-direction .op-photo-fallback>span{font-size:31px;text-shadow:0 2px 12px #071849}
+.op-art-direction .op-photo-fallback small{padding:5px 7px;border:1px solid rgba(239,213,140,.45);background:rgba(7,24,73,.74)}
+
+/* Radar: distinção funcional dentro da paleta principal. */
+.op-art-direction .program-pnab{--radar-accent:#2855a0;--radar-soft:#edf2fb}
+.op-art-direction .program-lpg{--radar-accent:#9a742f;--radar-soft:#f8f0df}
+.op-art-direction .program-diario{--radar-accent:#456486;--radar-soft:#edf1f5}
+.op-art-direction .program-other{--radar-accent:#293d63;--radar-soft:#f0f2f5}
+.op-art-direction .radar-program-card{background:linear-gradient(145deg,#fffdf8,#f8f3e9)}
+.op-art-direction .radar-program-card.is-active{box-shadow:inset 0 3px 0 var(--op-art-gold),inset 0 0 0 2px var(--radar-accent)}
+.op-art-direction .radar-program-icon,
+.op-art-direction .radar-source-emblem{
+ color:#fff4cf;
+ border:1px solid rgba(239,213,140,.72);
+ background:linear-gradient(145deg,var(--radar-accent),var(--op-art-deep));
+}
+.op-art-direction :is(.radar-toolbar,.radar-organized-list,.radar-source-contents,.radar-category-contents){background-color:#fffdf8}
+.op-art-direction .radar-source-section.radar-accordion-level-1{border-color:#d8cfbb;background:#fffdf8}
+.op-art-direction .radar-source-section>.radar-source-title{background:linear-gradient(90deg,var(--radar-soft),#fffaf0 82%)}
+.op-art-direction .radar-category-title{background:#f8f3e8}
+.op-art-direction .radar-category-section[open]>.radar-category-title{background:#ede7da}
+.op-art-direction .radar-category-section[open] .radar-category-index{background:var(--op-art-navy);border-color:var(--op-art-navy);color:var(--op-art-gold-soft)}
+
+/* Controles e chamadas repetem as proporções e acabamentos da abertura. */
+.op-art-direction :is(.op-primary-link,.op-map-button,.op-add-place,.op-main-cta,.radar-accordion-buttons button:first-child){
+ background:var(--op-art-navy);
+ border-color:var(--op-art-navy);
+ color:#fffaf0;
+}
+.op-art-direction :is(.op-primary-link,.op-map-button,.op-add-place,.op-main-cta):hover{background:#214485;color:#fff}
+.op-art-direction :is(.op-chip.active,.op-saved-tabs button[aria-selected="true"],.op-catalog-tabs button[aria-selected="true"]){background:var(--op-art-navy);border-color:var(--op-art-navy)}
+.op-art-direction .op-chip.category-active.active{background:var(--op-art-gold-soft);border-color:var(--op-art-gold);color:var(--op-art-navy)}
+.op-art-direction :is(.op-text-search,.op-catalog-fields input,.op-catalog-fields select,.radar-filter select,.radar-search){border-color:#d2c7ae;background:#fffdf8}
+.op-art-direction .op-share-central{border-color:#cdbb8d;border-top-color:var(--op-art-gold);background:linear-gradient(135deg,#f2eee3,#edf0e9)}
+.op-art-direction .email-alert-panel{border-color:#9c8048;background:linear-gradient(135deg,var(--op-art-deep),var(--op-art-navy))}
+
+/* A assinatura reaparece somente em grandes campos vazios. */
+.op-art-direction .ed-feature-zone:before{
+ content:"";
+ width:330px;
+ height:330px;
+ right:-40px;
+ bottom:-100px;
+ border:0;
+ border-radius:0;
+ transform:rotate(-8deg);
+ background:var(--op-cinema-art) center/contain no-repeat;
+ opacity:.13;
+}
+.op-art-direction .site-footer:before{
+ content:"";
+ position:absolute;
+ z-index:0;
+ right:-55px;
+ bottom:-105px;
+ width:300px;
+ height:300px;
+ background:var(--op-cinema-art) center/contain no-repeat;
+ opacity:.11;
+ pointer-events:none;
+}
+.op-art-direction .site-footer>.wrap{position:relative;z-index:1}
+
+@media(max-width:760px){
+ .op-art-direction .op-fold-section .op-section-menu>summary:after{right:35px;top:0;width:98px;height:98px;opacity:.055}
+ .op-art-direction .op-fold-icon{box-shadow:0 0 0 2px #fffdf8,0 0 0 3px rgba(199,154,59,.38),0 5px 13px rgba(7,24,73,.16)}
+ .op-art-direction .op-event-cover:not(.has-photo):after{right:-31px;width:200px;height:200px;opacity:.46}
+ .op-art-direction .ed-feature-zone:before{width:210px;height:210px;right:-52px;bottom:-62px;opacity:.1}
+ .op-art-direction .site-footer:before{width:190px;height:190px;right:-42px;bottom:-60px;opacity:.09}
+}
+
+@media(forced-colors:active){
+ .op-art-direction .op-fold-icon,.op-art-direction .radar-program-icon,.op-art-direction .radar-source-emblem{border:2px solid currentColor}
+}
