@@ -250,7 +250,7 @@ function renderSources(){
  root.innerHTML=(data.sources||[]).map(s=>'<a href="'+esc(s.url)+'" target="_blank" rel="noopener noreferrer" class="op-portal-link">'+
  '<span class="op-portal-icon">→</span><span><strong>'+esc(s.title)+'</strong><small>'+esc(s.city)+' · '+esc(s.kind)+'</small></span></a>').join('');
  const stamp=document.getElementById('opAgendaCurated');
- if(stamp&&data.curated_at){const [y,m,d]=data.curated_at.split('-');stamp.textContent='Curadoria inicial: '+d+'/'+m+'/'+y+' · datas conferidas nas fontes indicadas'}
+ if(stamp&&data.curated_at){const [y,m,d]=data.curated_at.split('-');stamp.textContent='Curadoria revisada: '+d+'/'+m+'/'+y+' · confirme datas, horários e ingressos na fonte'}
 }
 function renderMeetingSources(){
  const root=document.getElementById('opMeetingSources');if(!root)return;
