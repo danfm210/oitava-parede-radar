@@ -14,7 +14,7 @@ const DESTINATIONS=[
  {id:'agenda',label:'Agenda cultural',group:'Cultura',description:'Shows, festivais, cinema e gastronomia',keywords:'evento eventos audiovisual música festival festivais passeios'},
  {id:'reunioes',label:'Pontos de encontro',group:'Encontros',description:'Cafés, bares e espaços para brainstorm',keywords:'reuniões café cerveja salas coworking'},
  {id:'fontes',label:'Fontes oficiais',group:'Editais',description:'Portais dos órgãos e documentos originais',keywords:'site oficial prefeitura governo'},
- {id:'oportunidades',label:'Oportunidades de fomento',group:'Editais',description:'Programas, editais e linhas de apoio',keywords:'proac rouanet pnab cultura'},
+ {id:'oportunidades',label:'Oportunidades de fomento',group:'Editais',description:'Programas, editais e linhas de apoio',keywords:'promac proac icms rouanet pnab spcine fsa ancine facult cultura'},
  {id:'visao',label:'Visão geral',group:'Navegação',description:'Indicadores e acompanhamento da equipe',keywords:'dashboard resumo números'},
  {id:'acervo',label:'Acervo da Oitava Parede',group:'Projetos',description:'Fotos, bastidores e Instagram do coletivo',keywords:'imagem logo filmes produtora'},
  {id:'notificacoes',label:'Avisos e notificações',group:'Ajuda',description:'Como receber alertas e acompanhar mudanças',keywords:'email push notificações alertas'}

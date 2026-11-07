@@ -13,6 +13,8 @@ test('busca normaliza acentos e encontra o conteudo solicitado',()=>{
  assert.ok(extras.searchDestinations('Giovanna').some(x=>x.id==='monitorMentions'));
  assert.ok(extras.searchDestinations('OitavaFest').some(x=>x.id==='monitorMentions'));
  assert.ok(extras.searchDestinations('PNAB').some(x=>x.id==='monitor'));
+ assert.ok(extras.searchDestinations('PROMAC').some(x=>x.id==='oportunidades'));
+ assert.ok(extras.searchDestinations('SPCine').some(x=>x.id==='oportunidades'));
  assert.ok(extras.searchDestinations('cafÉ').some(x=>x.id==='reunioes' || x.id==='opMeetSearch'));
  assert.ok(extras.searchDestinations('Festival').some(x=>x.id==='agenda'));
 });

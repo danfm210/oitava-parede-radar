@@ -89,9 +89,17 @@ O site tem as abas **Agenda cultural** e **Reuniões**, com filtros por cidade, 
 
 `python -m http.server 8000 --directory docs` (abrir http://localhost:8000)
 
+## Lista ampliada de fomento — 07/11/2026
+
+A checagem recorrente do ChatGPT passou a consultar, de manhã e à noite, oito frentes de fomento relevantes ao coletivo: **PROMAC**, **ProAC Editais / Fomento CultSP**, **ProAC ICMS**, **PNAB estadual**, **SPCine / FSA**, **FACULT Santos**, **ANCINE / FSA** e **Lei Rouanet / SALIC**. O site apresenta a abrangência territorial, o mecanismo, a utilidade para o audiovisual e a principal condição de elegibilidade antes do link oficial.
+
+O PROMAC foi identificado corretamente como programa do **Município de São Paulo**, e não como programa estadual. A edição 2026 recebeu propostas até 26/05/2026. Para cobertura de todo o estado, a lista aponta ProAC Editais, ProAC ICMS e PNAB estadual. O prazo do Edital 02/2026 da SPCine/FSA é exibido como aberto até 16/12/2026 e muda automaticamente para encerrado depois da data; o mesmo mecanismo impede que prazos antigos do PROMAC e do FACULT pareçam abertos.
+
+Os arquivos `assets/fomento.js` e `assets/fomento.css`, espelhados em `docs/assets/`, concentram os programas e a apresentação. `tests/test_fomento.cjs` verifica contagem, fontes HTTPS oficiais, abrangência do PROMAC, virada dos prazos e integração do site. A pesquisa assistida ganhou recortes próprios para São Paulo capital e Fundo Setorial do Audiovisual, e a área de fontes passou de 12 para 18 referências oficiais.
+
 ## Limites honestos do monitor
 
-- Apenas **três fontes** iniciam a fase automática. Outros municípios e o Fomento CultSP continuam listados como links no site; requerem novos conectores e testes.
+- A coleta do feed do site continua automatizada em **três fontes** de Praia Grande. A lista ampliada é consultada pela tarefa recorrente do ChatGPT e permanece disponível como links oficiais no site; incorporar todos esses portais ao mesmo coletor exige conectores e testes específicos para cada formato.
 - Até 7 edições recentes do Diário Oficial e 85 anexos indexados por portal são descobertos por leitura; por rodada o sistema verifica a maioria dos links novos e os 4 iniciais dos já conhecidos, com até 12 anexos por fonte e limite de 18 MB por arquivo. Não é vigilância exaustiva de toda a história dos portais.
 - O monitor não realiza OCR, não faz buscas em documentos escaneados sem texto e não garante prazos nem confirmação de decisões.
 - A primeira execução inventaria documentos existentes e não os trata como novidades de publicação.

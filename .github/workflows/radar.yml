@@ -61,6 +61,8 @@ jobs:
           node --test tests/test_mobile.cjs
           node --check docs/assets/central.js
           node --test tests/test_central.cjs
+          node --check docs/assets/fomento.js
+          node --test tests/test_fomento.cjs
           node --check docs/assets/direcao-visual.js
           node --test tests/test_direcao_visual.cjs
           node --check docs/assets/novidades.js
