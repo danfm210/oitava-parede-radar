@@ -72,6 +72,11 @@ jobs:
         env:
           OITAVA_TERMS: ${{ secrets.OITAVA_TERMS }}
         run: python scripts/monitorar.py
+      - name: Validar dados gerados antes de publicar
+        run: |
+          python -m unittest tests.test_projetos_oficiais -v
+          node --check docs/assets/catalogo-projetos.js
+          node --test tests/test_catalogo_projetos.cjs
       - name: Enviar alertas de email quando houver mencoes novas
         env:
           EMAIL_USER: ${{ secrets.EMAIL_USER }}

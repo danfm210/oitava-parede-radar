@@ -24,6 +24,17 @@ test('decisão recursal de Julia substitui o estado pendente sem apagar o histó
  assert.equal(row.motivo,'DOCUMENTAÇÃO NÃO APRESENTADA DENTRO DO PRAZO');
  assert.equal(row.evidencias[0].situacao_na_fonte,'INSCRIÇÃO INVÁLIDA');
 });
+test('nova leitura de documento antigo não supera uma decisão recursal',()=>{
+ const base={titulo:'PROJETO TESTE',proponente:'JULIA XAVIER DE FREITAS',edital:'016/2026',programa:'PNAB · Edital 016/2026',pagina:1,conferencia:'campos_rotulados'};
+ const initial={...base,fonte_titulo:'Resultado Inscricoes Edital 16 - 2026',fonte_url:'https://www.gov.br/inicial.pdf',situacao_na_fonte:'PENDENTE',data_documento:'2026-10-24',verificado_em:'2026-11-10'};
+ const appeal={...base,fonte_titulo:'Resultado Recursos Edital-16 - 2026',fonte_url:'https://www.gov.br/recurso.pdf',situacao_na_fonte:'INSCRIÇÃO INVÁLIDA',data_documento:'2026-11-04',verificado_em:'2026-11-06'};
+ const row=api.groupOfficial([initial,appeal])[0];
+ assert.equal(row.situacao_na_fonte,'INSCRIÇÃO INVÁLIDA');
+ assert.ok(api.evidenceRank(appeal)[0]>api.evidenceRank(initial)[0]);
+ assert.equal(api.statusTone(row.situacao_na_fonte),'is-negative');
+ assert.equal(api.statusTone('PENDENTE'),'is-pending');
+ assert.equal(api.statusTone('ACEITO'),'is-positive');
+});
 test('busca ignora caixa e acento, preserva título exibido e filtra origem e pessoa',()=>{
  const rows=api.groupOfficial(audited);
  assert.equal(api.filterRows(rows,{query:'pos producao'})[0].titulo,expected[3]);

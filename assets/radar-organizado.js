@@ -186,7 +186,7 @@
     const meta='<span class="ed-doc-date"><time datetime="'+escapeHTML(reference||first)+'">'+escapeHTML(reference?fmt(reference):'Sem data')+'</time><small>'+escapeHTML(reference?'NO ARQUIVO':'NÃO INFORMADA')+'</small></span>';
     const secondary='Adicionado ao radar: '+fmt(first)+(read?' · Lido em '+fmt(read):' · Leitura não registrada');
     const href=allowLink(item.url) ?
-      '<a class="radar-entry-link" data-radar-document-key="'+htmlEscape(documentKey(item))+'" href="'+htmlEscape(item.url)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir documento oficial: '+htmlEscape(item.titulo)+'">Documento oficial <span aria-hidden="true">↗</span></a>':'';
+      '<a class="radar-entry-link" data-radar-document-key="'+htmlEscape(documentKey(item))+'" href="'+htmlEscape(item.url)+'" target="_blank" rel="noopener noreferrer" aria-label="Abrir documento oficial: '+htmlEscape(item.titulo)+'">Documento oficial <span aria-hidden="true">→</span></a>':'';
     return '<article class="radar-entry'+(isNew(item)?' is-new-file':'')+'" id="'+escapeHTML(documentAnchor(item))+'" tabindex="-1">'+
       '<div class="radar-entry-main">'+
       '<div class="radar-entry-labels"><span class="radar-type-pill type-'+kind.type+'">'+htmlEscape(TYPES[kind.type]?.short||'Documento')+'</span>'+

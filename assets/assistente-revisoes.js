@@ -31,7 +31,7 @@ function renderMentions(rows,allowed,esc){
   const id=onlyCleanId(m.id),done=status(m),priority=String(m.prioridade||'normal');
   const stamp=done?String(checked[id]?.at||''):'';
   const date=stamp?new Date(stamp).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'}):'';
-  const link=allowedUrl(m.url)?'<a class="op-mention-link" target="_blank" rel="noopener noreferrer" href="'+escapeFn(m.url)+'">Abrir original ↗</a>':'';
+  const link=allowedUrl(m.url)?'<a class="op-mention-link" target="_blank" rel="noopener noreferrer" href="'+escapeFn(m.url)+'">Abrir original →</a>':'';
   return '<article class="op-mention-card '+(done?'is-checked':'')+'" id="op-mention-'+id+'" tabindex="-1">'+
    '<label class="op-mention-check"><input type="checkbox" data-review-id="'+id+'" '+(done?'checked':'')+' aria-label="Marcar documento como conferido: '+escapeHTML(m.titulo)+'"/><span>Conferida</span></label>'+
    '<div class="op-mention-main"><span class="op-mention-priority '+(priority==='maxima'?'is-max':priority==='alta'?'is-high':'')+'">'+(priority==='maxima'?'Prioridade máxima':priority==='alta'?'Prioridade alta':'Menção não confirmada')+'</span>'+
@@ -94,10 +94,10 @@ function answer(question){
  const messages=$('opHelpMessages');if(!messages)return;
  const human=document.createElement('div');human.className='op-help-msg is-user';human.textContent=question;messages.appendChild(human);
  const info=knowledge(question);const bot=document.createElement('div');bot.className='op-help-msg is-bot';
- bot.innerHTML=safeText(info.text)+(info.anchor?'<div><a href="'+info.anchor+'" class="op-help-go">Ir para a seção ↗</a></div>':'');
+ bot.innerHTML=safeText(info.text)+(info.anchor?'<div><a href="'+info.anchor+'" class="op-help-go">Ir para a seção →</a></div>':'');
  messages.appendChild(bot);
  if(info.external){
-  const action=document.createElement('button');action.type='button';action.className='op-help-ai';action.textContent='Copiar dúvida e abrir ChatGPT ↗';
+  const action=document.createElement('button');action.type='button';action.className='op-help-ai';action.textContent='Copiar dúvida e abrir ChatGPT →';
   action.addEventListener('click',async()=>{try{await navigator.clipboard.writeText('Estou usando a Central de Pesquisa da Oitava Parede. Minha dúvida é: '+question)}catch{}window.open('https://chatgpt.com/','_blank','noopener,noreferrer')});
   bot.appendChild(action);
  }

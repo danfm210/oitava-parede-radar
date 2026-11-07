@@ -92,9 +92,9 @@ function init(){
    active=0;
    results.innerHTML=current.length?current.map((item,i)=>
      '<button class="op-search-result'+(i===0?' is-selected':'')+'" type="button" role="option" aria-selected="'+(i===0)+'" data-result-index="'+i+'" id="op-search-option-'+i+'">'+
-     '<span class="op-search-result-mark">'+(item.target?'↳':'↗')+'</span>'+
+     '<span class="op-search-result-mark">'+(item.target?'↳':'→')+'</span>'+
      '<span class="op-search-result-copy"><small>'+esc(item.group)+'</small><strong>'+esc(item.label)+'</strong><em>'+esc(item.description)+'</em></span>'+
-     '<span class="op-search-result-arrow" aria-hidden="true">↗</span></button>'
+     '<span class="op-search-result-arrow" aria-hidden="true">→</span></button>'
      ).join(''):'<div class="op-search-empty"><strong>Nenhum atalho encontrado.</strong><span>Tente “edital”, “café”, “Giovanna” ou “projetos”.</span></div>';
    field.setAttribute('aria-activedescendant',current.length?'op-search-option-0':'');
  }

@@ -1,8 +1,12 @@
 import unittest
-from scripts.projetos_oficiais import parse_page,parse_page_rows,extract_pdf,merge_rows
+from scripts.projetos_oficiais import parse_page,parse_page_rows,extract_pdf,merge_rows,document_stage
 from scripts.monitorar import MONITORED_PEOPLE,load_terms
 
 class OfficialProjectTests(unittest.TestCase):
+ def test_prazo_para_recurso_nao_transforma_resultado_inicial_em_recursal(self):
+  header='Resultado de inscrições. Prazo para apresentação de recursos: cinco dias.'
+  self.assertEqual(document_stage('Resultado Inscricoes Edital 16 - 2026',header),'Resultado de inscrições')
+  self.assertEqual(document_stage('Resultado Recursos Edital-16 - 2026',header),'Resultado da etapa recursal')
  def test_titulos_de_fichas_publicadas_e_nao_dos_documentos(self):
   # Trechos dos campos públicos auditados em 03/11/2026; CPF não é copiado.
   titles=['OITAVAFEST','LIVRO "OITAVO AMOR"','ZEBOLA DANCE - VIDEOCLIPE','CURSO PROFISSIONALIZANTE EM PÓS PRODUÇÃO']
@@ -61,11 +65,12 @@ class OfficialProjectTests(unittest.TestCase):
         'PROTOCOLO 20261AFF24C9E82\nDOCUMENTAÇÃO NÃO APRESENTADA DENTRO DO PRAZO')
   doc=fitz.open();page=doc.new_page();page.insert_text((50,50),text,fontsize=8)
   data=doc.tobytes();doc.close()
-  rows=extract_pdf(data,'https://www2.praiagrande.sp.gov.br/recurso.pdf','Resultado Recursos Edital-16 - 2026','PNAB Praia Grande',MONITORED_PEOPLE,'2026-11-06')
+  rows=extract_pdf(data,'https://www2.praiagrande.sp.gov.br/recurso.pdf','Resultado Recursos Edital-16 - 2026','PNAB Praia Grande',MONITORED_PEOPLE,'2026-11-06','2026-11-05')
   self.assertEqual(len(rows),2)
   julia=next(row for row in rows if row['proponente']=='JULIA XAVIER DE FREITAS')
   self.assertEqual(julia['etapa'],'Resultado da etapa recursal')
   self.assertEqual(julia['motivo'],'DOCUMENTAÇÃO NÃO APRESENTADA DENTRO DO PRAZO')
+  self.assertEqual(julia['data_no_arquivo'],'2026-11-05')
  def test_atualizacao_da_fonte_preserva_conclusao_informada_pelo_coletivo(self):
   progress={'aprovacao':'aprovado','execucao':'concluido','origem':'informado_pelo_coletivo'}
   old={'fonte_url':'https://www.gov.br/a.pdf','pagina':17,'titulo':'FASHION FILM','ano_edital':2024,'acompanhamento':progress}

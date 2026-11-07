@@ -1,6 +1,7 @@
 /* Uma central com foco no próximo passo: espaço, hierarquia e ações claras. */
 .op-painel-shortcut{display:inline-flex;align-items:center;gap:13px;min-height:42px;padding:9px 14px;border:1px solid #8d9fc16e;border-radius:5px;color:#efdcaa;font:800 11px "DM Sans",system-ui}
 .op-painel-shortcut:hover{background:#ffffff0d;color:#fff}
+.op-painel-shortcut .op-shortcut-icon{width:16px;height:16px;flex:0 0 16px}
 #meu-painel{scroll-margin-top:calc(var(--op-nav-offset,165px) - 94px)!important}
 .op-workspace{padding:0 0 54px;background:#f6f2e9;color:#142d56}
 .op-workspace-heading{display:flex;align-items:center;justify-content:space-between;gap:25px;margin-bottom:23px;padding-top:11px}
@@ -36,6 +37,7 @@
 .op-saved-no-results{font-size:13px;color:#69798b;padding:22px 0}
 .op-workspace-aside{display:grid;gap:13px}
 .op-health-card{border:1px solid #d0ddd4;border-radius:8px;padding:22px;background:#edf2eb}
+.op-health-card.is-late,.op-health-card.is-old{border-color:#decaa7;background:#f7f0e4}.op-health-card.is-partial,.op-health-card.is-error,.op-health-card.is-date{border-color:#dfc1ba;background:#f8ece8}
 .op-health-card h3{display:flex;align-items:center;gap:10px;font:700 18px "Space Grotesk",system-ui;margin:12px 0;letter-spacing:-.5px}
 .op-health-card h3 i{width:7px;height:7px;background:#a07726;border-radius:50%;flex-shrink:0}.op-health-card h3 i.is-ready{background:#39745a}
 .op-health-card p{font-size:12px;color:#586e76;line-height:1.75;margin:0 0 13px}

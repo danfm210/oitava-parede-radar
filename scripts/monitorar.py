@@ -192,7 +192,7 @@ def scan():
        try: from scripts.projetos_oficiais import extract_pdf
        except ModuleNotFoundError: from projetos_oficiais import extract_pdf
        people=[p for p in terms if p not in {"Oitava Parede","Oitava Fest","OitavaFest","Projeto OitavaFest"}]
-       extracted_projects.extend(extract_pdf(body,item["url"],item["title"],src["name"],people,stamp))
+       extracted_projects.extend(extract_pdf(body,item["url"],item["title"],src["name"],people,stamp,filename_date(item["url"])))
       except Exception as project_error:
        print("[projetos] Extracao ignorada:",type(project_error).__name__)
      if matches:

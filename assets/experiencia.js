@@ -8,6 +8,8 @@ const SCENES=[
  {id:'encontros',label:'Encontros',tag:'04 / CONECTAR',title:'Ideias pedem<br>um encontro.',description:'Um café, uma conversa, um novo projeto. Descubra lugares, salve seus favoritos ou cadastre um ponto do seu jeito.',href:'#reunioes',action:'Escolher um lugar',metric:'opPlaceCount',unit:'lugares na seleção',summary:'Pontos de encontro'}
 ];
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ARROW_ICON='<svg class="op-cta-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 15 15 5M8 5h7v7"/></svg>';
+const SEARCH_ICON='<svg class="op-cta-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false"><circle cx="9" cy="9" r="5.5"/><path d="m13 13 4 4"/></svg>';
 function metricNumber(text){const match=String(text??'').match(/^\s*((?:\d{1,3}(?:\.\d{3})+|\d+))(?=\s|$)/);return match?Number(match[1].replaceAll('.','')):null;}
 function nextScene(index,key,total=SCENES.length){if(!Number.isInteger(total)||total<1)return 0;if(key==='Home')return 0;if(key==='End')return total-1;if(key==='ArrowRight')return (index+1)%total;if(key==='ArrowLeft')return (index+total-1)%total;return index;}
 const formatMetric=value=>value===null?'—':value.toLocaleString('pt-BR');
@@ -15,10 +17,10 @@ function mountHome(){
  const home=document.getElementById('inicio-editorial');if(!home||document.getElementById('opSceneStage'))return false;
  const hero=home.querySelector('.ed-hero');if(!hero)return false;
  hero.className='op-cinema-hero';
- hero.innerHTML='<div class="op-cinema-copy"><div class="op-cinema-kicker"><span aria-hidden="true"></span>OITAVA PAREDE / CENTRAL DO COLETIVO</div><h1>A próxima<br><em>cena</em> começa<br>por aqui.</h1><p>Editais para tirar ideias do papel. Cultura para ampliar o olhar. Encontros para fazer acontecer.</p><div class="op-cinema-actions"><a href="#monitor" class="op-main-cta">Encontrar possibilidades <span aria-hidden="true">↗</span></a><button type="button" id="opHomeSearch" class="op-search-cta">Buscar na central <span aria-hidden="true">⌕</span></button></div><span class="op-cinema-signature">FILMES · IMAGENS · CULTURA · CONEXÕES</span></div>'+
+ hero.innerHTML='<div class="op-cinema-copy"><div class="op-cinema-kicker"><span aria-hidden="true"></span>OITAVA PAREDE / CENTRAL DO COLETIVO</div><h1>A próxima<br><em>cena</em> começa<br>por aqui.</h1><p>Editais para tirar ideias do papel. Cultura para ampliar o olhar. Encontros para fazer acontecer.</p><div class="op-cinema-actions"><a href="#monitor" class="op-main-cta">Encontrar possibilidades '+ARROW_ICON+'</a><button type="button" id="opHomeSearch" class="op-search-cta">Buscar na central '+SEARCH_ICON+'</button></div><span class="op-cinema-signature">FILMES · IMAGENS · CULTURA · CONEXÕES</span></div>'+
  '<div class="op-scene-stage" id="opSceneStage"><div class="op-scene-top"><span>ESCOLHA O SEU PRÓXIMO PASSO</span><span class="op-scene-live"><i aria-hidden="true"></i> NO COLETIVO</span></div><div class="op-scene-tabs" role="tablist" aria-label="Explore a central por tarefa">'+SCENES.map((scene,i)=>'<button type="button" role="tab" id="opSceneTab'+i+'" aria-controls="opScenePanel" aria-selected="'+(i===0)+'" tabindex="'+(i===0?'0':'-1')+'" data-scene="'+i+'"><small aria-hidden="true">0'+(i+1)+'</small>'+esc(scene.label)+'</button>').join('')+'</div><div class="op-scene-panel" id="opScenePanel" role="tabpanel" tabindex="0" aria-labelledby="opSceneTab0"><span class="op-scene-watermark" id="opSceneNumber" aria-hidden="true">01</span><div class="op-scene-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="op-scene-content"><span id="opSceneTag" class="op-scene-tag"></span><h2 id="opSceneTitle"></h2><p id="opSceneDescription"></p><div class="op-scene-bottom"><a id="opSceneAction" class="op-scene-action"></a><div class="op-scene-metric"><strong id="opSceneMetric">—</strong><span id="opSceneUnit"></span></div></div></div></div><div class="op-scene-foot"><span>DA IDEIA AO ENCONTRO.</span><span id="opScenePosition">01 / 04</span></div></div>';
  const modules=home.querySelector('.ed-modules');
- if(modules){modules.className='op-home-index';modules.setAttribute('aria-label','A central em números e ações');modules.innerHTML=SCENES.map((scene,i)=>'<a class="op-index-item" href="'+scene.href+'"><span class="op-index-number">0'+(i+1)+'</span><div><span class="op-index-label">'+esc(scene.summary)+'</span><p><strong data-scene-count="'+i+'">—</strong><span>'+esc(scene.unit)+'</span></p></div><span class="op-index-arrow" aria-hidden="true">↗</span></a>').join('');}
+ if(modules){modules.className='op-home-index';modules.setAttribute('aria-label','A central em números e ações');modules.innerHTML=SCENES.map((scene,i)=>'<a class="op-index-item" href="'+scene.href+'"><span class="op-index-number">0'+(i+1)+'</span><div><span class="op-index-label">'+esc(scene.summary)+'</span><p><strong data-scene-count="'+i+'">—</strong><span>'+esc(scene.unit)+'</span></p></div><span class="op-index-arrow" aria-hidden="true">→</span></a>').join('');}
  return true;
 }
 function init(){
@@ -37,7 +39,7 @@ function init(){
   panel.setAttribute('aria-labelledby','opSceneTab'+index);
   setText('opSceneTag',scene.tag);document.getElementById('opSceneTitle').innerHTML=scene.title;
   setText('opSceneDescription',scene.description);setText('opSceneUnit',scene.unit);
-  const action=document.getElementById('opSceneAction');action.href=scene.href;action.innerHTML=esc(scene.action)+' <span aria-hidden="true">↗</span>';
+  const action=document.getElementById('opSceneAction');action.href=scene.href;action.innerHTML=esc(scene.action)+' '+ARROW_ICON;
   setText('opSceneNumber',String(index+1).padStart(2,'0'));setText('opScenePosition',String(index+1).padStart(2,'0')+' / 04');
   stage.dataset.scene=scene.id;updateMetrics();if(focus)tabs[index].focus();
  }

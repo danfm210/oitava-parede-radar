@@ -110,7 +110,7 @@ function sourceFooter(e){
 }
 function eventDetails(e){
  if(!Array.isArray(e.highlights)||!e.highlights.length)return '';
- return '<details class="op-event-details"><summary>Informações e destaques</summary><ul>'+e.highlights.map(h=>'<li><strong>'+esc(h.title)+'</strong><span>'+esc(h.when)+' · '+esc(h.venue)+'</span></li>').join('')+'</ul>'+(Array.isArray(e.references)?e.references.filter(r=>safeURL(r.url)).map(r=>'<a target="_blank" rel="noopener noreferrer" href="'+esc(safeURL(r.url))+'">'+esc(r.title)+' ↗</a>').join(''):safeURL(e.details_url)?'<a target="_blank" rel="noopener noreferrer" href="'+esc(safeURL(e.details_url))+'">Consultar programação detalhada ↗</a>':'')+'</details>';
+ return '<details class="op-event-details"><summary>Informações e destaques</summary><ul>'+e.highlights.map(h=>'<li><strong>'+esc(h.title)+'</strong><span>'+esc(h.when)+' · '+esc(h.venue)+'</span></li>').join('')+'</ul>'+(Array.isArray(e.references)?e.references.filter(r=>safeURL(r.url)).map(r=>'<a target="_blank" rel="noopener noreferrer" href="'+esc(safeURL(r.url))+'">'+esc(r.title)+' →</a>').join(''):safeURL(e.details_url)?'<a target="_blank" rel="noopener noreferrer" href="'+esc(safeURL(e.details_url))+'">Consultar programação detalhada →</a>':'')+'</details>';
 }
 function eventCard(e){
  const t=catInfo[e.category]||catInfo.cultura;
@@ -131,11 +131,11 @@ function eventCard(e){
    '<p>'+esc(e.description)+'</p>'+
    '<div class="op-event-meta"><span>◷ '+esc(e.time||'Consultar horários')+'</span><span>◈ '+esc(e.price||'Consultar')+'</span></div>'+eventDetails(e)+
    '<div class="op-card-actions">'+
-    '<a class="op-primary-link" target="_blank" rel="noopener noreferrer" href="'+esc(e.url)+'">Ver programação <span aria-hidden="true">↗</span></a>'+
+    '<a class="op-primary-link" target="_blank" rel="noopener noreferrer" href="'+esc(e.url)+'">Ver programação <span aria-hidden="true">→</span></a>'+
     '<button type="button" class="op-icon-button '+(saved?'is-saved':'')+'" data-favevent="'+esc(e.id)+'" aria-pressed="'+saved+'" title="'+(saved?'Remover dos salvos':'Salvar evento')+'" aria-label="'+(saved?'Remover evento salvo: ':'Salvar evento: ')+esc(e.title)+'">'+(saved?'♥':'♡')+'</button>'+
-    '<button type="button" class="op-event-invite" data-invite-event="'+esc(e.id)+'" aria-label="Criar convite para '+esc(e.title)+'">Criar convite <span aria-hidden="true">↗</span></button>'+
+    '<button type="button" class="op-event-invite" data-invite-event="'+esc(e.id)+'" aria-label="Criar convite para '+esc(e.title)+'">Criar convite <span aria-hidden="true">→</span></button>'+
    '</div>'+sourceFooter(e)+
-   (e.image&&e.imageSource?'<a class="op-image-credit" target="_blank" rel="noopener noreferrer" href="'+esc(e.imageSource)+'">'+esc(e.imageCredit||'Imagem da fonte')+' ↗</a>':'')+'</div></article>';
+   (e.image&&e.imageSource?'<a class="op-image-credit" target="_blank" rel="noopener noreferrer" href="'+esc(e.imageSource)+'">'+esc(e.imageCredit||'Imagem da fonte')+' →</a>':'')+'</div></article>';
  return item;
 }
 function mapUrl(p){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.name+', '+p.address);}
@@ -159,13 +159,13 @@ function placeCard(p){
     '<div class="op-place-tags">'+(p.tags||[]).slice(0,3).map(v=>'<span>'+esc(v)+'</span>').join('')+'</div>'+
     '<div class="op-place-watch">'+esc(p.watch)+'</div>'+
     '<div class="op-place-actions">'+
-     '<a class="op-map-button" href="'+esc(mapUrl(p))+'" target="_blank" rel="noopener noreferrer">Ver no mapa ↗</a>'+
+     '<a class="op-map-button" href="'+esc(mapUrl(p))+'" target="_blank" rel="noopener noreferrer">Ver no mapa →</a>'+
      '<button type="button" class="op-copy-button" data-invite="'+esc(p.id)+'">Copiar convite</button>'+
      '<button type="button" class="op-icon-button '+(saved?'is-saved':'')+'" data-favplace="'+esc(p.id)+'" aria-pressed="'+saved+'" aria-label="'+(saved?'Remover local salvo':'Salvar local')+'">'+(saved?'♥':'♡')+'</button>'+
     '</div>'+
-    (safeURL(p.url)?'<a class="op-place-source" href="'+esc(safeURL(p.url))+'" target="_blank" rel="noopener noreferrer">Site / informações do local ↗</a>':'')+
+    (safeURL(p.url)?'<a class="op-place-source" href="'+esc(safeURL(p.url))+'" target="_blank" rel="noopener noreferrer">Site / informações do local →</a>':'')+
     (p.custom?'<div class="op-custom-actions"><button type="button" data-edit-place="'+esc(p.id)+'">Editar ponto</button><button type="button" data-delete-place="'+esc(p.id)+'">Excluir ponto</button></div>':'')+
-    (p.credit&&p.credit_url?'<div class="op-photo-credit"><a href="'+esc(p.credit_url)+'" target="_blank" rel="noopener noreferrer">'+esc(p.credit)+' ↗</a></div>':'')+
+    (p.credit&&p.credit_url?'<div class="op-photo-credit"><a href="'+esc(p.credit_url)+'" target="_blank" rel="noopener noreferrer">'+esc(p.credit)+' →</a></div>':'')+
    '</div></article>';
 }
 function toast(msg){const el=document.getElementById('opToast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),3200)}
@@ -207,7 +207,7 @@ function renderPlaces(){
 }
 function renderFestivals(){
  const node=document.getElementById('opFestivalGrid');if(!node)return;
- node.innerHTML=(data.festivals||[]).map(f=>'<article class="op-festival-card"><div class="op-festival-kicker">'+esc(f.city)+' · '+esc(f.focus)+'</div><h4>'+esc(f.title)+'</h4><p>'+esc(f.description)+'</p><p class="op-festival-state">'+esc(festivalState(f))+' · '+esc(f.edition)+'</p><p class="op-festival-dates">'+esc(calendarLabel(f))+'</p><p class="op-festival-participate">'+esc(f.participate)+'</p><a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer">Programação e fonte ↗</a></article>').join('');
+ node.innerHTML=(data.festivals||[]).map(f=>'<article class="op-festival-card"><div class="op-festival-kicker">'+esc(f.city)+' · '+esc(f.focus)+'</div><h4>'+esc(f.title)+'</h4><p>'+esc(f.description)+'</p><p class="op-festival-state">'+esc(festivalState(f))+' · '+esc(f.edition)+'</p><p class="op-festival-dates">'+esc(calendarLabel(f))+'</p><p class="op-festival-participate">'+esc(f.participate)+'</p><a href="'+esc(f.url)+'" target="_blank" rel="noopener noreferrer">Programação e fonte →</a></article>').join('');
 }
 function openPlace(p,trigger){
  const dialog=document.getElementById('opPlaceDialog'),form=document.getElementById('opPlaceForm');
@@ -238,7 +238,7 @@ function hookCustomPlaces(){
 function renderSources(){
  const root=document.getElementById('opEventSources');if(!root)return;
  root.innerHTML=(data.sources||[]).map(s=>'<a href="'+esc(s.url)+'" target="_blank" rel="noopener noreferrer" class="op-portal-link">'+
- '<span class="op-portal-icon">↗</span><span><strong>'+esc(s.title)+'</strong><small>'+esc(s.city)+' · '+esc(s.kind)+'</small></span></a>').join('');
+ '<span class="op-portal-icon">→</span><span><strong>'+esc(s.title)+'</strong><small>'+esc(s.city)+' · '+esc(s.kind)+'</small></span></a>').join('');
  const stamp=document.getElementById('opAgendaCurated');
  if(stamp&&data.curated_at){const [y,m,d]=data.curated_at.split('-');stamp.textContent='Curadoria inicial: '+d+'/'+m+'/'+y+' · datas conferidas nas fontes indicadas'}
 }
@@ -326,7 +326,7 @@ function hook(){
 
 function eventInviteMarkup(){return `<dialog id="opEventInviteDialog" class="op-place-dialog op-invite-dialog" aria-labelledby="opEventInviteTitle">
 <div class="op-place-dialog-head"><h2 id="opEventInviteTitle">Criar convite cultural</h2><button type="button" data-close-invite aria-label="Fechar convite">×</button></div>
-<div class="op-invite-context"><strong id="opInviteEventTitle"></strong><p id="opInviteEventMeta"></p><a id="opInviteSource" target="_blank" rel="noopener noreferrer">Programação do evento ↗</a></div>
+<div class="op-invite-context"><strong id="opInviteEventTitle"></strong><p id="opInviteEventMeta"></p><a id="opInviteSource" target="_blank" rel="noopener noreferrer">Programação do evento →</a></div>
 <p class="op-place-dialog-note">Escolha como reunir a equipe e confira o texto antes de compartilhar.</p>
 <form id="opInviteForm"><div class="op-place-form-grid">
 <label>Dia do encontro<input id="opInviteDay" type="date" required></label>
@@ -335,7 +335,7 @@ function eventInviteMarkup(){return `<dialog id="opEventInviteDialog" class="op-
 <label class="op-form-wide">Mensagem para o grupo (opcional)<textarea id="opInviteNote" maxlength="300" rows="2" placeholder="Ex.: vamos chegar 15 minutos antes?"></textarea></label>
 <label class="op-form-wide op-invite-preview-label">Prévia do convite<textarea id="opInvitePreview" readonly rows="7" spellcheck="false"></textarea></label>
 </div><p id="opInviteStatus" class="op-invite-status" role="status" aria-live="polite"></p>
-<div class="op-calendar-export"><button type="button" id="opInviteCalendar">Adicionar ao meu calendário <span aria-hidden="true">↗</span></button><small>Usa o dia e o horário combinados acima, no horário de Brasília. Sem horário, cria um lembrete de dia inteiro.</small></div><div class="op-place-form-actions op-invite-actions"><button type="button" data-close-invite>Fechar</button><button type="button" id="opInviteShare" hidden>Compartilhar</button><button type="submit" id="opInviteCopy" class="op-add-place">Copiar convite</button></div></form></dialog>`;}
+<div class="op-calendar-export"><button type="button" id="opInviteCalendar">Adicionar ao meu calendário <span aria-hidden="true">→</span></button><small>Usa o dia e o horário combinados acima, no horário de Brasília. Sem horário, cria um lembrete de dia inteiro.</small></div><div class="op-place-form-actions op-invite-actions"><button type="button" data-close-invite>Fechar</button><button type="button" id="opInviteShare" hidden>Compartilhar</button><button type="submit" id="opInviteCopy" class="op-add-place">Copiar convite</button></div></form></dialog>`;}
 
 function placeDialogMarkup(){return `<dialog id="opPlaceDialog" class="op-place-dialog" aria-labelledby="opPlaceDialogTitle">
 <div class="op-place-dialog-head"><h2 id="opPlaceDialogTitle">Cadastrar ponto de encontro</h2><button type="button" data-close-place aria-label="Fechar cadastro">×</button></div>

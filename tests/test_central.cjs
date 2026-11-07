@@ -9,10 +9,11 @@ test('salvos aceitam somente documentos oficiais, sem credenciais e sem duplicid
  assert.equal(safeURL('https://example.org/',true),'');
  assert.equal(safeURL('https://example.org/',false),'https://example.org/');
 });
-test('estado do radar distingue relatório recente, antigo, parcial, inválido e futuro',()=>{
+test('estado do radar distingue relatório recente, atrasado, antigo, parcial, inválido e futuro',()=>{
  const now=Date.parse('2026-11-04T15:00:00Z'),data={generated_at:'2026-11-04T12:00:00Z',fontes:[{situacao:'ok'},{situacao:'ok'}]};
  assert.equal(radarHealth(data,now).state,'ready');
- assert.equal(radarHealth(data,now+49*3600000).state,'old');
+ assert.equal(radarHealth(data,now+19*3600000).state,'late');
+ assert.equal(radarHealth(data,now+37*3600000).state,'old');
  assert.equal(radarHealth({...data,fontes:[{situacao:'ok'},{situacao:'erro'}]},now).state,'partial');
  assert.equal(radarHealth({...data,generated_at:'invalid'},now).state,'date');
  assert.equal(radarHealth({...data,generated_at:'2027-01-01T00:00:00Z'},now).state,'date');

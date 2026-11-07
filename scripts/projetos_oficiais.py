@@ -20,6 +20,13 @@ def official_url(url):
   return u.scheme=='https' and not u.username and not u.password and (h.endswith('.gov.br') or h=='plenussistemas.dioenet.com.br')
  except ValueError:return False
 
+def document_stage(document_title,header=''):
+ """Classifica pela manchete da decisão, sem confundir prazo para recurso com resultado recursal."""
+ pattern=r'\bresultado(?:\s+final)?(?:\s+da)?(?:\s+etapa)?\s+(?:de\s+|dos?\s+)?recurs'
+ title=norm(document_title)
+ heading=norm(header[:4000])
+ return 'Resultado da etapa recursal' if re.search(pattern,title) or re.search(pattern,heading) else 'Resultado de inscrições'
+
 def _parse_block(text,people):
  """Lê uma ficha delimitada, sem atravessar para o proponente seguinte."""
  person=re.search(r'PROPONENTE\s+(.+?)\s+(?:CPF\s*/?\s*CNPJ\*?|CPF|CNPJ|CATEGORIA)\b',text,re.I|re.S)
@@ -56,7 +63,7 @@ def parse_page(text,people):
  rows=parse_page_rows(text,people)
  return rows[0] if len(rows)==1 else None
 
-def extract_pdf(data,url,document_title,source_name,people,stamp):
+def extract_pdf(data,url,document_title,source_name,people,stamp,file_date=''):
  if not official_url(url):return []
  import fitz
  with fitz.open(stream=data,filetype='pdf') as document:
@@ -64,7 +71,7 @@ def extract_pdf(data,url,document_title,source_name,people,stamp):
   header=document[0].get_text('text',sort=True)
   edital=re.search(r'Chamamento\s+P[uú]blico\s+n[°ºo.]?\s*(\d{1,3}/20\d{2})',header,re.I)
   if not edital or not re.search(r'inscri',header,re.I):return []
-  etapa='Resultado da etapa recursal' if re.search(r'recurs',norm(document_title+' '+header)) else 'Resultado de inscrições'
+  etapa=document_stage(document_title,header)
   rows=[]
   for i,page in enumerate(document):
    page_rows=parse_page_rows(page.get_text('text',sort=True),people)
@@ -72,6 +79,7 @@ def extract_pdf(data,url,document_title,source_name,people,stamp):
     fragment=str(i+1)
     if len(page_rows)>1:fragment+='#'+(row.get('protocolo') or norm(row['proponente']+' '+row['titulo']))
     row.update(id=hashlib.sha256((url+'#'+fragment).encode()).hexdigest()[:20],programa=source_name+' · Edital '+edital.group(1),edital=edital.group(1),ano_edital=int(edital.group(1).split('/')[-1]),etapa=etapa,conferencia='campos_rotulados',verificado_em=stamp,fonte_titulo=document_title,fonte_url=url,pagina=i+1)
+    if file_date:row['data_no_arquivo']=file_date
     rows.append(row)
   return rows
 

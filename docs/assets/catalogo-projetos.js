@@ -21,6 +21,24 @@ function groupYears(rows,currentYear){
  for(const row of rows){const year=yearFor(row);if(!groups.has(year))groups.set(year,[]);groups.get(year).push(row);}
  return Array.from(groups,([year,items])=>({year,items,label:!year?'Ano não informado':year===String(currentYear)?year+' · Ano atual':Number(year)<Number(currentYear)?year+' · Histórico':year+' · Próximo ciclo'})).sort((a,b)=>Number(b.year||0)-Number(a.year||0));
 }
+function evidenceRank(row){
+ const title=norm(row?.fonte_titulo);
+ const recourse=/\bresultado(?:\s+final)?(?:\s+da)?(?:\s+etapa)?\s+(?:de\s+|dos?\s+)?recurs/.test(title);
+ const final=/\bresultado\s+final\b|\bhomologa/.test(title);
+ const amendment=/\bretific|\berrata|\brepublic/.test(title);
+ const result=/\bresultado|\binscri/.test(title);
+ const stage=recourse?4:final?3:result?2:1;
+ const documentTime=Date.parse(row?.data_documento||row?.data_no_arquivo||'')||0;
+ const verifiedTime=Date.parse(row?.verificado_em||'')||0;
+ return [stage,amendment?1:0,documentTime,verifiedTime];
+}
+function statusTone(value){
+ const text=norm(value);
+ if(/invalida|indefer|reprov|nao habilit|nao contempl|revog/.test(text))return 'is-negative';
+ if(/pendente|aguard|analise|recurso/.test(text))return 'is-pending';
+ if(/aceit|valida|habilit|classific|contempl|aprov|\bok\b/.test(text))return 'is-positive';
+ return 'is-neutral';
+}
 function groupOfficial(rows){
  const groups=new Map();
  for(const row of Array.isArray(rows)?rows:[]){
@@ -31,8 +49,7 @@ function groupOfficial(rows){
   if(!group.evidencias.some(e=>e.fonte_url===row.fonte_url&&e.pagina===row.pagina))group.evidencias.push(row);
  }
  for(const group of groups.values()){
-  const rank=row=>{const text=norm([row.etapa,row.fonte_titulo].join(' '));return [/recurs/.test(text)?3:/retific/.test(text)?2:1,Date.parse(row.verificado_em||row.data_documento||'')||0];};
-  const evidencias=group.evidencias.sort((a,b)=>{const ra=rank(a),rb=rank(b);return rb[0]-ra[0]||rb[1]-ra[1];});
+  const evidencias=group.evidencias.sort((a,b)=>{const ra=evidenceRank(a),rb=evidenceRank(b);return rb[0]-ra[0]||rb[1]-ra[1]||rb[2]-ra[2]||rb[3]-ra[3];});
   Object.assign(group,evidencias[0],{origin:'oficial',evidencias});
  }
  return Array.from(groups.values());
@@ -65,9 +82,9 @@ function init(){
   const progress=r.acompanhamento;
   const completed=progress?.aprovacao==='aprovado'&&progress?.execucao==='concluido';
   const reason=r.motivo?'<p class="op-catalog-local-note"><strong>Motivo na publicação:</strong> '+esc(r.motivo)+'</p>':'';
-  const currentState=completed?'<p class="op-catalog-completed">Aprovado e concluído</p><p class="op-catalog-local-note">Atualização informada pelo coletivo.</p>':'<p class="op-catalog-snapshot">'+esc(r.etapa)+' · '+esc(r.situacao_na_fonte)+'</p>'+reason;
+  const currentState=completed?'<p class="op-catalog-completed">Aprovado e concluído</p><p class="op-catalog-local-note">Atualização informada pelo coletivo.</p>':'<p class="op-catalog-snapshot '+statusTone(r.situacao_na_fonte)+'">'+esc(r.etapa)+' · '+esc(r.situacao_na_fonte)+'</p>'+reason;
 
-  return '<article class="op-catalog-card"><span class="op-catalog-origin">Fonte oficial · nome na publicação</span><h4>'+esc(r.titulo)+'</h4><p class="op-catalog-person"><span>Proponente na publicação</span><strong>'+esc(r.proponente)+'</strong></p><p class="op-catalog-program">'+esc(r.programa)+'</p>'+currentState+'<details><summary>Ver inscrição e fonte'+(r.evidencias.length>1?'s ('+r.evidencias.length+')':'')+'</summary>'+r.evidencias.map(e=>'<div class="op-catalog-evidence"><p><strong>Campo PROJETO:</strong> '+esc(e.titulo)+'</p><p><strong>Situação neste documento:</strong> '+esc(e.etapa)+' · '+esc(e.situacao_na_fonte)+'</p>'+(e.motivo?'<p><strong>Motivo:</strong> '+esc(e.motivo)+'</p>':'')+(e.protocolo?'<p><strong>Protocolo:</strong> '+esc(e.protocolo)+'</p>':'')+'<p>'+esc(e.fonte_titulo)+' · página '+e.pagina+'</p><p>Nome conferido em '+esc(String(e.verificado_em).slice(0,10).split('-').reverse().join('/'))+'</p><a target="_blank" rel="noopener noreferrer" href="'+sourceLink(e)+'">Abrir documento oficial ↗</a></div>').join('')+'</details></article>';
+  return '<article class="op-catalog-card"><span class="op-catalog-origin">Fonte oficial · nome na publicação</span><h4>'+esc(r.titulo)+'</h4><p class="op-catalog-person"><span>Proponente na publicação</span><strong>'+esc(r.proponente)+'</strong></p><p class="op-catalog-program">'+esc(r.programa)+'</p>'+currentState+'<details><summary>Ver inscrição e fonte'+(r.evidencias.length>1?'s ('+r.evidencias.length+')':'')+'</summary>'+r.evidencias.map(e=>'<div class="op-catalog-evidence"><p><strong>Campo PROJETO:</strong> '+esc(e.titulo)+'</p><p><strong>Situação neste documento:</strong> '+esc(e.etapa)+' · '+esc(e.situacao_na_fonte)+'</p>'+(e.motivo?'<p><strong>Motivo:</strong> '+esc(e.motivo)+'</p>':'')+(e.protocolo?'<p><strong>Protocolo:</strong> '+esc(e.protocolo)+'</p>':'')+'<p>'+esc(e.fonte_titulo)+' · página '+e.pagina+'</p><p>Nome conferido em '+esc(String(e.verificado_em).slice(0,10).split('-').reverse().join('/'))+'</p><a target="_blank" rel="noopener noreferrer" href="'+sourceLink(e)+'">Abrir documento oficial →</a></div>').join('')+'</details></article>';
  }
  function localCard(r){
   const statuses={aguardando:'Aguardando resultado',inscrito:'Inscrito',habilitado:'Habilitado',classificado:'Classificado',contemplado:'Contemplado',indeferido:'Indeferido',recurso:'Em recurso',revogado:'Afetado por revogação','nao-contemplado':'Não contemplado'};
@@ -103,6 +120,6 @@ function init(){
  window.addEventListener('oitava:projetos-atualizados',render);window.addEventListener('storage',e=>{if(e.key===STORE)render();});
  load();
 }
-if(typeof module==='object'&&module.exports)module.exports={norm,personKey,officialURL,groupOfficial,localRows,filterRows,yearFor,groupYears};
+if(typeof module==='object'&&module.exports)module.exports={norm,personKey,officialURL,evidenceRank,statusTone,groupOfficial,localRows,filterRows,yearFor,groupYears};
 if(typeof document!=='undefined'){if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();}
 })();
