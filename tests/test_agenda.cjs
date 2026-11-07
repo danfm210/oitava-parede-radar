@@ -5,12 +5,25 @@ const data=require('../docs/dados/agenda.json');
 test('agenda curada contem eventos futuros, fontes e locais reais',()=>{
  assert.equal(data.schema,1);
  assert.ok(data.events.length>=9);
- assert.ok(data.places.length>=9);
+ assert.ok(data.places.length>=17);
  assert.ok(data.sources.length>=6);
  assert.equal(new Set(data.events.map(x=>x.id)).size,data.events.length);
  assert.equal(new Set(data.places.map(x=>x.id)).size,data.places.length);
  assert.ok(data.events.every(e=>e.start<=e.end&&/^https:\/\//.test(e.url)));
  assert.ok(data.places.every(p=>['Santos','São Vicente','Praia Grande'].includes(p.city)&&p.address&&p.url));
+});
+
+test('Viver Praia Grande alimenta agenda e descoberta de pontos de encontro com origem explícita',()=>{
+ const isViver=url=>new URL(url).hostname==='viverpraiagrande.com.br';
+ const eventSource=data.sources.find(s=>s.url==='https://viverpraiagrande.com.br/eventos/');
+ assert.equal(eventSource.kind,'Fonte editorial de descoberta');
+ const viverEvents=data.events.filter(e=>e.source==='Viver Praia Grande');
+ assert.ok(viverEvents.length>=2);assert.ok(viverEvents.every(e=>e.source_kind==='Fonte editorial'&&isViver(e.url)));
+ assert.equal(data.meeting_sources.length,2);
+ assert.ok(data.meeting_sources.every(s=>isViver(s.url)));
+ const places=data.places.filter(p=>p.source==='Viver Praia Grande');
+ for(const id of ['bistro-praia','quintal-bistro-pg','brookie-cafe-pg','portinho-pg'])assert.ok(places.some(p=>p.id===id));
+ assert.ok(places.every(p=>isViver(p.source_url)));
 });
 
 test('só eventos em andamento ou futuros aparecem',()=>{
@@ -64,7 +77,7 @@ test('armazenamento corrompido, registros inválidos e duplicados não derrubam 
 test('Curta Santos tem programação detalhada e o circuito preserva festivais encerrados como referência',()=>{
  const curta=data.events.find(e=>e.id==='curta-santos-2026');
  assert.equal(curta.highlights.length,4);assert.ok(curta.references.some(r=>new URL(r.url).hostname==='www.sescsp.org.br'));
- assert.equal(data.places.length,15);assert.equal(data.festivals.length,5);
+ assert.equal(data.places.length,17);assert.equal(data.festivals.length,5);
  const kinoforum=data.festivals.find(f=>f.id==='kinoforum');
  assert.equal(agenda.festivalState(kinoforum,'2026-11-03'),'Edição encerrada');
  assert.equal(agenda.festivalState(curta,'2026-11-03'),'Em breve');

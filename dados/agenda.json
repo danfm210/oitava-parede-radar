@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "curated_at": "2026-11-03",
+  "curated_at": "2026-11-07",
   "scope": "Baixada Santista e capital; agenda selecionada com fontes e datas de publicacao",
   "notice": "As fotos dos eventos identificadas como 'Foto do local' retratam o espaço em que ocorrem, não necessariamente a edição atual. Créditos por fonte; links externos podem expirar. Confirme horários e ingressos.",
   "events": [
@@ -149,6 +149,7 @@
       "description": "Edição em homenagem a Antônio Manzione; consulte orientações de entrada.",
       "url": "https://viverpraiagrande.com.br/eventos/",
       "source": "Viver Praia Grande",
+      "source_kind": "Fonte editorial",
       "image": "https://www2.praiagrande.sp.gov.br/files/noticiaFoto/np5nnqgb.3oh.jpg",
       "imageCredit": "Foto do Palácio das Artes · Prefeitura de Praia Grande",
       "imageSource": "https://www2.praiagrande.sp.gov.br/noticia/praia-grande-lanca-novo-edital-da-politica-nacional-aldir-blanc-",
@@ -166,7 +167,8 @@
       "price": "Gratuito",
       "description": "Espetáculo teatral na programação cultural de Praia Grande.",
       "url": "https://viverpraiagrande.com.br/eventos/",
-      "source": "Viver Praia Grande"
+      "source": "Viver Praia Grande",
+      "source_kind": "Fonte editorial"
     },
     {
       "id": "cine-curtinhas-sp-2026",
@@ -387,10 +389,53 @@
       "why": "Opção central para um café e alinhamento de propostas sem formalidade.",
       "best": "Alinhamento de projetos, pauta rápida e encontro diurno",
       "watch": "Confirme Wi-Fi e ocupação antes de trabalhar por períodos longos.",
-      "url": "https://www.google.com/maps/search/?api=1&query=Cafeteria+Bistro+da+Praia+Praia+Grande",
+      "url": "https://viverpraiagrande.com.br/restaurantes/cafeterias/cafeteria-bistro-da-praia-boqueirao--is-b7p4q/",
+      "source": "Viver Praia Grande",
+      "source_url": "https://viverpraiagrande.com.br/passeios/melhores-cafeterias-praia-grande/",
+      "verified_at": "2026-11-07",
       "photo": "",
       "credit": "",
       "credit_url": ""
+    },
+    {
+      "id": "quintal-bistro-pg",
+      "name": "Quintal Bistrô e Café",
+      "city": "Praia Grande",
+      "type": "cafe",
+      "style": "Café e conversa",
+      "tags": [
+        "Café",
+        "Boqueirão",
+        "Encontro diurno"
+      ],
+      "address": "R. Oswaldo de Oliveira, 259 · Boqueirão, Praia Grande",
+      "why": "Bistrô de bairro para uma conversa criativa acompanhada de café ou almoço.",
+      "best": "Pauta em dupla, encontro diurno e troca de referências",
+      "watch": "Fonte editorial de descoberta. Confirme funcionamento, movimento, consumo e espaço para o grupo diretamente com o local.",
+      "url": "https://viverpraiagrande.com.br/restaurantes/cafeterias/quintal-bistro-e-cafe-boqueirao--tr-dlpb8/",
+      "source": "Viver Praia Grande",
+      "source_url": "https://viverpraiagrande.com.br/passeios/melhores-cafeterias-praia-grande/",
+      "verified_at": "2026-11-07"
+    },
+    {
+      "id": "brookie-cafe-pg",
+      "name": "Brookie Café e Doceria",
+      "city": "Praia Grande",
+      "type": "cafe",
+      "style": "Café descontraído",
+      "tags": [
+        "Café",
+        "Canto do Forte",
+        "Doceria"
+      ],
+      "address": "Av. Mal. Mallet, 411 · Canto do Forte, Praia Grande",
+      "why": "Opção informal para reunir poucas pessoas, fazer uma pausa e conversar sobre ideias.",
+      "best": "Encontro curto, conversa em dupla e pausa depois de uma atividade",
+      "watch": "Fonte editorial de descoberta. Confirme funcionamento, lotação, consumo e nível de ruído antes do encontro.",
+      "url": "https://viverpraiagrande.com.br/restaurantes/docerias/brookie-cafe-e-doceria-canto-do-forte--ee-pdyq8/",
+      "source": "Viver Praia Grande",
+      "source_url": "https://viverpraiagrande.com.br/passeios/melhores-cafeterias-praia-grande/",
+      "verified_at": "2026-11-07"
     },
     {
       "id": "vixe",
@@ -521,10 +566,12 @@
         "Quiosques"
       ],
       "url": "https://turismo.praiagrande.sp.gov.br/2021/04/16/area-de-lazer-ezio-dallacqua-portinho/",
+      "source": "Viver Praia Grande",
+      "source_url": "https://viverpraiagrande.com.br/passeios/passeios-na-praia-grande/",
       "photo": "https://turismo.praiagrande.sp.gov.br/wp-content/uploads/2021/05/revitalizacao_portinho_fotofredcasagrande_10-08-19_-93-1-scaled.jpg",
       "credit": "Foto: Fred Casagrande · Prefeitura de Praia Grande",
       "credit_url": "https://turismo.praiagrande.sp.gov.br/2021/04/16/area-de-lazer-ezio-dallacqua-portinho/",
-      "verified_at": "2026-11-03"
+      "verified_at": "2026-11-07"
     }
   ],
   "sources": [
@@ -548,9 +595,9 @@
     },
     {
       "city": "Praia Grande",
-      "title": "Agenda Viver Praia Grande",
+      "title": "Viver Praia Grande · agenda",
       "url": "https://viverpraiagrande.com.br/eventos/",
-      "kind": "Shows, teatro e oficinas"
+      "kind": "Fonte editorial de descoberta"
     },
     {
       "city": "São Vicente",
@@ -575,6 +622,20 @@
       "title": "Programação MIS-SP",
       "url": "https://mis-sp.org.br/",
       "kind": "Cinema e exposições"
+    }
+  ],
+  "meeting_sources": [
+    {
+      "city": "Praia Grande",
+      "title": "Guia de cafeterias",
+      "url": "https://viverpraiagrande.com.br/passeios/melhores-cafeterias-praia-grande/",
+      "kind": "Viver Praia Grande · cafés para encontros"
+    },
+    {
+      "city": "Praia Grande",
+      "title": "Passeios e espaços ao ar livre",
+      "url": "https://viverpraiagrande.com.br/passeios/passeios-na-praia-grande/",
+      "kind": "Viver Praia Grande · locais de convivência"
     }
   ],
   "photos_reviewed_at": "2026-11-03",

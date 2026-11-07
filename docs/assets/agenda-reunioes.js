@@ -24,7 +24,7 @@ const storage={
  get(key){try{const x=JSON.parse(localStorage.getItem(key)||'[]');return new Set(Array.isArray(x)?x.filter(v=>typeof v==='string'&&v.length<180).slice(0,500):[])}catch{return new Set()}},
  set(key,vals){try{localStorage.setItem(key,JSON.stringify([...vals]));return true;}catch{return false;}}
 };
-let data={events:[],places:[],sources:[],festivals:[],curated_at:null};
+let data={events:[],places:[],sources:[],meeting_sources:[],festivals:[],curated_at:null};
 let customPlaces=[],editingPlaceId=null,placeTrigger=null;
 let eventCity='Todas',eventCat='todos',eventSearch='',eventSavedOnly=false,eventPeriod='all';
 let currentInviteEvent=null,inviteTrigger=null;
@@ -106,7 +106,8 @@ function calendarLabel(e){
  return e.start===e.end?a:a+' — '+b;
 }
 function sourceFooter(e){
- return '<span class="op-source"><span class="op-source-dot"></span>'+esc(e.source)+'</span>';
+ const label=e.source_kind?e.source_kind+' · '+e.source:e.source;
+ return '<span class="op-source"><span class="op-source-dot"></span>'+esc(label)+'</span>';
 }
 function eventDetails(e){
  if(!Array.isArray(e.highlights)||!e.highlights.length)return '';
@@ -145,6 +146,15 @@ function photoBlock(p){
  return '<img loading="lazy" decoding="async" class="op-place-img" src="'+esc(p.photo)+'" alt="Fotografia do ambiente: '+esc(p.name)+'" referrerpolicy="no-referrer" onerror="this.hidden=true;this.nextElementSibling.hidden=false"/>'+
   '<div hidden>'+fallback+'</div>';
 }
+function placeSourceLinks(p){
+ const primary=safeURL(p.url),editorial=safeURL(p.source_url),links=[];
+ if(primary){
+  const viaPortal=p.source&&primary.includes('viverpraiagrande.com.br');
+  links.push('<a class="op-place-source" href="'+esc(primary)+'" target="_blank" rel="noopener noreferrer">'+esc(viaPortal?'Perfil no '+p.source:'Site / informações do local')+' →</a>');
+ }
+ if(editorial&&editorial!==primary)links.push('<a class="op-place-source op-place-editorial" href="'+esc(editorial)+'" target="_blank" rel="noopener noreferrer">Fonte editorial · '+esc(p.source||'guia de descoberta')+' →</a>');
+ return links.join('');
+}
 function placeCard(p){
  const kind=kindInfo[p.type]||kindInfo.cafe;
  const saved=savedPlaces.has(p.id);
@@ -163,7 +173,7 @@ function placeCard(p){
      '<button type="button" class="op-copy-button" data-invite="'+esc(p.id)+'">Copiar convite</button>'+
      '<button type="button" class="op-icon-button '+(saved?'is-saved':'')+'" data-favplace="'+esc(p.id)+'" aria-pressed="'+saved+'" aria-label="'+(saved?'Remover local salvo':'Salvar local')+'">'+(saved?'♥':'♡')+'</button>'+
     '</div>'+
-    (safeURL(p.url)?'<a class="op-place-source" href="'+esc(safeURL(p.url))+'" target="_blank" rel="noopener noreferrer">Site / informações do local →</a>':'')+
+    placeSourceLinks(p)+
     (p.custom?'<div class="op-custom-actions"><button type="button" data-edit-place="'+esc(p.id)+'">Editar ponto</button><button type="button" data-delete-place="'+esc(p.id)+'">Excluir ponto</button></div>':'')+
     (p.credit&&p.credit_url?'<div class="op-photo-credit"><a href="'+esc(p.credit_url)+'" target="_blank" rel="noopener noreferrer">'+esc(p.credit)+' →</a></div>':'')+
    '</div></article>';
@@ -241,6 +251,12 @@ function renderSources(){
  '<span class="op-portal-icon">→</span><span><strong>'+esc(s.title)+'</strong><small>'+esc(s.city)+' · '+esc(s.kind)+'</small></span></a>').join('');
  const stamp=document.getElementById('opAgendaCurated');
  if(stamp&&data.curated_at){const [y,m,d]=data.curated_at.split('-');stamp.textContent='Curadoria inicial: '+d+'/'+m+'/'+y+' · datas conferidas nas fontes indicadas'}
+}
+function renderMeetingSources(){
+ const root=document.getElementById('opMeetingSources');if(!root)return;
+ const rows=Array.isArray(data.meeting_sources)?data.meeting_sources:[];
+ root.innerHTML=rows.length?rows.map(s=>'<a href="'+esc(safeURL(s.url))+'" target="_blank" rel="noopener noreferrer" class="op-portal-link">'+
+ '<span class="op-portal-icon">→</span><span><strong>'+esc(s.title)+'</strong><small>'+esc(s.city)+' · '+esc(s.kind)+'</small></span></a>').join(''):'<p class="op-source-empty">Nenhum guia editorial cadastrado.</p>';
 }
 async function copyText(txt){
  if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function'){try{await navigator.clipboard.writeText(txt);return;}catch{}}
@@ -406,6 +422,9 @@ function buildUI(){
  '<div class="op-chipset" id="opMeetKinds" aria-label="Tipo de encontro">'+kindPlaces+'</div>',
  '<div class="op-control-foot"><strong id="opPlaceCount" aria-live="polite">Carregando locais...</strong><span id="opPlaceSourceStatus">Salve os favoritos e copie um convite para o grupo.</span></div></div>',
  '<div class="op-place-grid" id="opPlaceGrid" aria-live="polite"><div class="op-noresults">Carregando sugestões...</div></div>',
+ '<div class="op-agenda-bottom op-meeting-sources"><div class="op-agenda-bottom-head"><h3>Onde descobrir novos pontos de encontro</h3>',
+ '<span>Guias editoriais; confirme funcionamento diretamente com cada local</span></div>',
+ '<div class="op-portals" id="opMeetingSources">Carregando fontes...</div></div>',
  '<p class="op-meeting-footnote">Locais independentes, sem parceria com a Oitava Parede. Antes de reunir a equipe, confirme horário, lotação, consumo mínimo, Wi-Fi, reserva e se há espaço para conversas longas.</p>',
  '</div></section>'+placeDialogMarkup()+eventInviteMarkup()+'<div id="opToast" class="op-toast" role="status" aria-live="polite"></div>'
  ].join('');
@@ -436,7 +455,7 @@ async function init(){
   data=json;
   window.OitavaCentralData=window.OitavaCentralData||{};window.OitavaCentralData.agenda=data;
   window.dispatchEvent(new CustomEvent('op:agenda-ready',{detail:data}));
-  renderEvents();renderPlaces();renderSources();renderFestivals();
+  renderEvents();renderPlaces();renderSources();renderMeetingSources();renderFestivals();
  }catch(e){
   src.innerHTML='<div class="op-noresults"><strong>Não foi possível carregar a agenda.</strong><p>Utilize os portais de programação indicados na seção.</p></div>';
   renderPlaces();document.getElementById('opPlaceSourceStatus').textContent='As sugestões públicas não carregaram. Seus pontos personalizados continuam disponíveis.';
