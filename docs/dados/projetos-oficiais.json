@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "atualizado_em": "2026-11-08T01:47:17+00:00",
+  "atualizado_em": "2026-11-08T17:14:39+00:00",
   "projetos": [
     {
       "id": "bc2ec8694ce4d6667845",
@@ -110,11 +110,12 @@
       "ano_edital": 2026,
       "etapa": "Resultado de inscrições",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-06T04:51:50+00:00",
+      "verificado_em": "2026-11-08T17:13:52+00:00",
       "fonte_titulo": "Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_xdcc5rxd.pu0.pdf",
       "pagina": 65,
-      "motivo": "INSCRIÇÃO VÁLIDA"
+      "motivo": "INSCRIÇÃO VÁLIDA",
+      "data_no_arquivo": "2026-10-24"
     },
     {
       "titulo": "ZEBOLA DANCE - VIDEOCLIPE",
@@ -127,11 +128,12 @@
       "ano_edital": 2026,
       "etapa": "Resultado de inscrições",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-06T04:51:50+00:00",
+      "verificado_em": "2026-11-08T17:13:52+00:00",
       "fonte_titulo": "Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_xdcc5rxd.pu0.pdf",
       "pagina": 66,
-      "motivo": "INSCRIÇÃO VÁLIDA"
+      "motivo": "INSCRIÇÃO VÁLIDA",
+      "data_no_arquivo": "2026-10-24"
     },
     {
       "titulo": "ELE - UM VIDEOCLIPE ALIADOS",
@@ -144,11 +146,12 @@
       "ano_edital": 2026,
       "etapa": "Resultado de inscrições",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-06T04:51:50+00:00",
+      "verificado_em": "2026-11-08T17:13:52+00:00",
       "fonte_titulo": "Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_xdcc5rxd.pu0.pdf",
       "pagina": 203,
-      "motivo": "anexo 3 com datas incorretas"
+      "motivo": "anexo 3 com datas incorretas",
+      "data_no_arquivo": "2026-10-24"
     },
     {
       "titulo": "ELE - UM VIDEOCLIPE ALIADOS",
