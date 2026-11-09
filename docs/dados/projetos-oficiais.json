@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "atualizado_em": "2026-11-08T17:14:39+00:00",
+  "atualizado_em": "2026-11-09T01:56:49+00:00",
   "projetos": [
     {
       "id": "bc2ec8694ce4d6667845",
@@ -13,7 +13,7 @@
       "situacao_na_fonte": "ACEITO",
       "data_documento": "2026-10-23",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-07T22:19:40+00:00",
+      "verificado_em": "2026-11-09T01:55:56+00:00",
       "fonte_titulo": "Resultado Inscricoes Edital 19 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_rw0wr5ka.d2q.pdf",
       "pagina": 15,
@@ -32,12 +32,13 @@
       "situacao_na_fonte": "ACEITO",
       "data_documento": "2026-10-24",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-06T04:51:50+00:00",
+      "verificado_em": "2026-11-09T01:55:56+00:00",
       "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
       "pagina": 65,
       "ano_edital": 2026,
-      "motivo": "INSCRIÇÃO VÁLIDA"
+      "motivo": "INSCRIÇÃO VÁLIDA",
+      "data_no_arquivo": "2026-10-24"
     },
     {
       "id": "3c2efe2e0b21d2932ad1",
@@ -50,12 +51,13 @@
       "situacao_na_fonte": "ACEITO",
       "data_documento": "2026-10-24",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-06T04:51:50+00:00",
+      "verificado_em": "2026-11-09T01:55:56+00:00",
       "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
       "pagina": 66,
       "ano_edital": 2026,
-      "motivo": "INSCRIÇÃO VÁLIDA"
+      "motivo": "INSCRIÇÃO VÁLIDA",
+      "data_no_arquivo": "2026-10-24"
     },
     {
       "id": "5af3f4b31efcb7253c36",
@@ -68,7 +70,7 @@
       "situacao_na_fonte": "ACEITO",
       "data_documento": "2026-10-23",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-07T22:19:40+00:00",
+      "verificado_em": "2026-11-09T01:55:56+00:00",
       "fonte_titulo": "Resultado Inscricoes Edital 20 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_005855_Resultados-Da-Etapa-_tth3um0q.exz.pdf",
       "pagina": 17,
@@ -164,11 +166,12 @@
       "ano_edital": 2026,
       "etapa": "Resultado de inscrições",
       "conferencia": "campos_rotulados",
-      "verificado_em": "2026-11-06T04:51:50+00:00",
+      "verificado_em": "2026-11-09T01:55:56+00:00",
       "fonte_titulo": "RETIFICAÇÃO - Resultado Inscricoes Edital 16 - 2026",
       "fonte_url": "https://www2.praiagrande.sp.gov.br/files/documentos/Politica-Nacional-Aldir-Blanc/20261024_145348_Retificacao---Result_wmhodurc.psg.pdf",
       "pagina": 203,
-      "motivo": "anexo 3 com datas incorretas"
+      "motivo": "anexo 3 com datas incorretas",
+      "data_no_arquivo": "2026-10-24"
     },
     {
       "id": "05372a7b0dcc222947c5",
