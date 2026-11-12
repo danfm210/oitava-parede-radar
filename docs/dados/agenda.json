@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "curated_at": "2026-11-07",
+  "curated_at": "2026-11-12",
   "scope": "Baixada Santista e capital; agenda selecionada com fontes e datas de publicacao",
   "notice": "As fotos dos eventos identificadas como 'Foto do local' retratam o espaço em que ocorrem, não necessariamente a edição atual. Créditos por fonte; links externos podem expirar. Confirme horários e ingressos.",
   "events": [
@@ -104,6 +104,22 @@
       "source": "Oazis"
     },
     {
+      "id": "sexta-musical-boqueirao-2026",
+      "title": "Última Sexta Musical de 2026",
+      "category": "musica",
+      "city": "Praia Grande",
+      "start": "2026-11-13",
+      "end": "2026-11-13",
+      "time": "20h",
+      "venue": "Avenida Presidente Costa e Silva · Boqueirão",
+      "price": "Gratuito",
+      "description": "Encerramento da programação anual com Pagode do Rhavi, intérprete de Libras e serviços de saúde no corredor comercial do Boqueirão.",
+      "url": "https://www2.praiagrande.sp.gov.br/noticiaNP/id/5390",
+      "source": "Prefeitura de Praia Grande",
+      "source_kind": "Fonte oficial",
+      "featured": true
+    },
+    {
       "id": "cafe-arte-futrica-2026",
       "title": "Café, Arte e Coleção na Futrica",
       "category": "cultura",
@@ -146,10 +162,10 @@
       "time": "19h30",
       "venue": "Palácio das Artes · Boqueirão",
       "price": "Gratuito",
-      "description": "Edição em homenagem a Antônio Manzione; consulte orientações de entrada.",
-      "url": "https://viverpraiagrande.com.br/eventos/",
-      "source": "Viver Praia Grande",
-      "source_kind": "Fonte editorial",
+      "description": "Edição em homenagem a Antônio Manzione. Os ingressos gratuitos serão distribuídos 30 minutos antes de cada sessão.",
+      "url": "https://www2.praiagrande.sp.gov.br/noticia/homenagem-a-antonio-manzione-16-festival-de-violoes-comeca-na-proxima-semana",
+      "source": "Prefeitura de Praia Grande",
+      "source_kind": "Fonte oficial",
       "image": "https://www2.praiagrande.sp.gov.br/files/noticiaFoto/np5nnqgb.3oh.jpg",
       "imageCredit": "Foto do Palácio das Artes · Prefeitura de Praia Grande",
       "imageSource": "https://www2.praiagrande.sp.gov.br/noticia/praia-grande-lanca-novo-edital-da-politica-nacional-aldir-blanc-",
@@ -169,6 +185,37 @@
       "url": "https://viverpraiagrande.com.br/eventos/",
       "source": "Viver Praia Grande",
       "source_kind": "Fonte editorial"
+    },
+    {
+      "id": "caravana-natal-pg-2026",
+      "title": "Caravana de Natal de Praia Grande",
+      "category": "cultura",
+      "city": "Praia Grande",
+      "start": "2026-11-24",
+      "end": "2026-11-24",
+      "time": "A partir das 17h30",
+      "venue": "Ruas de Praia Grande · trajeto em atualização",
+      "price": "Gratuito",
+      "description": "Caravana de caminhões iluminados com a presença do Papai Noel. Consulte a página oficial para atualizações do trajeto.",
+      "url": "https://www2.praiagrande.sp.gov.br/pagina-introdutoria/caravana-de-natal",
+      "source": "Prefeitura de Praia Grande",
+      "source_kind": "Fonte oficial"
+    },
+    {
+      "id": "iemanja-pg-2026",
+      "title": "Festejos de Iemanjá de Praia Grande",
+      "category": "cultura",
+      "city": "Praia Grande",
+      "start": "2026-12-05",
+      "end": "2026-12-13",
+      "time": "Programação nos dias 5, 6, 12 e 13",
+      "venue": "Faixa de areia entre Mirim e Caiçara",
+      "price": "Acesso público",
+      "description": "Celebração religiosa e cultural tradicional, reconhecida como Patrimônio Cultural de Natureza Imaterial do Município.",
+      "url": "https://www2.praiagrande.sp.gov.br/noticia/festejos-de-iemanja-de-praia-grande-termina-inscricoes-na-proxima-segunda-26",
+      "source": "Prefeitura de Praia Grande",
+      "source_kind": "Fonte oficial",
+      "weekdays": [0, 6]
     },
     {
       "id": "cine-curtinhas-sp-2026",

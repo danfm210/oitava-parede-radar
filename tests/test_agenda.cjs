@@ -18,7 +18,8 @@ test('Viver Praia Grande alimenta agenda e descoberta de pontos de encontro com 
  const eventSource=data.sources.find(s=>s.url==='https://viverpraiagrande.com.br/eventos/');
  assert.equal(eventSource.kind,'Fonte editorial de descoberta');
  const viverEvents=data.events.filter(e=>e.source==='Viver Praia Grande');
- assert.ok(viverEvents.length>=2);assert.ok(viverEvents.every(e=>e.source_kind==='Fonte editorial'&&isViver(e.url)));
+ assert.ok(viverEvents.length>=1);assert.ok(viverEvents.every(e=>e.source_kind==='Fonte editorial'&&isViver(e.url)));
+ assert.equal(data.events.find(e=>e.id==='violao-pg-2026').source_kind,'Fonte oficial');
  assert.equal(data.meeting_sources.length,2);
  assert.ok(data.meeting_sources.every(s=>isViver(s.url)));
  const places=data.places.filter(p=>p.source==='Viver Praia Grande');
@@ -26,11 +27,34 @@ test('Viver Praia Grande alimenta agenda e descoberta de pontos de encontro com 
  assert.ok(places.every(p=>isViver(p.source_url)));
 });
 
+test('novidades de Praia Grande usam fonte oficial e orientações verificadas',()=>{
+ for(const id of ['sexta-musical-boqueirao-2026','violao-pg-2026','caravana-natal-pg-2026','iemanja-pg-2026']){
+  const event=data.events.find(e=>e.id===id);
+  assert.ok(event,id+' deve existir');
+  assert.equal(event.source_kind,'Fonte oficial');
+  assert.equal(new URL(event.url).hostname,'www2.praiagrande.sp.gov.br');
+ }
+ const violao=data.events.find(e=>e.id==='violao-pg-2026');
+ assert.match(violao.description,/30 minutos/);
+ assert.equal(data.curated_at,'2026-11-12');
+});
+
 test('só eventos em andamento ou futuros aparecem',()=>{
  const rows=[{id:'old',start:'2026-09-01',end:'2026-09-02',title:'Antigo'},
  {id:'live',start:'2026-11-01',end:'2026-11-09',title:'Em andamento'},
  {id:'next',start:'2026-11-20',end:'2026-11-21',title:'Futuro'}];
  assert.deepEqual(agenda.upcomingEvents(rows,'2026-11-03').map(x=>x.id),['live','next']);
+});
+
+test('marcador temporal destaca o que exige decisão rápida sem marcar evento distante',()=>{
+ const oneDay={start:'2026-11-13',end:'2026-11-13'};
+ assert.equal(agenda.eventProximity(oneDay,'2026-11-12'),'Amanhã');
+ assert.equal(agenda.eventProximity(oneDay,'2026-11-13'),'Hoje');
+ assert.equal(agenda.eventProximity(oneDay,'2026-11-14'),'');
+ assert.equal(agenda.eventProximity({start:'2026-11-20',end:'2026-11-20'},'2026-11-12'),'Em 8 dias');
+ assert.equal(agenda.eventProximity({start:'2026-12-20',end:'2026-12-20'},'2026-11-12'),'');
+ const weekends={start:'2026-12-05',end:'2026-12-13',weekdays:[0,6]};
+ assert.equal(agenda.eventProximity(weekends,'2026-12-08'),'Em 4 dias');
 });
 
 test('filtro de evento respeita cidade categoria busca e favoritos',()=>{

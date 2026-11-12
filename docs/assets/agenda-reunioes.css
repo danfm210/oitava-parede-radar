@@ -39,8 +39,10 @@
 .op-cover-shape i{position:absolute;border:2px solid #fff;border-radius:52% 48% 60% 40%;width:95px;height:158px;top:10px;left:15px;transform:rotate(-13deg)}
 .op-cover-shape i:nth-child(2){left:57px;top:-4px;transform:rotate(22deg)}
 .op-cover-shape i:nth-child(3){left:100px;top:25px;transform:rotate(52deg)}
-.op-event-tag,.op-feature-label{align-self:flex-start;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 10px;font:850 10px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.15px;backdrop-filter:blur(8px)}
-.op-feature-label{position:absolute;top:17px;right:17px;background:#f7c75b;border-color:#f7c75b;color:#132551}
+.op-event-tag,.op-feature-label,.op-time-label{align-self:flex-start;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:5px 10px;font:850 10px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.15px;backdrop-filter:blur(8px)}
+.op-event-badges{position:absolute;top:17px;right:17px;display:flex;flex-direction:column;align-items:flex-end;gap:6px;max-width:45%}
+.op-feature-label{background:#f7c75b;border-color:#f7c75b;color:#132551}
+.op-time-label{background:#fff;border-color:#fff;color:#173267;box-shadow:0 5px 14px rgba(4,18,52,.14)}
 .op-cover-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
 .op-cover-bottom span{font:750 12px/1.3 ui-sans-serif,system-ui,sans-serif;color:#e8ecff}
 .op-cover-bottom strong{font:850 16px/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:-.3px;text-align:right}
@@ -57,6 +59,8 @@
 .op-icon-button:hover,.op-icon-button.is-saved{color:#b14b53;background:#fff2f4;border-color:#e7c2c6}
 .op-source{display:flex;align-items:center;gap:6px;font:700 10px/1.4 ui-sans-serif,system-ui,sans-serif;color:#919eb1;margin-top:14px}
 .op-source-dot{display:block;width:5px;height:5px;background:#d6ac31;border-radius:100%}
+.op-source.is-official{color:#34725d}.op-source.is-official .op-source-dot{background:#2f8b69}
+.op-source.is-editorial{color:#856723}.op-source.is-editorial .op-source-dot{background:#d6ac31}
 .op-agenda-bottom{margin-top:28px;background:#fff;border:1px solid #e2e9f2;border-radius:19px;padding:21px}
 .op-meeting-sources{background:#f8fafc}
 #opMeetingSources{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}

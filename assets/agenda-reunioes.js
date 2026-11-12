@@ -91,6 +91,16 @@ function eventInvitation(event,{date,time='',meeting='',note=''}={}){
  return lines.join('\n');
 }
 function upcomingEvents(events,today){const day=today||new Date().toLocaleDateString('sv-SE',{timeZone:'America/Sao_Paulo'});return events.filter(e=>e&&e.end>=day).sort((a,b)=>a.start.localeCompare(b.start)||a.title.localeCompare(b.title));}
+function eventProximity(event,today=todayBR()){
+ if(!event||!validDay(today)||!validDay(event.start)||!validDay(event.end)||event.end<today)return '';
+ const first=today>event.start?today:event.start;let next='';
+ for(let day=first;day<=event.end;day=addDays(day,1)){if(eventRunsOn(event,day)){next=day;break;}}
+ if(!next)return '';
+ const days=Math.round((Date.parse(next+'T12:00:00Z')-Date.parse(today+'T12:00:00Z'))/86400000);
+ if(days===0)return 'Hoje';
+ if(days===1)return 'Amanhã';
+ return days<=30?'Em '+days+' dias':'';
+}
 function filterEvents(events,city,cat,query,savedOnly,saved){
  return events.filter(e=>(city==='Todas'||e.city===city)&&(cat==='todos'||e.category===cat)
  &&(!query||norm(e.title+' '+e.venue+' '+e.description+' '+e.city).includes(norm(query)))
@@ -107,7 +117,8 @@ function calendarLabel(e){
 }
 function sourceFooter(e){
  const label=e.source_kind?e.source_kind+' · '+e.source:e.source;
- return '<span class="op-source"><span class="op-source-dot"></span>'+esc(label)+'</span>';
+ const sourceClass=e.source_kind==='Fonte oficial'?' is-official':e.source_kind==='Fonte editorial'?' is-editorial':'';
+ return '<span class="op-source'+sourceClass+'"><span class="op-source-dot"></span>'+esc(label)+'</span>';
 }
 function eventDetails(e){
  if(!Array.isArray(e.highlights)||!e.highlights.length)return '';
@@ -117,13 +128,14 @@ function eventCard(e){
  const t=catInfo[e.category]||catInfo.cultura;
  const saved=savedEvents.has(e.id);
  const label=esc(calendarLabel(e));
+ const proximity=eventProximity(e);
  const item='<article class="op-event-card" data-category="'+esc(t.color)+'">'+
   '<div class="op-event-cover op-tone-'+esc(t.color)+(e.image?' has-photo':'')+'">'+
    (e.image?'<img class="op-event-photo" loading="lazy" decoding="async" src="'+esc(e.image)+'" alt="'+esc(e.imageType==='local'?'Foto do local do evento: '+e.venue:'Divulgação do evento '+e.title)+'" referrerpolicy="no-referrer" onerror="this.hidden=true;this.parentElement.classList.remove(\'has-photo\')"/>':'')+
    (e.image?'<span class="op-photo-kind">'+(e.imageType==='local'?'Foto do local':'Divulgação')+'</span>':'')+
    '<div class="op-cover-shape" aria-hidden="true"><i></i><i></i><i></i></div>'+
    '<span class="op-event-tag">'+esc(t.glyph)+' &nbsp;'+esc(t.label)+'</span>'+
-   (e.featured?'<span class="op-feature-label">Em destaque</span>':'')+
+   ((e.featured||proximity)?'<div class="op-event-badges">'+(proximity?'<span class="op-time-label">'+esc(proximity)+'</span>':'')+(e.featured?'<span class="op-feature-label">Em destaque</span>':'')+'</div>':'')+
    '<div class="op-cover-bottom"><span>'+esc(e.city)+'</span><strong>'+label+'</strong></div>'+
   '</div>'+
   '<div class="op-card-body">'+
@@ -369,7 +381,7 @@ function placeDialogMarkup(){return `<dialog id="opPlaceDialog" class="op-place-
 
 function buildUI(){
  if(document.getElementById('agenda'))return;
- const css=document.createElement('link');css.rel='stylesheet';css.href='./assets/agenda-reunioes.css';document.head.appendChild(css);
+ const css=document.createElement('link');css.rel='stylesheet';css.href='./assets/agenda-reunioes.css?v=20261112-agenda';document.head.appendChild(css);
  const nav=document.getElementById('nav');
  if(nav&&!nav.querySelector('[href="#agenda"]')){
   const before=nav.querySelector('[href="#notificacoes"]');
@@ -463,7 +475,7 @@ async function init(){
   console.warn('[agenda]',e);
  }
 }
-const api={upcomingEvents,filterEvents,filterPlaces,catInfo,kindInfo,customPlace,readCustomPlaces,safeURL,festivalState,periodBounds,eventInPeriod,defaultInviteDate,eventInvitation,validDay};
+const api={upcomingEvents,eventProximity,filterEvents,filterPlaces,catInfo,kindInfo,customPlace,readCustomPlaces,safeURL,festivalState,periodBounds,eventInPeriod,defaultInviteDate,eventInvitation,validDay};
 if(typeof module==='object'&&module.exports)module.exports=api;
 if(typeof document!=='undefined')if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })(typeof window!=='undefined'?window:null);
